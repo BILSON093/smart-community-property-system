@@ -1,0 +1,97 @@
+/* pages/register/register.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f7f8fa;
+}
+
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 60rpx 0;
+  text-align: center;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.form {
+  padding: 40rpx 30rpx;
+}
+
+.form-item {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 24rpx 30rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.form-item.small {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.address-row {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.label {
+  width: 140rpx;
+  font-size: 30rpx;
+  color: #323233;
+  flex-shrink: 0;
+}
+
+.form-item.small .label {
+  width: 100rpx;
+}
+
+.input {
+  flex: 1;
+  font-size: 30rpx;
+  color: #323233;
+}
+
+.eye-icon {
+  font-size: 40rpx;
+  margin-left: 20rpx;
+}
+
+.btn-register {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  font-size: 36rpx;
+  font-weight: bold;
+  border-radius: 12rpx;
+  margin-top: 40rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.3);
+}
+
+.btn-register::after {
+  border: none;
+}
+
+.login-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40rpx;
+  font-size: 28rpx;
+  color: #969799;
+}
+
+.link {
+  color: #667eea;
+  margin-left: 12rpx;
+  font-weight: bold;
+}

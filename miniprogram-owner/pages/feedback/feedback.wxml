@@ -1,0 +1,54 @@
+<!--pages/feedback/feedback.wxml-->
+<view class="container">
+  <view class="form">
+    <!-- 留言输入 -->
+    <view class="input-section">
+      <view class="section-title">提交留言</view>
+      <textarea
+        class="feedback-input"
+        placeholder="请输入您的问题或建议"
+        value="{{feedbackContent}}"
+        bindinput="onFeedbackInput"
+        maxlength="500"
+        show-confirm-bar="{{false}}"
+      ></textarea>
+      <text class="char-count">{{feedbackContent.length}}/500</text>
+
+      <button class="btn-submit" bindtap="submitFeedback">提交留言</button>
+    </view>
+
+    <!-- 留言列表 -->
+    <view class="feedback-list">
+      <view
+        class="feedback-card"
+        wx:for="{{feedbackList}}"
+        wx:key="id"
+      >
+        <view class="card-header">
+          <text class="status-badge status-{{item.status}}">
+            {{item.status === 0 ? '待处理' : '已处理'}}
+          </text>
+          <text class="time">{{item.createTime}}</text>
+        </view>
+
+        <view class="card-content">
+          <text class="content-text">{{item.content}}</text>
+        </view>
+
+        <view class="card-reply" wx:if="{{item.reply}}">
+          <view class="reply-title">管理员回复：</view>
+          <text class="reply-text">{{item.reply}}</text>
+        </view>
+      </view>
+
+      <view class="empty" wx:if="{{loading === false && feedbackList.length === 0}}">
+        <text class="empty-icon">💭</text>
+        <text class="empty-text">暂无留言记录</text>
+      </view>
+
+      <view class="loading" wx:if="{{loading}}">
+        <text>加载中...</text>
+      </view>
+    </view>
+  </view>
+</view>

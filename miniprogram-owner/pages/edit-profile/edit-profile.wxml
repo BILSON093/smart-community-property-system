@@ -1,0 +1,97 @@
+<!--pages/edit-profile/edit-profile.wxml-->
+<view class="container">
+  <view class="form">
+    <!-- 头像 -->
+    <view class="form-item avatar-item">
+      <text class="label">头像</text>
+      <view class="avatar-wrapper" bindtap="chooseAvatar">
+        <image class="avatar" src="{{formData.avatar || '/images/avatar-default.png'}}" mode="aspectFill"></image>
+        <text class="change-text">点击更换</text>
+      </view>
+    </view>
+
+    <!-- 用户名 -->
+    <view class="form-item">
+      <text class="label">用户名</text>
+      <input
+        class="input"
+        placeholder="请输入用户名"
+        value="{{formData.username}}"
+        bindinput="onUsernameInput"
+      />
+    </view>
+
+    <!-- 真实姓名 -->
+    <view class="form-item">
+      <text class="label">真实姓名</text>
+      <input
+        class="input"
+        placeholder="请输入真实姓名"
+        value="{{formData.realName}}"
+        bindinput="onRealNameInput"
+      />
+    </view>
+
+    <!-- 手机号 -->
+    <view class="form-item">
+      <text class="label">手机号</text>
+      <input
+        class="input"
+        type="number"
+        maxlength="11"
+        placeholder="请输入手机号"
+        value="{{formData.phone}}"
+        bindinput="onPhoneInput"
+      />
+    </view>
+
+    <!-- 身份证号 -->
+    <view class="form-item">
+      <text class="label">身份证号</text>
+      <input
+        class="input"
+        placeholder="请输入身份证号"
+        value="{{formData.idCard}}"
+        bindinput="onIdCardInput"
+      />
+    </view>
+
+    <!-- 地址信息 -->
+    <view class="section-title">地址信息</view>
+
+    <view class="address-row">
+      <view class="form-item small">
+        <text class="label">楼栋</text>
+        <input
+          class="input"
+          placeholder="楼栋"
+          value="{{formData.building}}"
+          bindinput="onBuildingInput"
+        />
+      </view>
+
+      <view class="form-item small">
+        <text class="label">单元</text>
+        <input
+          class="input"
+          placeholder="单元"
+          value="{{formData.unit}}"
+          bindinput="onUnitInput"
+        />
+      </view>
+
+      <view class="form-item small">
+        <text class="label">房间</text>
+        <input
+          class="input"
+          placeholder="房间号"
+          value="{{formData.room}}"
+          bindinput="onRoomInput"
+        />
+      </view>
+    </view>
+
+    <!-- 保存按钮 -->
+    <button class="btn-save" bindtap="saveProfile">保存</button>
+  </view>
+</view>

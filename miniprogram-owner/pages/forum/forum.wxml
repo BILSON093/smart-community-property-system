@@ -1,0 +1,91 @@
+<!--pages/forum/forum.wxml-->
+<view class="container">
+  <!-- 分类筛选 -->
+  <view class="category-bar">
+    <scroll-view class="category-scroll" scroll-x>
+      <view
+        class="category-item {{activeCategory === 0 ? 'active' : ''}}"
+        bindtap="selectCategory"
+        data-id="0"
+      >
+        全部
+      </view>
+      <view
+        class="category-item {{activeCategory === item.id ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="id"
+        bindtap="selectCategory"
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <view class="post-list">
+    <view
+      class="post-card"
+      wx:for="{{postList}}"
+      wx:key="id"
+      bindtap="viewPostDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="post-header">
+        <image class="avatar" src="{{item.userAvatar}}" mode="aspectFill" binderror="onAvatarError"></image>
+        <view class="user-info">
+          <text class="username">{{item.userName}}</text>
+          <text class="time">{{item.createTime}}</text>
+        </view>
+        <view class="pin-badge" wx:if="{{item.isPinned}}">置顶</view>
+      </view>
+
+      <view class="post-content">
+        <text class="post-title">{{item.title}}</text>
+        <text class="post-desc">{{item.content}}</text>
+      </view>
+
+      <view class="post-images" wx:if="{{item.images && item.images.length > 0}}">
+        <image
+          class="post-image"
+          wx:for="{{item.images}}"
+          wx:for-item="img"
+          wx:for-index="idx"
+          wx:key="idx"
+          src="{{img}}"
+          mode="aspectFill"
+          catchtap="previewImage"
+          data-url="{{img}}"
+          data-urls="{{item.images}}"
+        ></image>
+      </view>
+
+      <view class="post-footer">
+        <view class="footer-item" catchtap="toggleLike" data-id="{{item.id}}" data-liked="{{item.isLiked}}">
+          <text>{{item.isLiked ? '👍' : '👍'}}</text>
+          <text>{{item.likeCount || 0}}</text>
+        </view>
+        <view class="footer-item">
+          <text>💬</text>
+          <text>{{item.commentCount || 0}}</text>
+        </view>
+        <view class="footer-item delete-btn" wx:if="{{item.isOwnPost}}" catchtap="deletePost" data-id="{{item.id}}">
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{loading === false && postList.length === 0}}">
+      <text class="empty-icon">💬</text>
+      <text class="empty-text">暂无帖子</text>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="publish-btn" bindtap="publishPost" wx:if="{{isLoggedIn}}">
+    <text class="publish-icon">+</text>
+  </view>
+</view>

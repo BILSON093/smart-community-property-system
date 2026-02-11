@@ -1,0 +1,165 @@
+/* pages/profile/profile.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f7f8fa;
+  padding: 20rpx;
+  padding-bottom: 40rpx;
+}
+
+.not-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.login-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24rpx;
+  padding: 80rpx 60rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 32rpx rgba(102, 126, 234, 0.3);
+}
+
+.welcome-text {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 20rpx;
+}
+
+.desc-text {
+  display: block;
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 40rpx;
+}
+
+.btn-login {
+  width: 240rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: #ffffff;
+  color: #667eea;
+  font-size: 30rpx;
+  border-radius: 40rpx;
+  border: none;
+  font-weight: bold;
+}
+
+.btn-login::after {
+  border: none;
+}
+
+.logged-in {
+  padding: 0;
+}
+
+.user-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16rpx;
+  padding: 40rpx 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.3);
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  margin-right: 24rpx;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 8rpx;
+}
+
+.phone {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.edit-btn {
+  padding: 12rpx 24rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.address-card {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #969799;
+  margin-bottom: 16rpx;
+}
+
+.address-text {
+  font-size: 32rpx;
+  color: #323233;
+  font-weight: 500;
+}
+
+.menu-list {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f7f8fa;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.menu-text {
+  font-size: 30rpx;
+  color: #323233;
+}
+
+.arrow {
+  font-size: 24rpx;
+  color: #c8c9cc;
+}
+
+.logout .menu-text {
+  color: #ff4757;
+}

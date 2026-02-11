@@ -1,0 +1,52 @@
+package com.wye.service;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wye.entity.BusNotice;
+import com.wye.mapper.BusNoticeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class NoticeService {
+    
+    @Autowired
+    private BusNoticeMapper busNoticeMapper;
+    
+    /**
+     * 分页查询通知列表
+     */
+    public Page<BusNotice> list(int page, int size) {
+        return busNoticeMapper.selectPage(new Page<>(page, size),
+            new QueryWrapper<BusNotice>().orderByDesc("publish_time")
+        );
+    }
+    
+    /**
+     * 获取通知详情
+     */
+    public BusNotice getById(Long id) {
+        return busNoticeMapper.selectById(id);
+    }
+    
+    /**
+     * 添加通知
+     */
+    public void add(BusNotice notice) {
+        busNoticeMapper.insert(notice);
+    }
+    
+    /**
+     * 更新通知
+     */
+    public void update(BusNotice notice) {
+        busNoticeMapper.updateById(notice);
+    }
+    
+    /**
+     * 删除通知
+     */
+    public void delete(Long id) {
+        busNoticeMapper.deleteById(id);
+    }
+}

@@ -1,0 +1,31 @@
+<!--pages/activity/activity.wxml-->
+<view class="container">
+  <view class="activity-list">
+    <view
+      class="activity-card"
+      wx:for="{{activityList}}"
+      wx:key="id"
+      bindtap="viewDetail"
+      data-id="{{item.id}}"
+    >
+      <image class="activity-cover" src="{{item.coverImage}}" mode="aspectFill"></image>
+      <view class="activity-info">
+        <text class="activity-title">{{item.title}}</text>
+        <view class="activity-desc">{{item.description}}</view>
+        <view class="activity-meta">
+          <text class="meta-item">📅 {{item.startTime}}</text>
+          <text class="meta-item">📍 {{item.location}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{loading === false && activityList.length === 0}}">
+      <text class="empty-icon">🎉</text>
+      <text class="empty-text">暂无活动</text>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>

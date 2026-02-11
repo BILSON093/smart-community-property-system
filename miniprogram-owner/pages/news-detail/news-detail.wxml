@@ -1,0 +1,61 @@
+<!--pages/news-detail/news-detail.wxml-->
+<view class="container">
+  <view wx:if="{{notice}}" class="notice-detail">
+    <view class="notice-header">
+      <view class="notice-title-row">
+        <text class="notice-title">{{notice.title}}</text>
+        <text class="notice-tag {{notice.type === 1 ? 'important' : ''}}">
+          {{notice.type === 1 ? '重要' : '普通'}}
+        </text>
+      </view>
+      <text class="notice-time">{{notice.publishTime}}</text>
+    </view>
+
+    <view class="notice-content">
+      <rich-text nodes="{{notice.content}}"></rich-text>
+
+      <!-- 图片列表 -->
+      <view class="image-list" wx:if="{{notice.images && notice.images.length > 0}}">
+        <image
+          wx:for="{{notice.images}}"
+          wx:key="index"
+          class="notice-image"
+          src="{{item}}"
+          mode="widthFix"
+          bindtap="previewImage"
+          data-current="{{item}}"
+          data-urls="{{notice.images}}"
+        ></image>
+      </view>
+
+      <!-- 附件列表 -->
+      <view class="attachment-list" wx:if="{{notice.attachment && notice.attachment.length > 0}}">
+        <text class="attachment-title">📎 附件</text>
+        <view class="attachment-items">
+          <view
+            class="attachment-item"
+            wx:for="{{notice.attachment}}"
+            wx:for-item="att"
+            wx:for-index="idx"
+            wx:key="idx"
+            bindtap="previewAttachment"
+            data-url="{{att}}"
+          >
+            <text class="attachment-icon">📎</text>
+            <text class="attachment-name">附件{{idx + 1}}</text>
+            <text class="download-icon">⬇</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{loading === false && !notice}}">
+    <text class="empty-icon">📢</text>
+    <text class="empty-text">通知不存在</text>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

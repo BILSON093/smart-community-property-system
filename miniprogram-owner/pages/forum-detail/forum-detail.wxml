@@ -1,0 +1,130 @@
+<!--pages/forum-detail/forum-detail.wxml-->
+<view class="container">
+  <view class="post-detail" wx:if="{{post}}">
+    <!-- 作者信息 -->
+    <view class="author-info">
+      <image class="avatar" src="{{post.userAvatar}}" mode="aspectFill" binderror="onAvatarError"></image>
+      <view class="user-detail">
+        <text class="username">{{post.userName}}</text>
+        <text class="time">{{post.createTime}}</text>
+      </view>
+      <view class="pin-badge" wx:if="{{post.isPinned}}">置顶</view>
+      <view class="delete-post-btn" wx:if="{{post.isOwnPost}}" bindtap="deletePost">删除帖子</view>
+    </view>
+
+    <!-- 帖子内容 -->
+    <view class="post-content">
+      <text class="title">{{post.title}}</text>
+      <text class="content">{{post.content}}</text>
+    </view>
+
+    <!-- 帖子图片 -->
+    <view class="post-images" wx:if="{{post.images && post.images.length > 0}}">
+      <image
+        class="detail-image"
+        wx:for="{{post.images}}"
+        wx:key="index"
+        src="{{item}}"
+        mode="aspectFill"
+        bindtap="previewImage"
+        data-url="{{item}}"
+        data-urls="{{post.images}}"
+      ></image>
+    </view>
+
+    <!-- 操作栏 -->
+    <view class="action-bar">
+      <view class="action-item" bindtap="toggleLike">
+        <text class="icon {{post.isLiked ? 'liked' : ''}}">{{post.isLiked ? '❤️' : '🤍'}}</text>
+        <text class="count">{{post.likeCount || 0}}</text>
+      </view>
+      <view class="action-item">
+        <text class="icon">💬</text>
+        <text class="count">{{post.commentCount || 0}}</text>
+      </view>
+    </view>
+
+    <!-- 评论区 -->
+    <view class="comment-section">
+      <view class="section-title">评论 ({{post.commentCount || 0}})</view>
+
+      <view class="comment-list">
+        <view
+          class="comment-item"
+          wx:for="{{comments}}"
+          wx:key="id"
+        >
+          <image class="comment-avatar" src="{{item.userAvatar}}" mode="aspectFill" binderror="onAvatarError"></image>
+          <view class="comment-content">
+            <view class="comment-header">
+              <text class="comment-username">{{item.userName}}</text>
+              <view class="comment-right">
+                <text class="comment-time">{{item.createTime}}</text>
+                <view class="delete-comment-btn" wx:if="{{item.isOwnComment}}" bindtap="deleteComment" data-id="{{item.id}}">删除</view>
+              </view>
+            </view>
+            <text class="comment-text">{{item.content}}</text>
+            <view class="comment-images" wx:if="{{item.images && item.images.length > 0}}">
+              <image
+                class="comment-image"
+                wx:for="{{item.images}}"
+                wx:for-item="img"
+                wx:for-index="idx"
+                wx:key="idx"
+                src="{{img}}"
+                mode="aspectFill"
+                bindtap="previewImage"
+                data-url="{{img}}"
+                data-urls="{{item.images}}"
+              ></image>
+            </view>
+          </view>
+        </view>
+
+        <view class="empty" wx:if="{{comments.length === 0}}">
+          <text class="empty-text">暂无评论</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 评论输入框 -->
+    <view class="comment-input-bar">
+      <view class="input-wrapper">
+        <input
+          class="comment-input"
+          placeholder="说点什么..."
+          value="{{commentInput}}"
+          bindinput="onCommentInput"
+        />
+        <view class="image-btn" bindtap="chooseImage">📷</view>
+      </view>
+      <view class="comment-options">
+        <view class="anonymous-wrapper">
+          <text class="anonymous-label">匿名</text>
+          <switch checked="{{isAnonymousComment}}" bindchange="onAnonymousChange" />
+        </view>
+      </view>
+      <button class="btn-send" bindtap="submitComment">发送</button>
+    </view>
+
+    <!-- 评论预览图片 -->
+    <view class="comment-image-preview" wx:if="{{commentImages.length > 0}}">
+      <view class="preview-image-item" wx:for="{{commentImages}}" wx:key="index">
+        <image class="preview-img" src="{{item}}" mode="aspectFill" bindtap="previewCommentImage" data-index="{{index}}"/>
+        <text class="delete-btn" bindtap="deleteCommentImage" catchtap="preventBubble" data-index="{{index}}">×</text>
+      </view>
+      <view class="add-btn" wx:if="{{commentImages.length < 9}}" bindtap="chooseImage">
+        <text class="add-icon">+</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{loading === false && !post}}">
+    <text class="empty-icon">💬</text>
+    <text class="empty-text">帖子不存在</text>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

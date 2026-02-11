@@ -1,0 +1,73 @@
+<!--pages/forum-publish/forum-publish.wxml-->
+<view class="container">
+  <view class="form">
+    <!-- 标题输入 -->
+    <view class="form-item">
+      <text class="label">标题</text>
+      <input
+        class="input title-input"
+        placeholder="请输入帖子标题"
+        value="{{title}}"
+        bindinput="onTitleInput"
+        maxlength="100"
+      />
+    </view>
+
+    <!-- 分类选择 -->
+    <view class="form-item">
+      <text class="label">分类</text>
+      <picker mode="selector" range="{{categories}}" range-key="name" bindchange="onCategoryChange">
+        <view class="picker">
+          <text wx:if="{{selectedCategoryName}}">{{selectedCategoryName}}</text>
+          <text class="placeholder" wx:else>请选择分类</text>
+          <text class="arrow">></text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 内容输入 -->
+    <view class="form-item content-item">
+      <text class="label">内容</text>
+      <textarea
+        class="textarea"
+        placeholder="请输入帖子内容"
+        value="{{content}}"
+        bindinput="onContentInput"
+        maxlength="1000"
+        show-confirm-bar="{{false}}"
+      ></textarea>
+      <text class="char-count">{{content.length}}/1000</text>
+    </view>
+
+    <!-- 图片上传 -->
+    <view class="form-item">
+      <text class="label">图片（选填）</text>
+      <view class="image-list">
+        <view
+          class="image-item"
+          wx:for="{{imageList}}"
+          wx:key="index"
+        >
+          <image class="image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}"></image>
+          <view class="delete-btn" bindtap="deleteImage" data-index="{{index}}">×</view>
+        </view>
+        <view class="add-image" bindtap="chooseImage" wx:if="{{imageList.length < 9}}">
+          <text class="add-icon">+</text>
+          <text class="add-text">添加图片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 匿名发布选项 -->
+    <view class="form-item">
+      <text class="label">设置</text>
+      <view class="switch-wrapper">
+        <text class="switch-label">匿名发布</text>
+        <switch checked="{{isAnonymous}}" bindchange="onAnonymousChange" />
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="btn-submit" bindtap="submitPost">发布</button>
+  </view>
+</view>

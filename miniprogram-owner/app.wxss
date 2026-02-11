@@ -1,0 +1,109 @@
+/**app.wxss**/
+page {
+  background-color: #f7f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.container {
+  min-height: 100vh;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 通用卡片样式 */
+.card {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+  margin-bottom: 20rpx;
+}
+
+/* 通用按钮样式 */
+.btn-primary {
+  background-color: #1989fa;
+  color: #ffffff;
+  border-radius: 12rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 32rpx;
+  border: none;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-default {
+  background-color: #ffffff;
+  color: #646566;
+  border: 2rpx solid #ebedf0;
+  border-radius: 12rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 32rpx;
+}
+
+.btn-default::after {
+  border: none;
+}
+
+/* 状态标签 */
+.status-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 6rpx;
+  font-size: 24rpx;
+}
+
+.status-pending {
+  background-color: #fffbe8;
+  color: #ee9a00;
+}
+
+.status-processing {
+  background-color: #e8f3ff;
+  color: #1989fa;
+}
+
+.status-completed {
+  background-color: #f0f9ff;
+  color: #07c160;
+}
+
+.status-cancelled {
+  background-color: #f5f5f5;
+  color: #969799;
+}
+
+/* 空状态 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+  color: #969799;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+}
+
+/* 安全区域适配 */
+.safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}

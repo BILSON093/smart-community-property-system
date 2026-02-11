@@ -1,0 +1,172 @@
+/* pages/repairer-home/repairer-home.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f7f8fa;
+  padding-bottom: 20rpx;
+}
+
+/* 自定义导航栏 */
+.custom-nav-bar {
+  background: linear-gradient(135deg, #1989fa 0%, #1a7be6 100%);
+  padding-top: calc(160rpx + env(safe-area-inset-top));
+  padding-bottom: 20rpx;
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30rpx;
+  height: 88rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.logout {
+  font-size: 28rpx;
+  color: #fff;
+  opacity: 0.9;
+  padding: 10rpx 20rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20rpx;
+}
+
+/* 统计卡片 */
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 40rpx 30rpx;
+  background-color: #fff;
+  margin: 60rpx 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #1989fa;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  background-color: #fff;
+  margin: 0 20rpx 40rpx 20rpx;
+  border-bottom: 1rpx solid #eee;
+  border-radius: 12rpx 12rpx 0 0;
+  padding-top: 10rpx;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 35rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #1989fa;
+  font-weight: bold;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background-color: #1989fa;
+  border-radius: 2rpx;
+}
+
+/* 工单列表 */
+.order-list {
+  padding: 0 20rpx 40rpx 20rpx;
+}
+
+.order-item {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.order-id {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.order-status {
+  font-size: 24rpx;
+  color: #1989fa;
+  background-color: rgba(25, 137, 250, 0.1);
+  padding: 8rpx 16rpx;
+  border-radius: 4rpx;
+}
+
+.order-content {
+  margin-bottom: 20rpx;
+}
+
+.order-desc {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.arrow {
+  font-size: 32rpx;
+  color: #ccc;
+}
+
+.empty {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}

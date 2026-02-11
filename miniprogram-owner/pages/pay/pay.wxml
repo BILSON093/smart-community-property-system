@@ -1,0 +1,151 @@
+<!--pages/pay/pay.wxml-->
+<view class="container">
+  <!-- 统计卡片 -->
+  <view class="stat-card">
+    <view class="stat-item">
+      <text class="stat-label">待缴金额</text>
+      <text class="stat-value unpaid">¥{{totalUnpaid}}</text>
+    </view>
+    <view class="divider"></view>
+    <view class="stat-item">
+      <text class="stat-label">已缴金额</text>
+      <text class="stat-value paid">¥{{totalPaid}}</text>
+    </view>
+  </view>
+
+  <!-- 筛选标签 -->
+  <view class="filter-bar">
+    <view
+      class="filter-item {{activeFilter === 'all' ? 'active' : ''}}"
+      bindtap="switchFilter"
+      data-filter="all"
+    >
+      全部
+    </view>
+    <view
+      class="filter-item {{activeFilter === 'unpaid' ? 'active' : ''}}"
+      bindtap="switchFilter"
+      data-filter="unpaid"
+    >
+      未支付
+    </view>
+    <view
+      class="filter-item {{activeFilter === 'paid' ? 'active' : ''}}"
+      bindtap="switchFilter"
+      data-filter="paid"
+    >
+      已支付
+    </view>
+  </view>
+
+  <!-- 费用列表 -->
+  <view class="fee-list">
+    <view
+      class="fee-card"
+      wx:for="{{filteredFees}}"
+      wx:key="id"
+    >
+      <view class="card-header">
+        <text class="fee-type">{{item.type}}</text>
+        <view class="status-badge status-{{item.status}}">
+          {{item.status === 0 ? '未支付' : '已支付'}}
+        </view>
+      </view>
+
+      <view class="card-content">
+        <view class="info-row">
+          <text class="label">账单月份：</text>
+          <text class="value">{{item.month}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">金额：</text>
+          <text class="value amount">¥{{item.amount}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.remark}}">
+          <text class="label">备注：</text>
+          <text class="value">{{item.remark}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.payTime}}">
+          <text class="label">支付时间：</text>
+          <text class="value">{{item.payTime}}</text>
+        </view>
+      </view>
+
+      <view class="card-footer" wx:if="{{item.status === 0}}">
+        <button class="btn-pay" bindtap="showPayDialog" data-id="{{item.id}}">立即支付</button>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{loading === false && filteredFees.length === 0}}">
+      <text class="empty-icon">💳</text>
+      <text class="empty-text">暂无缴费记录</text>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>
+
+<!-- 支付弹窗 -->
+<view class="modal-mask" wx:if="{{showPayDialog}}" bindtap="closePayDialog">
+  <view class="modal-content" catchtap="preventBubble">
+    <view class="modal-header">
+      <text class="modal-title">确认支付</text>
+      <text class="modal-close" bindtap="closePayDialog">×</text>
+    </view>
+
+    <view class="modal-body">
+      <view class="payment-summary">
+        <view class="summary-title">支付详情</view>
+        <view class="summary-item" wx:if="{{currentFee}}">
+          <text class="summary-label">缴费项目：</text>
+          <text class="summary-value">{{currentFee.month}}{{currentFee.type}}费</text>
+        </view>
+        <view class="summary-item" wx:if="{{currentFee}}">
+          <text class="summary-label">支付金额：</text>
+          <text class="summary-amount">¥{{currentFee.amount}}</text>
+        </view>
+        <view class="summary-item" wx:if="{{currentFee && currentFee.remark}}">
+          <text class="summary-label">备注：</text>
+          <text class="summary-value">{{currentFee.remark}}</text>
+        </view>
+      </view>
+
+      <view class="payment-methods">
+        <text class="method-title">支付方式</text>
+        <view class="method-list">
+          <view
+            class="method-item {{selectedMethod === 'alipay' ? 'selected' : ''}}"
+            bindtap="selectMethod"
+            data-method="alipay"
+          >
+            <image class="method-icon" src="/images/zhifubao.png"></image>
+            <text class="method-name">支付宝</text>
+          </view>
+          <view
+            class="method-item {{selectedMethod === 'wechat' ? 'selected' : ''}}"
+            bindtap="selectMethod"
+            data-method="wechat"
+          >
+            <image class="method-icon" src="/images/weixin.png"></image>
+            <text class="method-name">微信支付</text>
+          </view>
+          <view
+            class="method-item {{selectedMethod === 'bank' ? 'selected' : ''}}"
+            bindtap="selectMethod"
+            data-method="bank"
+          >
+            <image class="method-icon" src="/images/yinghangka.png"></image>
+            <text class="method-name">银行卡</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="closePayDialog">取消</button>
+      <button class="btn-confirm" bindtap="confirmPay">确认支付</button>
+    </view>
+  </view>
+</view>

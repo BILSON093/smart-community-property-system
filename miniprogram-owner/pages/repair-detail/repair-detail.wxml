@@ -1,0 +1,135 @@
+<!--pages/repair-detail/repair-detail.wxml-->
+<view class="container">
+  <view class="detail-card" wx:if="{{repair}}">
+    <!-- 状态栏 -->
+    <view class="status-bar status-{{repair.status}}">
+      <text class="status-text">{{repair.statusText}}</text>
+      <text class="status-tip">{{repair.statusTip}}</text>
+    </view>
+
+    <!-- 报修信息 -->
+    <view class="section">
+      <view class="section-title">报修信息</view>
+      <view class="info-row">
+        <text class="label">报修单号：</text>
+        <text class="value">#{{repair.id}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">报修内容：</text>
+        <text class="value">{{repair.content}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">提交时间：</text>
+        <text class="value">{{repair.createTime}}</text>
+      </view>
+    </view>
+
+    <!-- 图片 -->
+    <view class="section" wx:if="{{repair.images && repair.images.length > 0}}">
+      <view class="section-title">报修图片</view>
+      <view class="images-grid">
+        <image
+          class="detail-image"
+          wx:for="{{repair.images}}"
+          wx:key="index"
+          src="{{item}}"
+          mode="aspectFill"
+          bindtap="previewImage"
+          data-url="{{item}}"
+          data-urls="{{repair.images}}"
+        ></image>
+      </view>
+    </view>
+
+    <!-- 维修信息 -->
+    <view class="section" wx:if="{{repair.workerName}}">
+      <view class="section-title">维修信息</view>
+      <view class="info-row">
+        <text class="label">维修员：</text>
+        <text class="value">{{repair.workerName}}</text>
+      </view>
+      <view class="info-row" wx:if="{{repair.startTime}}">
+        <text class="label">开始时间：</text>
+        <text class="value">{{repair.startTime}}</text>
+      </view>
+      <view class="info-row" wx:if="{{repair.completeTime}}">
+        <text class="label">完成时间：</text>
+        <text class="value">{{repair.completeTime}}</text>
+      </view>
+    </view>
+
+    <!-- 评价信息 -->
+    <view class="section" wx:if="{{repair.evaluation}}">
+      <view class="section-title">我的评价</view>
+      <view class="info-row">
+        <text class="label">评分：</text>
+        <text class="value rating">{{repair.ratingStars}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">评价：</text>
+        <text class="value">{{repair.evaluation.comment || '无'}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="actions" wx:if="{{repair.status === 3 && !repair.evaluation}}">
+      <button class="btn-evaluate" bindtap="showEvaluateModal">评价服务</button>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{loading === false && !repair}}">
+    <text class="empty-icon">🔧</text>
+    <text class="empty-text">报修记录不存在</text>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
+
+<!-- 评价弹窗 -->
+<view class="modal-mask" wx:if="{{showEvaluate}}" bindtap="closeEvaluate">
+  <view class="modal-content" catchtap="preventBubble">
+    <view class="modal-header">
+      <text class="modal-title">评价服务</text>
+      <text class="modal-close" bindtap="closeEvaluate">×</text>
+    </view>
+
+    <view class="modal-body">
+      <!-- 评分选择 -->
+      <view class="rate-section">
+        <text class="rate-label">请选择评分 (当前: {{evaluateScore}})</text>
+        <view class="rate-stars">
+          <text
+            class="star {{item <= evaluateScore ? 'active' : ''}}"
+            wx:for="{{[1, 2, 3, 4, 5]}}"
+            wx:key="item"
+            bindtap="selectScore"
+            data-score="{{item}}"
+          >
+            {{item <= evaluateScore ? '★' : '☆'}}
+          </text>
+        </view>
+      </view>
+
+      <!-- 评价内容 -->
+      <view class="comment-section">
+        <text class="comment-label">评价内容</text>
+        <textarea
+          class="comment-input"
+          placeholder="请输入您的评价内容"
+          value="{{evaluateComment}}"
+          bindinput="onCommentInput"
+          maxlength="200"
+          auto-height
+        ></textarea>
+        <text class="char-count">{{evaluateComment.length}}/200</text>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="closeEvaluate">取消</button>
+      <button class="btn-submit" bindtap="submitEvaluate">提交评价</button>
+    </view>
+  </view>
+</view>

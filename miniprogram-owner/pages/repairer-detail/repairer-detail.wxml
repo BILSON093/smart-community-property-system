@@ -1,0 +1,101 @@
+<!--pages/repairer-detail/repairer-detail.wxml-->
+<view class="container" wx:if="{{detail}}">
+  <!-- 状态栏 -->
+  <view class="status-bar {{detail.status === 1 ? 'pending' : detail.status === 2 ? 'in-progress' : 'completed'}}">
+    <text class="status-text">
+      {{detail.status === 1 ? '待处理' : detail.status === 2 ? '维修中' : '已完成'}}
+    </text>
+  </view>
+
+  <!-- 工单信息 -->
+  <view class="card">
+    <view class="card-title">工单信息</view>
+    <view class="info-row">
+      <text class="label">工单号</text>
+      <text class="value">{{detail.id}}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">报修时间</text>
+      <text class="value">{{detail.createTime}}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">完成时间</text>
+      <text class="value">{{detail.completeTime || '未完成'}}</text>
+    </view>
+  </view>
+
+  <!-- 报修详情 -->
+  <view class="card">
+    <view class="card-title">报修详情</view>
+    <view class="detail-content">
+      <text>{{detail.content}}</text>
+    </view>
+    <!-- 图片展示 -->
+    <view class="images" wx:if="{{images.length > 0}}">
+      <image
+        class="image-item"
+        wx:for="{{images}}"
+        wx:key="index"
+        src="{{item}}"
+        mode="aspectFill"
+        bindtap="previewImage"
+        data-index="{{index}}"
+      ></image>
+    </view>
+  </view>
+
+  <!-- 业主信息 -->
+  <view class="card" wx:if="{{detail.ownerName || detail.phone || detail.building}}">
+    <view class="card-title">业主信息</view>
+    <view class="info-row" wx:if="{{detail.ownerName}}">
+      <text class="label">业主姓名</text>
+      <text class="value">{{detail.ownerName}}</text>
+    </view>
+    <view class="info-row" wx:if="{{detail.phone}}">
+      <text class="label">联系电话</text>
+      <text class="value phone">{{detail.phone}}</text>
+    </view>
+    <view class="info-row" wx:if="{{detail.building}}">
+      <text class="label">房屋地址</text>
+      <text class="value">{{detail.building}}{{detail.unit ? '-' + detail.unit : ''}}{{detail.room ? '-' + detail.room : ''}}</text>
+    </view>
+  </view>
+
+  <!-- 评价信息 -->
+  <view class="card" wx:if="{{detail.evaluation && detail.status === 3}}">
+    <view class="card-title">评价信息</view>
+    <view class="info-row">
+      <text class="label">评分</text>
+      <text class="value">{{detail.evaluation.score}} 星</text>
+    </view>
+    <view class="info-row" wx:if="{{detail.evaluation.comment}}">
+      <text class="label">评价内容</text>
+      <text class="value">{{detail.evaluation.comment}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons" wx:if="{{detail.status !== 3}}">
+    <button
+      class="btn btn-cancel"
+      wx:if="{{detail.status === 1}}"
+      bindtap="handleCancel"
+    >
+      退单
+    </button>
+    <button
+      class="btn btn-start"
+      wx:if="{{detail.status === 1}}"
+      bindtap="handleStart"
+    >
+      开始维修
+    </button>
+    <button
+      class="btn btn-complete"
+      wx:if="{{detail.status === 2}}"
+      bindtap="handleComplete"
+    >
+      完成维修
+    </button>
+  </view>
+</view>

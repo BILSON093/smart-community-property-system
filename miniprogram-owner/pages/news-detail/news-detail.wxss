@@ -1,0 +1,151 @@
+/* pages/news-detail/news-detail.wxss */
+.container {
+  min-height: 100vh;
+  padding: 20rpx;
+  background-color: #f7f8fa;
+}
+
+.notice-detail {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.notice-header {
+  border-bottom: 1rpx solid #ebedf0;
+  padding-bottom: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.notice-title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.notice-title {
+  flex: 1;
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.notice-tag {
+  padding: 6rpx 16rpx;
+  border-radius: 6rpx;
+  font-size: 22rpx;
+  background-color: #f7f8fa;
+  color: #969799;
+  margin-left: 16rpx;
+}
+
+.notice-tag.important {
+  background-color: #fffbe8;
+  color: #ee9a00;
+}
+
+.notice-time {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+.notice-content {
+  font-size: 28rpx;
+  color: #646566;
+  line-height: 1.8;
+}
+
+.image-list {
+  margin-top: 20rpx;
+}
+
+.notice-image {
+  width: 100%;
+  margin-bottom: 16rpx;
+  border-radius: 8rpx;
+}
+
+/* 附件样式 */
+.attachment-list {
+  margin-top: 30rpx;
+  padding: 24rpx;
+  background-color: #f8f9fb;
+  border-radius: 12rpx;
+}
+
+.attachment-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #323233;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.attachment-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.attachment-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.08);
+}
+
+.attachment-icon {
+  font-size: 28rpx;
+  color: #1989fa;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.attachment-name {
+  flex: 1;
+  font-size: 26rpx;
+  color: #323233;
+  line-height: 1.4;
+}
+
+.download-icon {
+  font-size: 28rpx;
+  color: #969799;
+  margin-left: 8rpx;
+  flex-shrink: 0;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+  color: #969799;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+}
+
+.loading {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #969799;
+  font-size: 28rpx;
+}

@@ -1,0 +1,85 @@
+/* pages/activity/activity.wxss */
+.container {
+  min-height: 100vh;
+  padding: 20rpx;
+}
+
+.activity-list {
+  padding-bottom: 40rpx;
+}
+
+.activity-card {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.activity-cover {
+  width: 100%;
+  height: 300rpx;
+}
+
+.activity-info {
+  padding: 24rpx;
+}
+
+.activity-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #323233;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activity-desc {
+  font-size: 28rpx;
+  color: #646566;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.activity-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.meta-item {
+  font-size: 26rpx;
+  color: #969799;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+  color: #969799;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+}
+
+.loading {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #969799;
+  font-size: 28rpx;
+}

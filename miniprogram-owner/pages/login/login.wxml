@@ -1,0 +1,66 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <view class="login-box">
+    <view class="login-header">
+      <text class="header-icon">👤</text>
+      <text class="title">智慧社区</text>
+      <text class="subtitle">欢迎登录物业管理系统</text>
+    </view>
+
+    <view class="login-form">
+      <view class="form-item">
+        <text class="label">账号</text>
+        <input
+          class="input"
+          placeholder="请输入手机号或用户名"
+          bindinput="onUsernameInput"
+          placeholder-class="placeholder"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="label">密码</text>
+        <input
+          class="input"
+          password="{{!showPassword}}"
+          placeholder="请输入密码"
+          bindinput="onPasswordInput"
+          placeholder-class="placeholder"
+        />
+        <text class="eye-icon" bindtap="togglePassword">
+          {{showPassword ? '👁️' : '🔒'}}
+        </text>
+      </view>
+
+      <view class="form-item">
+        <text class="label">登录身份</text>
+        <view class="role-selector">
+          <view
+            class="role-item {{loginType === 1 ? 'active' : ''}}"
+            bindtap="onRoleSelect"
+            data-type="1"
+          >
+            业主
+          </view>
+          <view
+            class="role-item {{loginType === 2 ? 'active' : ''}}"
+            bindtap="onRoleSelect"
+            data-type="2"
+          >
+            维修员
+          </view>
+        </view>
+      </view>
+
+      <button class="btn-login" bindtap="handleLogin">登录</button>
+
+      <view class="register-link" bindtap="goToRegister">
+        还没有账号？立即注册
+      </view>
+    </view>
+
+    <view class="login-tips">
+      <text>测试账号：13800138001 / 12345678</text>
+    </view>
+  </view>
+</view>

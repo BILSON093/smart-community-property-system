@@ -1,0 +1,114 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 轮播图 -->
+  <swiper class="carousel" indicator-dots autoplay circular interval="3000">
+    <swiper-item wx:for="{{carouselList}}" wx:key="id">
+      <image class="carousel-image" src="{{item.imageUrl}}" mode="aspectFill" bindtap="goToActivity"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 快捷入口 -->
+  <view class="quick-menu">
+    <view class="menu-item" bindtap="goToRepair">
+      <view class="menu-icon repair">🔧</view>
+      <text class="menu-text">在线报修</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToPay">
+      <view class="menu-icon pay">💳</view>
+      <text class="menu-text">缴费管理</text>
+      <view class="badge" wx:if="{{pendingPayCount > 0}}">{{pendingPayCount}}</view>
+    </view>
+
+    <view class="menu-item" bindtap="goToNews">
+      <view class="menu-icon news">📢</view>
+      <text class="menu-text">通知公告</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToActivity">
+      <view class="menu-icon activity">🎉</view>
+      <text class="menu-text">社区活动</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToForum">
+      <view class="menu-icon forum">💬</view>
+      <text class="menu-text">社区论坛</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToFeedback">
+      <view class="menu-icon feedback">💭</view>
+      <text class="menu-text">留言反馈</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToChat">
+      <view class="menu-icon chat">🤖</view>
+      <text class="menu-text">AI客服</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToProfile">
+      <view class="menu-icon profile">👤</view>
+      <text class="menu-text">个人中心</text>
+    </view>
+  </view>
+
+  <!-- 最新通知 -->
+  <view class="notice-section">
+    <view class="section-header" bindtap="goToNews">
+      <text class="section-title">📢 最新通知</text>
+      <text class="more">更多 ></text>
+    </view>
+
+    <view class="notice-list">
+      <view
+        class="notice-item"
+        wx:for="{{noticeList}}"
+        wx:key="id"
+        bindtap="viewNoticeDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="notice-header">
+          <text class="notice-title">{{item.title}}</text>
+          <text class="notice-type {{item.type === 1 ? 'important' : ''}}">
+            {{item.type === 1 ? '重要' : '普通'}}
+          </text>
+        </view>
+        <text class="notice-time">{{item.publishTime}}</text>
+      </view>
+
+      <view class="empty" wx:if="{{noticeList.length === 0}}">
+        <text class="empty-text">暂无通知</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最新活动 -->
+  <view class="activity-section">
+    <view class="section-header" bindtap="goToActivity">
+      <text class="section-title">🎉 社区活动</text>
+      <text class="more">更多 ></text>
+    </view>
+
+    <view class="activity-list">
+      <view
+        class="activity-item"
+        wx:for="{{activityList}}"
+        wx:key="id"
+        bindtap="viewActivityDetail"
+        data-id="{{item.id}}"
+      >
+        <image class="activity-image" src="{{item.coverImage}}" mode="aspectFill"></image>
+        <view class="activity-info">
+          <text class="activity-title">{{item.title}}</text>
+          <view class="activity-meta">
+            <text class="activity-time">📅 {{item.startTime}}</text>
+            <text class="activity-location">📍 {{item.location}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty" wx:if="{{activityList.length === 0}}">
+        <text class="empty-text">暂无活动</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+<!--pages/news/news.wxml-->
+<view class="container">
+  <view class="notice-list">
+    <view
+      class="notice-item"
+      wx:for="{{noticeList}}"
+      wx:key="id"
+      bindtap="viewDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="notice-header">
+        <view class="notice-title-row">
+          <text class="notice-title">{{item.title}}</text>
+          <text class="notice-tag {{item.type === 1 ? 'important' : ''}}">
+            {{item.type === 1 ? '重要' : '普通'}}
+          </text>
+        </view>
+        <text class="notice-time">{{item.publishTime}}</text>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{loading === false && noticeList.length === 0}}">
+      <text class="empty-icon">📢</text>
+      <text class="empty-text">暂无通知</text>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>

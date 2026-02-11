@@ -1,0 +1,153 @@
+<!--pages/repair/repair.wxml-->
+<view class="container">
+  <!-- 报修记录 -->
+  <view class="repair-list-section">
+    <view class="section-header">
+      <text class="section-title">我的报修记录</text>
+    </view>
+
+    <view class="tab-bar">
+      <view
+        class="tab-item {{activeTab === 'all' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="all"
+      >
+        全部
+      </view>
+      <view
+        class="tab-item {{activeTab === 'pending' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="pending"
+      >
+        待处理
+      </view>
+      <view
+        class="tab-item {{activeTab === 'processing' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="processing"
+      >
+        处理中
+      </view>
+      <view
+        class="tab-item {{activeTab === 'completed' ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-tab="completed"
+      >
+        已完成
+      </view>
+    </view>
+
+    <view class="repair-list">
+      <view
+        class="repair-card"
+        wx:for="{{filteredRepairs}}"
+        wx:key="id"
+        bindtap="viewDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="card-header">
+          <text class="card-title">报修 #{{item.id}}</text>
+          <view class="status-badge status-{{item.status}}">
+            {{item.statusText}}
+          </view>
+        </view>
+
+        <view class="card-content">
+          <text class="content-text">{{item.content}}</text>
+        </view>
+
+        <view class="card-images" wx:if="{{item.images && item.images.length > 0}}">
+          <image
+            class="repair-image"
+            wx:for="{{item.images}}"
+            wx:for-item="img"
+            wx:for-index="idx"
+            wx:key="idx"
+            src="{{img}}"
+            mode="aspectFill"
+            bindtap="previewImage"
+            data-url="{{img}}"
+            data-urls="{{item.images}}"
+            catchtap="true"
+          ></image>
+        </view>
+
+        <view class="card-footer">
+          <text class="time">{{item.createTime}}</text>
+          <text class="worker" wx:if="{{item.workerName}}">
+            维修员：{{item.workerName}}
+          </text>
+        </view>
+      </view>
+
+      <view class="empty" wx:if="{{loading === false && filteredRepairs.length === 0}}">
+        <text class="empty-icon">🔧</text>
+        <text class="empty-text">暂无报修记录</text>
+      </view>
+
+      <view class="loading" wx:if="{{loading}}">
+        <text>加载中...</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加报修按钮 -->
+  <view class="add-btn" bindtap="showAddModal" wx:if="{{isLoggedIn}}">
+    <text class="add-icon">+</text>
+  </view>
+</view>
+
+<!-- 报修弹窗 -->
+<view class="modal-mask" wx:if="{{showModal}}" bindtap="closeModal">
+  <view class="modal-content" catchtap="preventBubble">
+    <view class="modal-header">
+      <text class="modal-title">在线报修</text>
+      <text class="modal-close" bindtap="closeModal">×</text>
+    </view>
+
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">故障描述</text>
+        <textarea
+          class="form-textarea"
+          placeholder="请详细描述故障情况"
+          value="{{form.content}}"
+          bindinput="onContentInput"
+          maxlength="500"
+          auto-height
+        ></textarea>
+        <text class="char-count">{{form.content.length}}/500</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">上传图片</text>
+        <view class="uploader">
+          <view
+            class="file-item"
+            wx:for="{{fileList}}"
+            wx:key="index"
+          >
+            <image class="file-preview" src="{{item}}" mode="aspectFill"></image>
+            <text class="file-remove" bindtap="removeFile" data-index="{{index}}">×</text>
+          </view>
+          <view
+            class="upload-area"
+            wx:if="{{fileList.length < 3}}"
+            bindtap="chooseImage"
+          >
+            <text class="upload-icon">+</text>
+            <text class="upload-text">点击上传</text>
+          </view>
+        </view>
+        <text class="upload-tip">最多上传3张图片</text>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="closeModal">取消</button>
+      <button class="btn-submit" bindtap="submitRepair" disabled="{{submitting}}">
+        {{submitting ? '提交中...' : '提交报修'}}
+      </button>
+    </view>
+  </view>
+</view>

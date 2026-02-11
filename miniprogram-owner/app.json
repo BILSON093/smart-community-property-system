@@ -1,0 +1,66 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/news/news",
+    "pages/news-detail/news-detail",
+    "pages/activity/activity",
+    "pages/activity-detail/activity-detail",
+    "pages/repair/repair",
+    "pages/repair-detail/repair-detail",
+    "pages/repairer-home/repairer-home",
+    "pages/repairer-detail/repairer-detail",
+    "pages/pay/pay",
+    "pages/forum/forum",
+    "pages/forum-detail/forum-detail",
+    "pages/forum-publish/forum-publish",
+    "pages/feedback/feedback",
+    "pages/chat/chat",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/edit-profile/edit-profile",
+    "pages/change-password/change-password"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1989fa",
+    "navigationBarTitleText": "智慧社区",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f7f8fa"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1989fa",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/forum/forum",
+        "text": "论坛",
+        "iconPath": "images/tab/forum.png",
+        "selectedIconPath": "images/tab/forum-active.png"
+      },
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "AI客服",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/profile.png",
+        "selectedIconPath": "images/tab/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

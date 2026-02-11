@@ -1,0 +1,35 @@
+# 图片资源说明
+
+此文件夹用于存放小程序所需的图片资源，包括：
+
+## 必需的图片资源
+
+### 1. Logo和头像
+- logo.png - 应用Logo (建议尺寸: 200x200)
+- avatar-default.png - 默认头像 (建议尺寸: 120x120)
+- ai-avatar.png - AI客服头像 (建议尺寸: 120x120)
+
+### 2. 底部导航图标 (建议尺寸: 48x48)
+- tab/home.png - 首页图标
+- tab/home-active.png - 首页图标(激活状态)
+- tab/repair.png - 报修图标
+- tab/repair-active.png - 报修图标(激活状态)
+- tab/forum.png - 论坛图标
+- tab/forum-active.png - 论坛图标(激活状态)
+- tab/profile.png - 个人中心图标
+- tab/profile-active.png - 个人中心图标(激活状态)
+
+## 临时方案
+
+在开发阶段，可以使用以下方式暂时解决图片资源缺失的问题：
+
+1. 使用网络图片URL
+2. 使用Base64编码的图片
+3. 使用纯色背景配合文字
+4. 使用emoji表情代替图标
+
+## 建议
+
+- 图标使用PNG格式，支持透明背景
+- 图片大小建议控制在100KB以内
+- 建议使用2倍或3倍图以适应不同屏幕分辨率

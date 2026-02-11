@@ -1,0 +1,51 @@
+<!--pages/activity-detail/activity-detail.wxml-->
+<view class="container">
+  <view class="activity-detail" wx:if="{{activity}}">
+    <image class="cover-image" src="{{activity.coverImage}}" mode="aspectFill"></image>
+
+    <view class="info-section">
+      <view class="title">{{activity.title}}</view>
+
+      <view class="meta-info">
+        <view class="meta-item">
+          <text class="icon">📅</text>
+          <text class="text">活动时间：{{activity.startTime}}</text>
+        </view>
+        <view class="meta-item">
+          <text class="icon">📍</text>
+          <text class="text">活动地点：{{activity.location}}</text>
+        </view>
+      </view>
+
+      <view class="description-section">
+        <view class="section-title">活动介绍</view>
+        <rich-text class="description" nodes="{{activity.description}}"></rich-text>
+      </view>
+
+      <view class="images-section" wx:if="{{activityImages && activityImages.length > 0}}">
+        <view class="section-title">活动图片</view>
+        <view class="images-grid">
+          <image
+            class="activity-image"
+            wx:for="{{activityImages}}"
+            wx:key="index"
+            src="{{item}}"
+            mode="aspectFill"
+            bindtap="previewImage"
+            data-url="{{item}}"
+            data-urls="{{activityImages}}"
+          ></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{loading === false && !activity}}">
+    <text class="empty-icon">🎉</text>
+    <text class="empty-text">活动不存在</text>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

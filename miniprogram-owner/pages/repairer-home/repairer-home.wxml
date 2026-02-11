@@ -1,0 +1,79 @@
+<!--pages/repairer-home/repairer-home.wxml-->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav-bar">
+    <view class="nav-content">
+      <text class="title">维修工作台</text>
+      <text class="logout" bindtap="logout">退出登录</text>
+    </view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-container">
+    <view class="stat-item">
+      <text class="stat-value">{{stats.pending}}</text>
+      <text class="stat-label">待处理</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.inProgress}}</text>
+      <text class="stat-label">进行中</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{stats.completed}}</text>
+      <text class="stat-label">已完成</text>
+    </view>
+  </view>
+
+  <!-- 标签页切换 -->
+  <view class="tabs">
+    <view 
+      class="tab-item {{activeTab === 0 ? 'active' : ''}}" 
+      data-index="0" 
+      bindtap="switchTab"
+    >
+      待处理
+    </view>
+    <view 
+      class="tab-item {{activeTab === 1 ? 'active' : ''}}" 
+      data-index="1" 
+      bindtap="switchTab"
+    >
+      进行中
+    </view>
+    <view 
+      class="tab-item {{activeTab === 2 ? 'active' : ''}}" 
+      data-index="2" 
+      bindtap="switchTab"
+    >
+      已完成
+    </view>
+  </view>
+
+  <!-- 工单列表 -->
+  <view class="order-list">
+    <block wx:if="{{orderList.length > 0}}">
+      <view 
+        class="order-item" 
+        wx:for="{{orderList}}" 
+        wx:key="id"
+        bindtap="goToDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="order-header">
+          <text class="order-id">工单号：{{item.id}}</text>
+          <text class="order-status">{{item.status === 1 ? '待处理' : item.status === 2 ? '维修中' : '已完成'}}</text>
+        </view>
+        <view class="order-content">
+          <text class="order-desc">{{item.content}}</text>
+        </view>
+        <view class="order-footer">
+          <text class="order-time">报修时间：{{item.createTime}}</text>
+          <text class="arrow">></text>
+        </view>
+      </view>
+    </block>
+    <view class="empty" wx:else>
+      <text>暂无工单</text>
+    </view>
+  </view>
+</view>

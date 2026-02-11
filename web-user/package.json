@@ -1,0 +1,24 @@
+{
+  "name": "wuye-mobile",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "@vant/icons": "^3.0.2",
+    "axios": "^1.5.0",
+    "element-plus": "^2.13.1",
+    "pinia": "^2.1.6",
+    "vant": "^4.7.1",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.3.4",
+    "postcss-px-to-viewport": "^1.1.1",
+    "vite": "^4.4.9"
+  }
+}

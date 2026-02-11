@@ -1,0 +1,79 @@
+<!--pages/chat/chat.wxml-->
+<view class="container">
+  <!-- 聊天记录 -->
+  <scroll-view class="chat-container" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation>
+    <view
+      class="message-item message-{{item.sender === 0 ? 'user' : 'ai'}}"
+      wx:for="{{messageList}}"
+      wx:key="id"
+      id="msg-{{item.id}}"
+    >
+      <image
+        class="avatar"
+        src="{{item.sender === 0 ? userAvatar : aiAvatar}}"
+        mode="aspectFill"
+      ></image>
+      <view class="message-content">
+        <!-- 文本消息 -->
+        <text class="message-text" wx:if="{{item.type === 'text' || !item.type}}">{{item.content}}</text>
+        <!-- 图片消息 -->
+        <image
+          class="message-image"
+          src="{{item.content}}"
+          mode="widthFix"
+          bindtap="previewImage"
+          data-src="{{item.content}}"
+          wx:if="{{item.type === 'image'}}"
+        ></image>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{messageList.length === 0}}">
+      <text class="empty-icon">{{chatMode === 'ai' ? '🤖' : '👤'}}</text>
+      <text class="empty-text">{{chatMode === 'ai' ? '您好！我是AI客服，有什么可以帮您的吗？' : '您好！有什么问题可以咨询人工客服。'}}</text>
+    </view>
+
+    <view class="loading-message" wx:if="{{loading}}">
+      <image class="avatar" src="{{aiAvatar}}" mode="aspectFill"></image>
+      <view class="message-content">
+        <text class="message-text">正在输入...</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-area">
+    <view class="button-row">
+      <button class="btn-ai" bindtap="switchChatMode">{{chatMode === 'ai' ? 'AI客服' : '人工客服'}}</button>
+    </view>
+
+    <!-- 已选中的图片预览 -->
+    <view class="preview-image" wx:if="{{imageReady}}">
+      <image
+        class="preview-img"
+        src="{{selectedImage}}"
+        mode="aspectFill"
+        bindtap="previewImage"
+        data-src="{{selectedImage}}"
+      ></image>
+      <view class="remove-image" bindtap="removeImage">
+        <text class="remove-icon">×</text>
+      </view>
+    </view>
+
+    <view class="input-row">
+      <view class="input-wrapper">
+        <view class="icon-image" bindtap="chooseImage">📷</view>
+        <input
+          class="message-input"
+          placeholder="{{imageReady ? '输入您的问题（可选）' : '请输入您的问题...'}}"
+          value="{{inputText}}"
+          bindinput="onInputChange"
+          bindconfirm="sendMessage"
+          confirm-type="send"
+        />
+      </view>
+      <button class="btn-send" bindtap="sendMessage">发送</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,114 @@
+<!--pages/register/register.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">业主注册</text>
+  </view>
+
+  <view class="form">
+    <view class="form-item">
+      <text class="label">用户名</text>
+      <input
+        class="input"
+        placeholder="请输入用户名"
+        value="{{username}}"
+        bindinput="onUsernameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="label">密码</text>
+      <input
+        class="input"
+        placeholder="请输入密码（6-20位）"
+        type="{{showPassword ? 'text' : 'password'}}"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+      />
+      <text class="eye-icon" bindtap="togglePassword">
+        {{showPassword ? '👁️' : '👁️‍🗨️'}}
+      </text>
+    </view>
+
+    <view class="form-item">
+      <text class="label">确认密码</text>
+      <input
+        class="input"
+        placeholder="请再次输入密码"
+        type="password"
+        value="{{confirmPassword}}"
+        bindinput="onConfirmPasswordInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="label">真实姓名</text>
+      <input
+        class="input"
+        placeholder="请输入真实姓名"
+        value="{{realName}}"
+        bindinput="onRealNameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="label">手机号</text>
+      <input
+        class="input"
+        placeholder="请输入手机号"
+        type="number"
+        maxlength="11"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="label">身份证号</text>
+      <input
+        class="input"
+        placeholder="请输入身份证号"
+        value="{{idCard}}"
+        bindinput="onIdCardInput"
+      />
+    </view>
+
+    <view class="address-row">
+      <view class="form-item small">
+        <text class="label">楼栋</text>
+        <input
+          class="input"
+          placeholder="楼栋"
+          value="{{building}}"
+          bindinput="onBuildingInput"
+        />
+      </view>
+
+      <view class="form-item small">
+        <text class="label">单元</text>
+        <input
+          class="input"
+          placeholder="单元"
+          value="{{unit}}"
+          bindinput="onUnitInput"
+        />
+      </view>
+
+      <view class="form-item small">
+        <text class="label">房间</text>
+        <input
+          class="input"
+          placeholder="房间号"
+          value="{{room}}"
+          bindinput="onRoomInput"
+        />
+      </view>
+    </view>
+
+    <button class="btn-register" bindtap="handleRegister">注册</button>
+
+    <view class="login-link">
+      <text>已有账号？</text>
+      <text class="link" bindtap="goToLogin">立即登录</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,232 @@
+<template>
+  <div class="activity-detail">
+    <div class="header">
+      <button @click="$router.back()" class="btn-back">
+        <van-icon name="arrow-left" style="font-size: 18px;" />
+        返回
+      </button>
+      <h1 class="page-title">活动详情</h1>
+    </div>
+    
+    <div class="content">
+      <h2 class="title">{{ activity.title }}</h2>
+      
+      <div class="cover-image">
+        <img :src="activity.coverImage" @click="previewCoverImage" />
+      </div>
+      
+      <div class="info">
+        <div class="info-item">
+          <van-icon name="location-o" />
+          <span>{{ activity.location }}</span>
+        </div>
+        <div class="info-item">
+          <van-icon name="clock-o" />
+          <span>{{ formattedStartTime }}</span>
+        </div>
+        <div class="info-item" v-if="activity.endTime">
+          <van-icon name="time" />
+          <span>结束时间: {{ formattedEndTime }}</span>
+        </div>
+      </div>
+      
+      <div class="description">
+        <h2>活动介绍</h2>
+        <p>{{ activity.description }}</p>
+      </div>
+      
+      <div class="images" v-if="activityImages.length > 0">
+        <h2>活动图片</h2>
+        <div class="image-grid">
+          <div v-for="(img, index) in activityImages" :key="index" class="image-item">
+            <img :src="img" @click="previewImage(index)" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { showToast, showImagePreview } from 'vant'
+import request from '@/utils/request'
+
+const route = useRoute()
+const activity = ref({})
+const activityImages = ref([])
+
+const formatDate = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+}
+
+const formattedStartTime = computed(() => {
+  return formatDate(activity.value.startTime)
+})
+
+const formattedEndTime = computed(() => {
+  return formatDate(activity.value.endTime)
+})
+
+onMounted(async () => {
+  const id = route.params.id
+  if (!id) {
+    showToast('活动ID不存在')
+    return
+  }
+  
+  const res = await request.get(`/activity/${id}`)
+  activity.value = res.data
+  
+  // 处理活动图片
+  if (activity.value.images) {
+    try {
+      activityImages.value = JSON.parse(activity.value.images)
+    } catch (e) {
+      console.error('解析图片失败', e)
+    }
+  }
+})
+
+const previewImage = (index) => {
+  if (activityImages.value.length === 0) return
+  
+  showImagePreview({
+    images: activityImages.value,
+    startPosition: index,
+    closeable: true
+  })
+}
+
+const previewCoverImage = () => {
+  if (!activity.value.coverImage) return
+  
+  const allImages = [activity.value.coverImage, ...activityImages.value]
+  showImagePreview({
+    images: allImages,
+    startPosition: 0,
+    closeable: true
+  })
+}
+</script>
+
+<style scoped>
+.activity-detail {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.page-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  margin-left: 16px;
+}
+
+.content {
+  padding: 20px;
+  background: white;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.cover-image {
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cover-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.info {
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+.description {
+  margin-bottom: 20px;
+}
+
+.description h2,
+.images h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.description p {
+  line-height: 1.6;
+  color: #666;
+  font-size: 14px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.image-item {
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.btn-back {
+  background: #f0f9ff;
+  color: #409eff;
+  border: 1px solid #409eff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s;
+}
+
+.btn-back:hover {
+  background: #e6f7ff;
+  transform: translateY(-2px);
+}
+</style>
