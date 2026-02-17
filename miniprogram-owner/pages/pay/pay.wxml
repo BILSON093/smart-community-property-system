@@ -57,6 +57,10 @@
           <text class="label">账单月份：</text>
           <text class="value">{{item.month}}</text>
         </view>
+        <view class="info-row" wx:if="{{item.usage && item.unit}}">
+          <text class="label">用量：</text>
+          <text class="value">{{item.usage}} {{item.unit}}</text>
+        </view>
         <view class="info-row">
           <text class="label">金额：</text>
           <text class="value amount">¥{{item.amount}}</text>
@@ -101,6 +105,10 @@
         <view class="summary-item" wx:if="{{currentFee}}">
           <text class="summary-label">缴费项目：</text>
           <text class="summary-value">{{currentFee.month}}{{currentFee.type}}费</text>
+        </view>
+        <view class="summary-item" wx:if="{{currentFee && currentFee.usage && currentFee.unit}}">
+          <text class="summary-label">用量：</text>
+          <text class="summary-value">{{currentFee.usage}} {{currentFee.unit}}</text>
         </view>
         <view class="summary-item" wx:if="{{currentFee}}">
           <text class="summary-label">支付金额：</text>

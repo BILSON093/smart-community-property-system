@@ -54,6 +54,9 @@ const cancelRepair = (repairId) => post(`/repair/cancel/${repairId}`)
 
 // ==================== 费用相关 ====================
 
+// 获取费用设置
+const getFeeSettings = () => get('/fee/settings')
+
 // 获取我的缴费列表
 const getMyFees = (data) => get('/fee/my', data)
 
@@ -193,6 +196,7 @@ module.exports = {
   cancelRepair,
 
   // 费用相关
+  getFeeSettings,
   getMyFees,
   payFee,
 

@@ -7,7 +7,7 @@
 
 /* 自定义导航栏 */
 .custom-nav-bar {
-  background: linear-gradient(135deg, #1989fa 0%, #1a7be6 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   padding-top: calc(160rpx + env(safe-area-inset-top));
   padding-bottom: 20rpx;
 }
@@ -55,7 +55,7 @@
 .stat-value {
   font-size: 48rpx;
   font-weight: bold;
-  color: #1989fa;
+  color: #304156;
   margin-bottom: 10rpx;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .tab-item.active {
-  color: #1989fa;
+  color: #304156;
   font-weight: bold;
 }
 
@@ -96,7 +96,7 @@
   transform: translateX(-50%);
   width: 60rpx;
   height: 4rpx;
-  background-color: #1989fa;
+  background-color: #304156;
   border-radius: 2rpx;
 }
 
@@ -127,8 +127,8 @@
 
 .order-status {
   font-size: 24rpx;
-  color: #1989fa;
-  background-color: rgba(25, 137, 250, 0.1);
+  color: #304156;
+  background-color: rgba(48, 65, 86, 0.1);
   padding: 8rpx 16rpx;
   border-radius: 4rpx;
 }

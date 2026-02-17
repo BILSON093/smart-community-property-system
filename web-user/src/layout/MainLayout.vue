@@ -7,15 +7,15 @@
           <h1>智慧社区</h1>
         </div>
         <nav class="nav">
-          <router-link to="/" class="nav-item">首页</router-link>
-          <router-link to="/news" class="nav-item">通知</router-link>
-          <router-link to="/activity" class="nav-item">活动</router-link>
-          <router-link to="/forum" class="nav-item">论坛</router-link>
-          <router-link to="/pay" class="nav-item">缴费</router-link>
-          <router-link to="/repair" class="nav-item">报修</router-link>
-          <router-link to="/chat" class="nav-item">客服</router-link>
-          <router-link to="/feedback" class="nav-item">反馈</router-link>
-          <router-link to="/profile" class="nav-item">我的</router-link>
+          <router-link to="/home" class="nav-item">首页</router-link>
+          <router-link to="/home/news" class="nav-item">通知</router-link>
+          <router-link to="/home/activity" class="nav-item">活动</router-link>
+          <router-link to="/home/forum" class="nav-item">论坛</router-link>
+          <router-link to="/home/pay" class="nav-item">缴费</router-link>
+          <router-link to="/home/repair" class="nav-item">报修</router-link>
+          <router-link to="/home/chat" class="nav-item">客服</router-link>
+          <router-link to="/home/feedback" class="nav-item">反馈</router-link>
+          <router-link to="/home/profile" class="nav-item">我的</router-link>
         </nav>
         <div class="user-info" v-if="userInfo">
           <div class="avatar" v-if="userInfo.avatar">
@@ -163,7 +163,7 @@ const handleLogout = () => {
   transition: all 0.1s;
 }
 
-.nav-item.router-link-active {
+.nav-item.router-link-exact-active {
   color: #409EFF;
   background-color: rgba(64, 158, 255, 0.1);
   border-bottom: 2px solid #409EFF;

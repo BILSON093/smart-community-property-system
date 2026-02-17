@@ -61,31 +61,31 @@
 }
 
 .menu-icon.repair {
-  background-color: #e8f3ff;
+  background-color: #f0f5ff;
 }
 
 .menu-icon.pay {
-  background-color: #fffbe8;
-}
-
-.menu-icon.news {
-  background-color: #fff0f0;
-}
-
-.menu-icon.activity {
-  background-color: #f0f9ff;
-}
-
-.menu-icon.forum {
-  background-color: #f6ffed;
-}
-
-.menu-icon.feedback {
   background-color: #fff7e6;
 }
 
+.menu-icon.news {
+  background-color: #f5f5f5;
+}
+
+.menu-icon.activity {
+  background-color: #ffeef0;
+}
+
+.menu-icon.forum {
+  background-color: #f0fdf4;
+}
+
+.menu-icon.feedback {
+  background-color: #fefce8;
+}
+
 .menu-icon.chat {
-  background-color: #f9f0ff;
+  background-color: #fdf4ff;
 }
 
 .menu-icon.profile {

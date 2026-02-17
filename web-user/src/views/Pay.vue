@@ -19,7 +19,7 @@
         <div v-else class="payment-item" v-for="item in list" :key="item.id">
           <div class="payment-info">
             <div class="payment-type">
-              <span class="type-name">{{ item.month }}{{ item.type }}费</span>
+              <span class="type-name">{{ item.month }}{{ item.type }}</span>
               <span class="payment-status" :class="['status-' + item.status]">
                 {{ item.status === 0 ? '待缴' : '已缴' }}
               </span>
@@ -28,6 +28,10 @@
                 <div class="detail-item">
                   <label>账单月份：</label>
                   <span>{{ item.month }}</span>
+                </div>
+                <div class="detail-item" v-if="calculateUsage(item)">
+                  <label>使用量：</label>
+                  <span>{{ calculateUsage(item).usage }} {{ calculateUsage(item).unit }}</span>
                 </div>
                 <div class="detail-item">
                   <label></label>
@@ -66,7 +70,11 @@
             <h4>支付详情</h4>
             <div class="summary-item">
               <label>缴费项目：</label>
-              <span>{{ currentFee?.month }}{{ currentFee?.type }}费</span>
+              <span>{{ currentFee?.month }}{{ currentFee?.type }}</span>
+            </div>
+            <div class="summary-item" v-if="calculateUsage(currentFee)">
+              <label>使用量：</label>
+              <span>{{ calculateUsage(currentFee).usage }} {{ calculateUsage(currentFee).unit }}</span>
             </div>
             <div class="summary-item">
               <label>支付金额：</label>
@@ -112,17 +120,45 @@ const loading = ref(false)
 const showPayDialog = ref(false)
 const currentFee = ref(null)
 const selectedMethod = ref('alipay')
+const feeSettings = ref(null)
 const paymentMethods = ref([
   { id: 'alipay', name: '支付宝', icon: '/images/zhifubao.png' },
   { id: 'wechat', name: '微信支付', icon: '/images/weixin.png' },
   { id: 'bank', name: '银行卡', icon: '/images/yinghangka.png' }
 ])
 
+const calculateUsage = (item) => {
+  if (!feeSettings.value || !item.amount) return null
+  
+  const amount = parseFloat(item.amount)
+  let unit = ''
+  let usage = 0
+  
+  if (item.type === '水费') {
+    usage = amount / parseFloat(feeSettings.value.waterFee)
+    unit = '吨'
+  } else if (item.type === '电费') {
+    usage = amount / parseFloat(feeSettings.value.electricityFee)
+    unit = '度'
+  } else if (item.type === '燃气费') {
+    usage = amount / parseFloat(feeSettings.value.gasFee)
+    unit = '立方米'
+  } else {
+    return null
+  }
+  
+  return { usage: usage.toFixed(2), unit }
+}
+
 const onLoad = async () => {
   loading.value = true
   try {
-    const res = await request.get('/fee/my', { params: { page: 1, size: 100 } })
-    list.value = res.data.records || []
+    const [feesRes, settingsRes] = await Promise.all([
+      request.get('/fee/my', { params: { page: 1, size: 100 } }),
+      request.get('/fee/settings')
+    ])
+    list.value = feesRes.data.records || []
+    feeSettings.value = settingsRes.data
   } catch (error) {
     console.error('加载缴费列表失败:', error)
     showToast('加载缴费列表失败')

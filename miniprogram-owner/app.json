@@ -23,14 +23,14 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#1989fa",
+    "navigationBarBackgroundColor": "#304156",
     "navigationBarTitleText": "智慧社区",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#f7f8fa"
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#1989fa",
+    "selectedColor": "#304156",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [
@@ -49,8 +49,8 @@
       {
         "pagePath": "pages/chat/chat",
         "text": "AI客服",
-        "iconPath": "images/tab/home.png",
-        "selectedIconPath": "images/tab/home-active.png"
+        "iconPath": "images/tab/ai.png",
+        "selectedIconPath": "images/tab/ai-active.png"
       },
       {
         "pagePath": "pages/profile/profile",

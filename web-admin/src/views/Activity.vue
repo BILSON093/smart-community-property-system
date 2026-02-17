@@ -147,7 +147,7 @@
             <el-button type="primary">上传图片</el-button>
             <template #tip>
               <div class="el-upload__tip">
-                最多上传5张图片，单张不超过5MB
+                最多上传10张图片，单张不超过20MB
               </div>
             </template>
           </el-upload>

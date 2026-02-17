@@ -44,7 +44,7 @@
   <!-- 输入区域 -->
   <view class="input-area">
     <view class="button-row">
-      <button class="btn-ai" bindtap="switchChatMode">{{chatMode === 'ai' ? 'AI客服' : '人工客服'}}</button>
+      <button class="btn-ai {{chatMode === 'manual' ? 'manual' : ''}}" bindtap="switchChatMode">{{chatMode === 'ai' ? 'AI客服' : '人工客服'}}</button>
     </view>
 
     <!-- 已选中的图片预览 -->

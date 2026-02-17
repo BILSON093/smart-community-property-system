@@ -39,13 +39,13 @@
 }
 
 .status-0 {
-  background-color: #fffbe8;
-  color: #ee9a00;
+  background-color: #fff7e6;
+  color: #d97706;
 }
 
 .status-1 {
-  background-color: #f0f9ff;
-  color: #07c160;
+  background-color: #f0fdf4;
+  color: #16a34a;
 }
 
 .time {
@@ -67,12 +67,12 @@
   background-color: #ffffff;
   border-radius: 8rpx;
   padding: 20rpx;
-  border-left: 4rpx solid #1989fa;
+  border-left: 4rpx solid #304156;
 }
 
 .reply-title {
   font-size: 26rpx;
-  color: #1989fa;
+  color: #304156;
   font-weight: 500;
   margin-bottom: 12rpx;
 }
@@ -144,13 +144,17 @@
   width: 100%;
   height: 88rpx;
   line-height: 88rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   color: #ffffff;
   font-size: 32rpx;
-  border-radius: 12rpx;
+  border-radius: 44rpx;
   margin-top: 30rpx;
   border: none;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .btn-submit::after {

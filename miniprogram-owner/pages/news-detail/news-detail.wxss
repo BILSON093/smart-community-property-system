@@ -41,8 +41,8 @@
 }
 
 .notice-tag.important {
-  background-color: #fffbe8;
-  color: #ee9a00;
+  background-color: #fff7e6;
+  color: #d97706;
 }
 
 .notice-time {

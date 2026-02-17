@@ -39,7 +39,7 @@
 }
 
 .tab-item.active {
-  color: #1989fa;
+  color: #304156;
   font-weight: 600;
 }
 
@@ -51,7 +51,7 @@
   transform: translateX(-50%);
   width: 60rpx;
   height: 4rpx;
-  background-color: #1989fa;
+  background-color: #304156;
   border-radius: 2rpx;
 }
 
@@ -87,23 +87,23 @@
 }
 
 .status-0 {
-  background-color: #fffbe8;
-  color: #ee9a00;
+  background-color: #fff7e6;
+  color: #d97706;
 }
 
 .status-1 {
-  background-color: #e8f3ff;
-  color: #1989fa;
+  background-color: #f0f5ff;
+  color: #304156;
 }
 
 .status-2 {
-  background-color: #e8f3ff;
-  color: #1989fa;
+  background-color: #f0f5ff;
+  color: #304156;
 }
 
 .status-3 {
-  background-color: #f0f9ff;
-  color: #07c160;
+  background-color: #f0fdf4;
+  color: #16a34a;
 }
 
 .status-4 {
@@ -149,7 +149,7 @@
 
 .worker {
   font-size: 26rpx;
-  color: #1989fa;
+  color: #304156;
 }
 
 .empty {
@@ -185,12 +185,12 @@
   right: 40rpx;
   width: 120rpx;
   height: 120rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8rpx 24rpx rgba(48, 65, 86, 0.4);
   z-index: 999;
 }
 
@@ -198,6 +198,7 @@
   font-size: 72rpx;
   color: #ffffff;
   font-weight: bold;
+  line-height: 1;
 }
 
 /* 弹窗样式 */
@@ -374,8 +375,12 @@
   background-color: #f7f8fa;
   color: #323233;
   font-size: 28rpx;
-  border-radius: 12rpx;
+  border-radius: 44rpx;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .btn-cancel::after {
@@ -386,11 +391,15 @@
   flex: 1;
   height: 80rpx;
   line-height: 80rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   color: #ffffff;
   font-size: 28rpx;
-  border-radius: 12rpx;
+  border-radius: 44rpx;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .btn-submit::after {

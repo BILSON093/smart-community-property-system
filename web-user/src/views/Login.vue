@@ -18,13 +18,22 @@
         />
         <van-field
           v-model="form.password"
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
           name="password"
           label="密码"
           placeholder="请输入密码"
           :rules="[{ required: true, message: '请输入密码' }]"
           size="large"
-        />
+        >
+          <template #button>
+            <van-icon 
+              :name="showPassword ? 'eye-o' : 'closed-eye'" 
+              @click="showPassword = !showPassword"
+              size="18"
+              color="#999"
+            />
+          </template>
+        </van-field>
 
         <div class="form-actions">
           <van-button round block type="primary" native-type="submit" size="large" class="login-btn">
@@ -35,10 +44,6 @@
           </router-link>
         </div>
       </van-form>
-
-      <div class="login-tips">
-        <p>测试账号：13800138001 / 12345678</p>
-      </div>
     </div>
   </div>
 </template>
@@ -51,9 +56,10 @@ import request from '@/utils/request'
 
 const router = useRouter()
 const form = ref({
-  username: '13800138001',
-  password: '12345678'
+  username: '',
+  password: ''
 })
+const showPassword = ref(false)
 
 const handleLogin = async (values) => {
   try {
@@ -65,7 +71,7 @@ const handleLogin = async (values) => {
     localStorage.setItem('userInfo', JSON.stringify(res.data))
     showToast('登录成功')
     setTimeout(() => {
-      router.replace('/')
+      router.replace('/home')
     }, 500)
   } catch (error) {
     showToast(error.message || '登录失败')
@@ -76,8 +82,7 @@ const handleLogin = async (values) => {
 <style scoped>
 .login-container {
   min-height: 100vh;
-  /* 修改背景色为指定的深蓝灰色渐变 */
-  background: linear-gradient(135deg, #304156 0%, #345473 100%);
+  background-color: #304156;
   display: flex;
   align-items: center;
   justify-content: center;

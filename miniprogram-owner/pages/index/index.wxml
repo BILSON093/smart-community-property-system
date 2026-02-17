@@ -3,7 +3,7 @@
   <!-- 轮播图 -->
   <swiper class="carousel" indicator-dots autoplay circular interval="3000">
     <swiper-item wx:for="{{carouselList}}" wx:key="id">
-      <image class="carousel-image" src="{{item.imageUrl}}" mode="aspectFill" bindtap="goToActivity"></image>
+      <image class="carousel-image" src="{{item.imageUrl}}" mode="aspectFill"></image>
     </swiper-item>
   </swiper>
 

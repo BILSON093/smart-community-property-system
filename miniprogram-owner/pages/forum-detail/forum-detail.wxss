@@ -323,11 +323,14 @@
 
 .btn-send {
   padding: 16rpx 32rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   color: #ffffff;
   font-size: 28rpx;
-  border-radius: 24rpx;
+  border-radius: 44rpx;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-send::after {

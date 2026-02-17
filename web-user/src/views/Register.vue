@@ -58,22 +58,40 @@
         />
         <van-field
           v-model="form.password"
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
           name="password"
           label="密码"
           placeholder="请输入密码"
           :rules="[{ required: true, message: '请输入密码' }]"
           size="large"
-        />
+        >
+          <template #button>
+            <van-icon 
+              :name="showPassword ? 'eye-o' : 'closed-eye'" 
+              @click="showPassword = !showPassword"
+              size="18"
+              color="#999"
+            />
+          </template>
+        </van-field>
         <van-field
           v-model="form.confirmPassword"
-          type="password"
+          :type="showConfirmPassword ? 'text' : 'password'"
           name="confirmPassword"
           label="确认密码"
           placeholder="请再次输入密码"
           :rules="[{ required: true, message: '请确认密码' }]"
           size="large"
-        />
+        >
+          <template #button>
+            <van-icon 
+              :name="showConfirmPassword ? 'eye-o' : 'closed-eye'" 
+              @click="showConfirmPassword = !showConfirmPassword"
+              size="18"
+              color="#999"
+            />
+          </template>
+        </van-field>
 
         <van-field
           v-model="form.building"
@@ -136,6 +154,9 @@ const form = ref({
   idCard: ''
 })
 
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
+
 const chooseAvatar = () => {
   avatarInput.value.click()
 }
@@ -187,8 +208,7 @@ const handleRegister = async (values) => {
 <style scoped>
 .register-container {
   min-height: 100vh;
-  /* 背景改为深色主题渐变 */
-  background: linear-gradient(135deg, #304156 0%, #345473 100%);
+  background-color: #304156;
   display: flex;
   align-items: center;
   justify-content: center;

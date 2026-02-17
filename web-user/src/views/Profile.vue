@@ -23,10 +23,6 @@
           <span>清除缓存</span>
           <button class="setting-btn" @click="clearCache">清除</button>
         </div>
-        <div class="setting-item">
-          <span>检查更新</span>
-          <button class="setting-btn" @click="checkUpdate">检查</button>
-        </div>
         <button class="dialog-btn" @click="showSettingsDialog = false">确定</button>
       </div>
     </div>
@@ -135,10 +131,6 @@ const showSettings = () => {
 const clearCache = () => {
   localStorage.clear()
   showToast('缓存已清除')
-}
-
-const checkUpdate = () => {
-  showToast('当前已是最新版本')
 }
 </script>
 

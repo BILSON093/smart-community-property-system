@@ -50,7 +50,7 @@
             />
           </div>
           <div class="post-actions">
-            <el-button @click="toggleLike(item)" :type="item.isLiked ? 'danger' : ''" :icon="item.isLiked ? Star : StarFilled" link>
+            <el-button @click="toggleLike(item)" :type="item.isLiked ? 'warning' : ''" :icon="item.isLiked ? StarFilled : Star" link>
               {{ item.likeCount || 0 }}
             </el-button>
             <el-button @click="handleViewComments(item)" :icon="ChatDotRound" link>
@@ -209,6 +209,7 @@ onMounted(() => {
   loadForums()
   loadCategories()
 })
+
 const formData = ref({
   categoryId: null,
   title: '',
@@ -220,11 +221,6 @@ const commentForm = ref({
   content: '',
   images: '',
   isAnonymous: 0
-})
-
-onMounted(() => {
-  loadForums()
-  loadCategories()
 })
 
 const goBack = () => {
@@ -239,8 +235,7 @@ const loadForums = async () => {
     })
     const forums = res.data.records || []
     
-    const userId = localStorage.getItem('userId')
-    if (userId) {
+    if (currentUserId.value) {
       for (const forum of forums) {
         try {
           const likeRes = await request.get(`/forum/${forum.id}/like/check`)
@@ -324,9 +319,7 @@ const customUpload = async (options) => {
 }
 
 const handleImageSuccess = (response, file, fileList) => {
-  file.status = 'success'
   imageList.value = fileList
-  ElMessage.success('图片上传成功')
 }
 
 const handleImageRemove = (file, fileList) => {
@@ -334,9 +327,7 @@ const handleImageRemove = (file, fileList) => {
 }
 
 const handleCommentImageSuccess = (response, file, fileList) => {
-  file.status = 'success'
   commentImageList.value = fileList
-  ElMessage.success('图片上传成功')
 }
 
 const handleCommentImageRemove = (file, fileList) => {

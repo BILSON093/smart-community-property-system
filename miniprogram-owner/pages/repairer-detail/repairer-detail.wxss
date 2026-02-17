@@ -15,15 +15,15 @@
 }
 
 .status-bar.pending {
-  background: linear-gradient(135deg, #ff976a 0%, #f60 100%);
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
 }
 
 .status-bar.in-progress {
-  background: linear-gradient(135deg, #1989fa 0%, #1a7be6 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
 }
 
 .status-bar.completed {
-  background: linear-gradient(135deg, #07c160 0%, #06ae56 100%);
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
 }
 
 /* 卡片样式 */
@@ -66,7 +66,7 @@
 }
 
 .value.phone {
-  color: #1989fa;
+  color: #304156;
 }
 
 .detail-content {
@@ -112,15 +112,19 @@
   border-radius: 44rpx;
   font-size: 32rpx;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .btn-start {
-  background: linear-gradient(135deg, #1989fa 0%, #1a7be6 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   color: #fff;
 }
 
 .btn-complete {
-  background: linear-gradient(135deg, #07c160 0%, #06ae56 100%);
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
   color: #fff;
 }
 

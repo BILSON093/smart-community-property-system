@@ -58,9 +58,5 @@
         还没有账号？立即注册
       </view>
     </view>
-
-    <view class="login-tips">
-      <text>测试账号：13800138001 / 12345678</text>
-    </view>
   </view>
 </view>

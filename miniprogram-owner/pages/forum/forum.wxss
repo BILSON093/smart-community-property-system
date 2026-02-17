@@ -30,7 +30,7 @@
 }
 
 .category-item.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   color: #ffffff;
 }
 
@@ -179,12 +179,12 @@
   right: 40rpx;
   width: 120rpx;
   height: 120rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8rpx 24rpx rgba(48, 65, 86, 0.4);
   z-index: 999;
 }
 

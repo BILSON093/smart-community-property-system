@@ -3,6 +3,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/home',
     component: () => import('@/layout/MainLayout.vue'),
     children: [
       {
@@ -22,13 +26,13 @@ const routes = [
         name: 'Activity',
         component: () => import('@/views/Activity.vue'),
         meta: { title: '活动' }
-    },
-    {
+      },
+      {
         path: 'activity/:id',
         name: 'ActivityDetail',
         component: () => import('@/views/ActivityDetail.vue'),
         meta: { title: '活动详情' }
-    },
+      },
       {
         path: 'profile',
         name: 'Profile',
@@ -68,6 +72,38 @@ const routes = [
     ]
   },
   {
+    path: '/news',
+    redirect: '/home/news'
+  },
+  {
+    path: '/activity',
+    redirect: '/home/activity'
+  },
+  {
+    path: '/forum',
+    redirect: '/home/forum'
+  },
+  {
+    path: '/pay',
+    redirect: '/home/pay'
+  },
+  {
+    path: '/repair',
+    redirect: '/home/repair'
+  },
+  {
+    path: '/chat',
+    redirect: '/home/chat'
+  },
+  {
+    path: '/feedback',
+    redirect: '/home/feedback'
+  },
+  {
+    path: '/profile',
+    redirect: '/home/profile'
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/Login.vue')
@@ -92,7 +128,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
-  const whiteList = ['', '/', '/home', '/news', '/activity']
+  const whiteList = ['/home', '/news', '/activity', '/home/news', '/home/activity', '/home/forum']
   
   if (to.meta.needAuth && !token && !whiteList.includes(to.path.toLowerCase())) {
     next('/login')

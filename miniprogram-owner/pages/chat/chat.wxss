@@ -28,7 +28,7 @@
 .message-user .message-content {
   margin-right: 16rpx;
   margin-left: 0;
-  background-color: #1989fa;
+  background-color: #304156;
 }
 
 .message-user .message-text {
@@ -38,7 +38,7 @@
 .message-user .message-content::before {
   right: -8rpx;
   left: auto;
-  border-right-color: #1989fa;
+  border-right-color: #304156;
   border-left-color: transparent;
 }
 
@@ -161,12 +161,20 @@
 
 .btn-ai {
   padding: 16rpx 32rpx;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   color: #ffffff;
   font-size: 28rpx;
-  border-radius: 24rpx;
+  border-radius: 44rpx;
   border: none;
   white-space: nowrap;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-ai.manual {
+  background: linear-gradient(135deg, #4a5b73 0%, #5a6b83 100%);
 }
 
 .btn-ai::after {
@@ -185,11 +193,14 @@
 .btn-send {
   flex-shrink: 0;
   padding: 16rpx 32rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   color: #ffffff;
   font-size: 28rpx;
-  border-radius: 24rpx;
+  border-radius: 44rpx;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-send::after {

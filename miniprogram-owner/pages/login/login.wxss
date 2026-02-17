@@ -2,7 +2,7 @@
 .container {
   min-height: 100vh;
   /* 深蓝灰色渐变背景 */
-  background: linear-gradient(135deg, #304156 0%, #345473 100%);
+  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,8 +66,9 @@
 .label {
   font-size: 28rpx;
   color: #606266;
-  width: 100rpx;
+  width: 140rpx;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .input {
@@ -81,15 +82,16 @@
 }
 
 .eye-icon {
-  font-size: 40rpx;
+  font-size: 32rpx;
   margin-left: 20rpx;
   color: #909399;
-  padding: 10rpx;
-  min-width: 60rpx;
-  min-height: 60rpx;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 44rpx;
 }
 
 /* 角色选择器 */
@@ -127,6 +129,11 @@
   margin-top: 64rpx;
   border: none;
   transition: opacity 0.3s;
+  box-shadow: 0 8rpx 24rpx rgba(48, 65, 86, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 
 .btn-login:active {
@@ -139,10 +146,11 @@
 
 .register-link {
   text-align: center;
-  color: #345473;
+  color: #3a4b63;
   font-size: 28rpx;
   margin-top: 32rpx;
   padding-top: 16rpx;
+  opacity: 0.9;
 }
 
 .login-tips {

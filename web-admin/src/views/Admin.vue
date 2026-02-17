@@ -4,7 +4,7 @@
       <template #header>
         <div class="card-header">
           <span>管理员账号管理</span>
-          <el-button type="primary" size="small" @click="showAddAdminDialogVisible = true">添加管理员</el-button>
+          <el-button type="primary" size="small" @click="openAddAdminDialog">添加管理员</el-button>
         </div>
       </template>
       
@@ -57,7 +57,7 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showAddAdminDialog = false">取消</el-button>
+        <el-button @click="showAddAdminDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="addAdmin">添加</el-button>
       </template>
     </el-dialog>
@@ -165,6 +165,18 @@ const loadAdminList = async () => {
 }
 
 // 管理员管理方法
+const openAddAdminDialog = () => {
+  adminForm.value = {
+    id: null,
+    username: '',
+    realName: '',
+    phone: '',
+    password: '',
+    avatar: ''
+  }
+  showAddAdminDialogVisible.value = true
+}
+
 const showEditAdminDialog = (admin) => {
   adminForm.value = { ...admin }
   showEditAdminDialogVisible.value = true

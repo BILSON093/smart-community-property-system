@@ -8,7 +8,12 @@
 function formatDate(date, format = 'YYYY-MM-DD HH:mm:ss') {
   if (!date) return ''
 
-  const d = new Date(date)
+  let dateStr = date
+  if (typeof date === 'string') {
+    dateStr = date.replace(/ /g, 'T')
+  }
+
+  const d = new Date(dateStr)
   if (isNaN(d.getTime())) return ''
 
   const year = d.getFullYear()

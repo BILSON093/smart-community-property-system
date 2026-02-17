@@ -3,7 +3,7 @@
     <div class="login-box">
       <h1>智慧社区管理系统</h1>
       
-      <el-form :model="loginForm" :rules="rules" ref="formRef" label-width="80px" class="login-form">
+      <el-form :model="loginForm" :rules="rules" ref="formRef" label-width="80px" class="login-form" @submit.prevent="handleLogin">
         <el-form-item label="账号" prop="username">
           <el-input v-model="loginForm.username" placeholder="请输入手机号或账号" />
         </el-form-item>
@@ -21,7 +21,7 @@
         
         <el-form-item class="button-item">
           <div class="button-group">
-            <el-button type="primary" @click="handleLogin" class="action-btn login-btn">
+            <el-button type="primary" native-type="submit" class="action-btn login-btn">
               登录
             </el-button>
             <el-button @click="showRegisterDialog = true; registerType = 2" class="action-btn register-btn">
@@ -58,7 +58,7 @@
           <el-input v-model="registerForm.realName" placeholder="请输入真实姓名" />
         </el-form-item>
         <el-form-item label="联系方式" prop="phone">
-          <el-input v-model="registerForm.phone" placeholder="请输入shou" />
+          <el-input v-model="registerForm.phone" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="registerForm.password" type="password" placeholder="请设置密码" show-password />
@@ -87,8 +87,8 @@ const registerType = ref(2)
 const uploadUrl = '/api/common/upload'
 
 const loginForm = ref({
-  username: 'admin',
-  password: '12345678',
+  username: '',
+  password: '',
   loginType: 0
 })
 

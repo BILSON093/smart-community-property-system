@@ -56,7 +56,7 @@ onMounted(async () => {
 const onLoad = () => {}
 
 const showDetail = (item) => {
-  router.push(`/activity/${item.id}`)
+  router.push(`/home/activity/${item.id}`)
 }
 </script>
 

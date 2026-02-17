@@ -78,16 +78,22 @@ onMounted(async () => {
     return
   }
   
-  const res = await request.get(`/activity/${id}`)
-  activity.value = res.data
-  
-  // 处理活动图片
-  if (activity.value.images) {
-    try {
-      activityImages.value = JSON.parse(activity.value.images)
-    } catch (e) {
-      console.error('解析图片失败', e)
+  try {
+    const res = await request.get(`/activity/${id}`)
+    console.log('活动详情响应:', res)
+    activity.value = res.data
+    
+    // 处理活动图片
+    if (activity.value.images) {
+      try {
+        activityImages.value = JSON.parse(activity.value.images)
+      } catch (e) {
+        console.error('解析图片失败', e)
+      }
     }
+  } catch (error) {
+    console.error('加载活动详情失败:', error)
+    showToast('加载活动详情失败')
   }
 })
 

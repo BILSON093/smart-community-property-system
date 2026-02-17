@@ -14,16 +14,46 @@ Page({
     isLoggedIn: false,
     showPayDialog: false,
     currentFee: null,
-    selectedMethod: 'alipay'
+    selectedMethod: 'alipay',
+    feeSettings: [] // 费用设置
   },
 
   onLoad() {
+    this.loadFeeSettings()
     this.loadFees()
   },
 
   onShow() {
     // 每次显示时刷新数据
     this.loadFees()
+  },
+
+  // 加载费用设置
+  loadFeeSettings() {
+    api.getFeeSettings().then(res => {
+      const data = res.data || {}
+      // 转换驼峰命名为小写命名
+      const settings = {
+        waterFee: data.water_fee || data.waterFee,
+        electricityFee: data.electricity_fee || data.electricityFee,
+        gasFee: data.gas_fee || data.gasFee,
+        propertyFee: data.property_fee || data.propertyFee
+      }
+      this.setData({ feeSettings: settings })
+    }).catch(err => {
+      console.error('加载费用设置失败:', err)
+    })
+  },
+
+  // 根据费用类型获取单价和单位
+  getFeeSetting(type) {
+    const { feeSettings } = this.data
+    const typeMap = {
+      '水费': { unit_price: feeSettings.waterFee, unit_name: '吨' },
+      '电费': { unit_price: feeSettings.electricityFee, unit_name: '度' },
+      '燃气费': { unit_price: feeSettings.gasFee, unit_name: '立方米' }
+    }
+    return typeMap[type] || {}
   },
 
   loadFees() {
@@ -43,10 +73,20 @@ Page({
 
     this.setData({ loading: true })
     api.getMyFees({ page: 1, pageSize: 50 }).then(res => {
-      const feeList = (res.data.records || []).map(item => ({
-        ...item,
-        payTime: item.payTime ? formatDate(item.payTime, 'YYYY-MM-DD HH:mm') : ''
-      }))
+      const { feeSettings } = this.data
+
+      // 处理费用数据,计算用量
+      const feeList = (res.data.records || []).map(item => {
+        const setting = this.getFeeSetting(item.type)
+        const usage = setting.unit_price ? (parseFloat(item.amount) / setting.unit_price).toFixed(2) : null
+
+        return {
+          ...item,
+          payTime: item.payTime ? formatDate(item.payTime, 'YYYY-MM-DD HH:mm') : '',
+          usage: usage,
+          unit: setting.unit_name || ''
+        }
+      })
 
       // 计算总额
       const totalUnpaid = feeList
