@@ -1,16 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login.vue')
-  },
-  {
-    path: '/',
-    component: () => import('@/layout/Layout.vue'),
-    redirect: '/login',
-    children: [
+  {
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login.vue')
+  },
+  {
+    path: '/',
+    component: () => import('@/layout/Layout.vue'),
+    redirect: '/dashboard',
+    children: [
       {
         path: 'dashboard',
         name: 'Dashboard',
@@ -90,11 +94,17 @@ const routes = [
         meta: { title: '留言反馈' }
       },
       {
-        path: 'ai-config',
-        name: 'AiConfig',
-        component: () => import('@/views/AiConfig.vue'),
-        meta: { title: 'AI模型配置' }
-      }
+        path: 'ai-config',
+        name: 'AiConfig',
+        component: () => import('@/views/AiConfig.vue'),
+        meta: { title: 'AI模型配置' }
+      },
+      {
+        path: 'agent-chat',
+        name: 'AgentChat',
+        component: () => import('@/views/AgentChat.vue'),
+        meta: { title: 'AI智能助手' }
+      }
     ]
   },
   {

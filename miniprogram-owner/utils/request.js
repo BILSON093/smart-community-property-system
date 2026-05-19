@@ -18,6 +18,7 @@ function request(options) {
       url: `${app.globalData.baseURL}${url}`,
       method,
       data,
+      timeout: 60000,
       header: {
         'Content-Type': 'application/json',
         ...header

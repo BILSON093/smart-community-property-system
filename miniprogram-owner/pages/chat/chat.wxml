@@ -29,8 +29,8 @@
     </view>
 
     <view class="empty" wx:if="{{messageList.length === 0}}">
-      <text class="empty-icon">{{chatMode === 'ai' ? '🤖' : '👤'}}</text>
-      <text class="empty-text">{{chatMode === 'ai' ? '您好！我是AI客服，有什么可以帮您的吗？' : '您好！有什么问题可以咨询人工客服。'}}</text>
+      <text class="empty-icon">{{chatMode === 'agent' ? '🤖' : (chatMode === 'ai' ? '🤖' : '👤')}}</text>
+      <text class="empty-text">{{chatMode === 'agent' ? '您好！我是智能助手，可以帮您报修、缴费、查进度等操作！' : (chatMode === 'ai' ? '您好！我是AI客服，有什么可以帮您的吗？' : '您好！有什么问题可以咨询人工客服。')}}</text>
     </view>
 
     <view class="loading-message" wx:if="{{loading}}">
@@ -44,7 +44,7 @@
   <!-- 输入区域 -->
   <view class="input-area">
     <view class="button-row">
-      <button class="btn-ai {{chatMode === 'manual' ? 'manual' : ''}}" bindtap="switchChatMode">{{chatMode === 'ai' ? 'AI客服' : '人工客服'}}</button>
+      <button class="btn-ai {{chatMode === 'manual' ? 'manual' : ''}}" bindtap="switchChatMode">{{chatMode === 'agent' ? '智能助手' : (chatMode === 'ai' ? 'AI客服' : '人工客服')}}</button>
     </view>
 
     <!-- 已选中的图片预览 -->

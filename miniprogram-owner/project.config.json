@@ -51,5 +51,8 @@
   "projectname": "miniprogram-owner",
   "condition": {},
   "simulatorPluginLibVersion": {},
-  "editorSetting": {}
+  "editorSetting": {
+    "tabIndent": "auto",
+    "tabSize": 2
+  }
 }

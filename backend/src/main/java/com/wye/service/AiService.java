@@ -257,7 +257,8 @@ public class AiService {
                 List<Map<String, Object>> choices = (List<Map<String, Object>>) responseMap.get("choices");
                 if (choices != null && !choices.isEmpty()) {
                     Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
-                    return (String) message.get("content");
+                    String content = (String) message.get("content");
+                    return stripThinking(content);
                 }
             } else {
                 System.out.println("AI接口调用失败，状态码: " + response.getStatus() + ", 响应: " + response.body());
@@ -349,6 +350,31 @@ public class AiService {
         } else {
             return "您好，我是智能客服，请问有什么可以帮助您？您可以询问缴费、收费标准、活动、通知等相关问题。";
         }
+    }
+
+    private String stripThinking(String content) {
+        if (content == null || content.isEmpty()) {
+            return content;
+        }
+        String result = content;
+
+        while (true) {
+            int start = result.indexOf("<think>");
+            if (start < 0) break;
+            int end = result.indexOf("</think>", start);
+            if (end < 0) break;
+            result = result.substring(0, start) + result.substring(end + "</think>".length());
+        }
+
+        while (true) {
+            int start = result.indexOf("```thinking");
+            if (start < 0) break;
+            int end = result.indexOf("```", start + 3);
+            if (end < 0) break;
+            result = result.substring(0, start) + result.substring(end + 3);
+        }
+
+        return result.trim();
     }
 }
 

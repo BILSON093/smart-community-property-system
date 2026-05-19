@@ -10,7 +10,7 @@ Page({
     loading: false,
     userAvatar: '/images/avatar-default.png',
     aiAvatar: '/images/ai-avatar.png',
-    chatMode: 'ai', // 'ai' 或 'manual'
+    chatMode: 'agent', // 'agent'、'ai' 或 'manual'
     scrollToView: '',
     selectedImage: '', // 已选中的图片
     imageReady: false // 图片是否已准备好
@@ -34,6 +34,11 @@ Page({
   },
 
   loadChatHistory() {
+    // Agent模式和AI客服模式不加载历史记录
+    if (this.data.chatMode === 'agent' || this.data.chatMode === 'ai') {
+      this.setData({ messageList: [] })
+      return
+    }
     api.getChatHistory().then(res => {
       // sender: 1 是用户，2 是管理员/客服
       const messages = (res.data || []).map(item => ({
@@ -46,10 +51,7 @@ Page({
       this.setData({ messageList: messages })
       this.scrollToBottom()
     }).catch(() => {
-      // AI 模式不加载历史记录
-      if (this.data.chatMode === 'manual') {
-        this.setData({ messageList: [] })
-      }
+      this.setData({ messageList: [] })
     })
   },
 
@@ -150,6 +152,24 @@ Page({
           title: '发送失败',
           icon: 'none'
         })
+      })
+    } else if (chatMode === 'agent') {
+      api.agentChat({ message: '[图片]' }).then(res => {
+        const reply = (res.data && res.data.reply) || '抱歉，我暂时无法处理您的请求。'
+        const aiMessage = {
+          id: Date.now(),
+          sender: 1,
+          content: reply,
+          type: 'text'
+        }
+        this.setData({
+          messageList: [...this.data.messageList, aiMessage],
+          loading: false,
+          scrollToView: `msg-${aiMessage.id}`
+        })
+      }).catch(() => {
+        this.setData({ loading: false })
+        wx.showToast({ title: '发送失败', icon: 'none' })
       })
     } else {
       // 人工客服模式 - 保存到数据库
@@ -254,6 +274,45 @@ Page({
           icon: 'none'
         })
       })
+    } else if (chatMode === 'agent') {
+      // Agent模式 - 只发送文字
+      api.agentChat({
+        message: inputText || ''
+      }).then(res => {
+        const reply = (res.data && res.data.reply) || '抱歉，我暂时无法处理您的请求。'
+        const toolCalls = (res.data && res.data.tool_calls) || []
+        let content = reply
+        if (toolCalls.length > 0) {
+          const toolInfo = toolCalls.map(tc => {
+            try {
+              const result = JSON.parse(tc.result)
+              if (result.result) return '✅ ' + result.result
+              return ''
+            } catch { return '' }
+          }).filter(s => s).join('\n')
+          if (toolInfo) content = content + '\n' + toolInfo
+        }
+        const aiMessage = {
+          id: Date.now(),
+          sender: 1,
+          content: content,
+          type: 'text'
+        }
+        this.setData({
+          messageList: [...this.data.messageList, aiMessage],
+          loading: false,
+          selectedImage: '',
+          imageReady: false,
+          scrollToView: `msg-${aiMessage.id}`
+        })
+      }).catch(() => {
+        this.setData({
+          loading: false,
+          selectedImage: '',
+          imageReady: false
+        })
+        wx.showToast({ title: '消息发送失败', icon: 'none' })
+      })
     } else {
       // 人工客服模式 - 保存到数据库
       const promises = []
@@ -314,16 +373,17 @@ Page({
 
   switchChatMode() {
     const { chatMode } = this.data
-    const newMode = chatMode === 'ai' ? 'manual' : 'ai'
-    const modeName = newMode === 'ai' ? 'AI客服' : '人工客服'
+    const modes = ['agent', 'ai', 'manual']
+    const modeNames = { agent: '智能助手', ai: 'AI客服', manual: '人工客服' }
+    const currentIndex = modes.indexOf(chatMode)
+    const newMode = modes[(currentIndex + 1) % modes.length]
+    const modeName = modeNames[newMode]
 
     this.setData({ chatMode: newMode })
 
-    // 切换到人工客服时加载历史记录
     if (newMode === 'manual') {
       this.loadChatHistory()
     } else {
-      // 切换到 AI 时清空消息
       this.setData({ messageList: [] })
     }
 

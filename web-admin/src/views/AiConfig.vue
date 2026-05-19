@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column prop="apiUrl" label="API URL" min-width="200" show-overflow-tooltip />
         <el-table-column prop="modelName" label="模型名称" width="150" />
-        <el-table-column prop="apiKey" label="API Key" width="200" show-overflow-tooltip>
+        <el-table-column prop="apiKey" label="API Key" width="150" show-overflow-tooltip>
           <template #default="{ row }">
             {{ row.apiKey ? maskApiKey(row.apiKey) : '-' }}
           </template>

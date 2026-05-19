@@ -138,6 +138,9 @@ const getCarouselList = () => get('/carousel/list')
 // AI客服对话
 const aiChat = (data) => post('/ai/chat', data)
 
+// Agent智能助手对话
+const agentChat = (data) => post('/agent/chat', data)
+
 // 上传文件
 const uploadFile = (filePath) => {
   return new Promise((resolve, reject) => {
@@ -232,6 +235,7 @@ module.exports = {
 
   // AI客服相关
   aiChat,
+  agentChat,
   sendChatMessage,
   getChatHistory,
   getAdminInfo,

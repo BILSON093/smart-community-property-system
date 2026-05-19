@@ -8,13 +8,23 @@
         </button>
         <div class="header-title">
           <van-icon name="chat-o" size="28" color="#fff" />
-          <h2>{{ isHuman ? '人工客服' : 'AI智能客服' }}</h2>
+          <h2>{{ modeLabel }}</h2>
         </div>
       </div>
-      <button @click="switchService" class="btn-switch">
-        <van-icon :name="isHuman ? 'chat' : 'service'" size="18" />
-        {{ isHuman ? '切换到AI' : '切换到人工' }}
-      </button>
+      <div class="header-actions">
+        <button @click="switchToAgent" class="btn-switch" :class="{ active: chatMode === 'agent' }">
+          <van-icon name="fire-o" size="18" />
+          智能助手
+        </button>
+        <button @click="switchToAI" class="btn-switch" :class="{ active: chatMode === 'ai' }">
+          <van-icon name="chat-o" size="18" />
+          AI客服
+        </button>
+        <button @click="switchToHuman" class="btn-switch" :class="{ active: chatMode === 'manual' }">
+          <van-icon name="service" size="18" />
+          人工
+        </button>
+      </div>
     </div>
 
     <div class="chat-content">
@@ -67,11 +77,11 @@
           发送
         </button>
       </div>
-      <div class="quick-questions" v-if="!isHuman">
-        <p class="quick-title">常见问题：</p>
+      <div class="quick-questions" v-if="chatMode !== 'manual'">
+        <p class="quick-title">{{ chatMode === 'agent' ? '试试对我说：' : '常见问题：' }}</p>
         <div class="quick-tags">
           <span
-            v-for="(q, index) in quickQuestions"
+            v-for="(q, index) in currentQuickQuestions"
             :key="index"
             @click="quickAsk(q)"
             class="quick-tag"
@@ -85,12 +95,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, computed } from 'vue'
 import { showToast } from 'vant'
 import request from '@/utils/request'
 import router from '@/router'
 
 const isHuman = ref(false)
+const chatMode = ref('agent')
 const input = ref('')
 const messages = ref([])
 const selectedImage = ref('')
@@ -102,6 +113,22 @@ const quickQuestions = ref([
   '如何联系物业？',
   '停车如何办理？'
 ])
+const agentQuickQuestions = ref([
+  '我欠了多少钱？',
+  '我家水管漏水了',
+  '我的报修处理了吗？',
+  '最近有什么通知？',
+  '给工单打个5分',
+  '我要提交反馈'
+])
+const currentQuickQuestions = computed(() => {
+  return chatMode.value === 'agent' ? agentQuickQuestions.value : quickQuestions.value
+})
+const modeLabel = computed(() => {
+  if (chatMode.value === 'agent') return 'AI智能助手'
+  if (chatMode.value === 'ai') return 'AI智能客服'
+  return '人工客服'
+})
 const messageList = ref(null)
 const userInfo = ref({ avatar: '', name: '' })
 const adminInfo = ref({ avatar: '', name: '' })
@@ -205,9 +232,41 @@ const formatContentWithLinks = (content) => {
   return formattedContent
 }
 
-const switchService = () => {
-  isHuman.value = !isHuman.value
-  showToast(isHuman.value ? '已切换到人工客服' : '已切换到AI客服')
+const switchToAgent = () => {
+  if (chatMode.value === 'agent') return
+  chatMode.value = 'agent'
+  isHuman.value = false
+  messages.value = []
+  messages.value.push({
+    id: 1,
+    role: 'ai',
+    content: '您好！我是智能助手，不仅能回答问题，还能帮您报修、缴费、查进度等操作！',
+    createTime: new Date(),
+    avatar: adminInfo.value.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+  })
+  scrollToBottom()
+}
+
+const switchToAI = () => {
+  if (chatMode.value === 'ai') return
+  chatMode.value = 'ai'
+  isHuman.value = false
+  messages.value = []
+  messages.value.push({
+    id: 1,
+    role: 'ai',
+    content: '您好，我是智慧社区的智能客服，请问有什么可以帮助您？',
+    createTime: new Date(),
+    avatar: adminInfo.value.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+  })
+  scrollToBottom()
+}
+
+const switchToHuman = () => {
+  if (chatMode.value === 'manual') return
+  chatMode.value = 'manual'
+  isHuman.value = true
+  loadChatHistory()
 }
 
 const send = async () => {
@@ -236,7 +295,7 @@ const send = async () => {
   input.value = ''
 
   try {
-    if (isHuman.value) {
+    if (chatMode.value === 'manual') {
       // 人工客服
       await request.post('/chat/send', {
         sender: 1,
@@ -244,6 +303,30 @@ const send = async () => {
         msgType: 'text'
       })
       showToast('已发送给人工客服')
+    } else if (chatMode.value === 'agent') {
+      // Agent智能助手
+      const res = await request.post('/agent/chat', {
+        message: question
+      })
+      let reply = (res.data && res.data.reply) || '抱歉，我暂时无法处理您的请求。'
+      const toolCalls = (res.data && res.data.tool_calls) || []
+      if (toolCalls.length > 0) {
+        const toolInfo = toolCalls.map(tc => {
+          try {
+            const result = JSON.parse(tc.result)
+            if (result.result) return '✅ ' + result.result
+            return ''
+          } catch { return '' }
+        }).filter(s => s).join('\n')
+        if (toolInfo) reply = reply + '\n' + toolInfo
+      }
+      addMessage({
+        id: messages.value.length + 1,
+        role: 'ai',
+        content: reply,
+        createTime: new Date(),
+        avatar: adminInfo.value.avatar
+      })
     } else {
       // AI客服
       const res = await request.post('/ai/chat', { 
@@ -298,6 +381,11 @@ const quickAsk = (question) => {
 }
 
 const loadChatHistory = async () => {
+  // Agent模式和AI客服模式不加载历史记录
+  if (chatMode.value === 'agent' || chatMode.value === 'ai') {
+    messages.value = []
+    return
+  }
   try {
     const res = await request.get('/chat/session')
     if (res.data && res.data.length > 0) {
@@ -309,28 +397,9 @@ const loadChatHistory = async () => {
         avatar: msg.avatar || (msg.sender === 1 ? userInfo.value.avatar : adminInfo.value.avatar)
       }))
       scrollToBottom()
-    } else {
-      // 添加欢迎消息
-      messages.value.push({
-        id: 1,
-        role: 'ai',
-        content: '您好，我是智慧社区的智能客服，请问有什么可以帮助您？',
-        createTime: new Date(),
-        avatar: adminInfo.value.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-      })
-      scrollToBottom()
     }
   } catch (error) {
     console.error('加载聊天记录失败:', error)
-    // 加载失败时显示欢迎消息
-    messages.value.push({
-      id: 1,
-      role: 'ai',
-      content: '您好，我是智慧社区的智能客服，请问有什么可以帮助您？',
-      createTime: new Date(),
-      avatar: adminInfo.value.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
-    })
-    scrollToBottom()
   }
 }
 
@@ -415,21 +484,32 @@ onMounted(() => {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 10px 20px;
+  padding: 8px 14px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   transition: all 0.3s;
 }
 
 .btn-switch:hover {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
+}
+
+.btn-switch.active {
+  background: rgba(255, 255, 255, 0.9);
+  color: #304156;
+  border-color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .chat-content {

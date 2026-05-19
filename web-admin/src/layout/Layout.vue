@@ -65,6 +65,10 @@
           <el-icon><Setting /></el-icon>
           <span>AI模型配置</span>
         </el-menu-item>
+        <el-menu-item index="/agent-chat">
+          <el-icon><Promotion /></el-icon>
+          <span>AI智能助手</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>

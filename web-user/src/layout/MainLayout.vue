@@ -13,7 +13,7 @@
           <router-link to="/home/forum" class="nav-item">论坛</router-link>
           <router-link to="/home/pay" class="nav-item">缴费</router-link>
           <router-link to="/home/repair" class="nav-item">报修</router-link>
-          <router-link to="/home/chat" class="nav-item">客服</router-link>
+          <router-link to="/home/chat" class="nav-item">智能助手</router-link>
           <router-link to="/home/feedback" class="nav-item">反馈</router-link>
           <router-link to="/home/profile" class="nav-item">我的</router-link>
         </nav>

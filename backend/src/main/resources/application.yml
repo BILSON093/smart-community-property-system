@@ -39,7 +39,7 @@ mybatis-plus:
 # 文件存储配置
 file:
   upload:
-    path: /Users/macbook/Desktop/ai/trae/elysia1/backend/upload
+    path: C:\Users\Administrator\Desktop\trae\elysia1\backend\upload
     url-prefix: /upload
 
 # JWT配置
@@ -51,3 +51,8 @@ jwt:
 ai:
   url: http://localhost:1234/v1/chat/completions
   model: local-model
+
+# Agent配置
+agent:
+  max-tool-rounds: 5
+  max-history: 10
