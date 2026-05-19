@@ -50,8 +50,6 @@
 | 报修 | ![小程序报修](screenshots/mp-repair.png) |
 | 个人中心 | ![小程序个人中心](screenshots/mp-profile.png) |
 
-> 将截图文件放入 `screenshots/` 目录后即可显示。
-
 ## 系统功能
 
 ### 管理员功能（web-admin）
@@ -304,122 +302,6 @@ JWT Token 中包含 userId、username、role，拦截器解析后存入 request 
 |------|------|
 | chat_record | 聊天记录 |
 | ai_config | AI 模型配置 |
-
-## API 接口概览
-
-所有接口前缀为 `/api`，需要认证的接口需在请求头中携带 `Authorization: Bearer <token>`。
-
-### 认证与用户
-
-| 方法 | 路径 | 说明 | 认证 |
-|------|------|------|------|
-| POST | `/api/user/login` | 用户登录 | 否 |
-| POST | `/api/user/register` | 业主注册 | 否 |
-| POST | `/api/user/register/worker` | 维修员注册 | 否 |
-| POST | `/api/user/register/admin` | 管理员注册 | 否 |
-| GET | `/api/user/info` | 获取当前用户信息 | 是 |
-| PUT | `/api/user/update` | 更新个人信息 | 是 |
-| POST | `/api/user/change-password` | 修改密码 | 是 |
-
-### 业主管理（管理员）
-
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/admin/owners` | 业主列表 |
-| POST | `/api/admin/owner/add` | 新增业主 |
-| PUT | `/api/admin/owner/update` | 更新业主 |
-| DELETE | `/api/admin/owner/{id}` | 删除业主 |
-
-### 维修员管理（管理员）
-
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/admin/workers` | 维修员列表 |
-| POST | `/api/admin/worker/add` | 新增维修员 |
-| PUT | `/api/admin/worker/update` | 更新维修员 |
-| PUT | `/api/admin/worker/approve` | 审核维修员 |
-| DELETE | `/api/admin/worker/{id}` | 删除维修员 |
-
-### 报修工单
-
-| 方法 | 路径 | 说明 | 角色 |
-|------|------|------|------|
-| GET | `/api/repair/list` | 全部工单 | 管理员 |
-| GET | `/api/repair/my` | 我的报修 | 业主 |
-| GET | `/api/repair/worker` | 待处理工单 | 维修员 |
-| GET | `/api/repair/worker/completed` | 已完成工单 | 维修员 |
-| GET | `/api/repair/worker/stats` | 维修员绩效统计 | 维修员 |
-| GET | `/api/repair/{id}` | 工单详情 | 是 |
-| POST | `/api/repair/add` | 提交报修 | 业主 |
-| POST | `/api/repair/dispatch` | 派单 | 管理员 |
-| POST | `/api/repair/start/{id}` | 开始维修 | 维修员 |
-| POST | `/api/repair/complete/{id}` | 完成维修 | 维修员 |
-| POST | `/api/repair/evaluate` | 评价维修 | 业主 |
-| POST | `/api/repair/cancel/{id}` | 退单 | 维修员 |
-
-### 物业缴费
-
-| 方法 | 路径 | 说明 | 角色 |
-|------|------|------|------|
-| GET | `/api/fee/list` | 全部账单 | 管理员 |
-| GET | `/api/fee/my` | 我的账单 | 业主 |
-| POST | `/api/fee/add` | 新增账单 | 管理员 |
-| POST | `/api/fee/pay/{id}` | 缴费 | 业主 |
-| DELETE | `/api/fee/{id}` | 删除账单 | 管理员 |
-| GET | `/api/fee/settings` | 费用单价 | 是 |
-| POST | `/api/fee/settings` | 设置单价 | 管理员 |
-| POST | `/api/fee/urge-payment` | 一键催缴 | 管理员 |
-
-### 社区论坛
-
-| 方法 | 路径 | 说明 | 角色 |
-|------|------|------|------|
-| GET | `/api/forum/list` | 已审核帖子列表 | 是 |
-| GET | `/api/forum/list/all` | 全部帖子 | 管理员 |
-| GET | `/api/forum/my-posts` | 我的帖子 | 业主 |
-| GET | `/api/forum/{id}` | 帖子详情 | 是 |
-| POST | `/api/forum/add` | 发帖 | 业主 |
-| PUT | `/api/forum/{id}/approve` | 审核通过 | 管理员 |
-| PUT | `/api/forum/{id}/reject` | 审核拒绝 | 管理员 |
-| PUT | `/api/forum/{id}/pin` | 置顶 | 管理员 |
-| POST | `/api/forum/{id}/comments` | 发表评论 | 是 |
-| POST | `/api/forum/{id}/like` | 点赞/取消 | 业主 |
-| GET | `/api/forum/category/list` | 论坛分类列表 | 是 |
-
-### 通知与消息
-
-| 方法 | 路径 | 说明 | 角色 |
-|------|------|------|------|
-| GET | `/api/notice/list` | 公告列表 | 是 |
-| GET | `/api/notice/{id}` | 公告详情 | 是 |
-| POST | `/api/notice/{id}/read` | 标记已读 | 业主 |
-| GET | `/api/notification/my` | 我的通知 | 业主 |
-| POST | `/api/notification/read/{id}` | 标记已读 | 业主 |
-| POST | `/api/notification/read-all` | 全部已读 | 业主 |
-| GET | `/api/notification/unread-count` | 未读数 | 业主 |
-
-### AI 与客服
-
-| 方法 | 路径 | 说明 | 角色 |
-|------|------|------|------|
-| POST | `/api/ai/chat` | AI 客服对话 | 业主 |
-| POST | `/api/agent/chat` | AI 智能助手 | 业主/管理员 |
-| POST | `/api/chat/send` | 发送人工消息 | 业主 |
-| GET | `/api/chat/session` | 聊天记录 | 业主 |
-| POST | `/api/chat/admin/reply` | 人工回复 | 管理员 |
-
-### 其他
-
-| 方法 | 路径 | 说明 | 角色 |
-|------|------|------|------|
-| GET | `/api/activity/list` | 活动列表 | 是 |
-| POST | `/api/activity/{id}/signup` | 报名活动 | 业主 |
-| GET | `/api/carousel/list` | 轮播图 | 是 |
-| POST | `/api/common/upload` | 文件上传 | 是 |
-| POST | `/api/feedback/add` | 提交反馈 | 业主 |
-| GET | `/api/feedback/list` | 反馈列表 | 管理员 |
-| PUT | `/api/feedback/update` | 处理反馈 | 管理员 |
-| GET | `/api/admin/statistics` | 看板统计 | 管理员 |
 
 ## 部署
 
