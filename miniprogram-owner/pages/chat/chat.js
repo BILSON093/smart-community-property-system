@@ -17,9 +17,18 @@ Page({
   },
 
   onLoad() {
+    // 先用缓存的头像
     if (app.globalData.userInfo && app.globalData.userInfo.avatar) {
       this.setData({ userAvatar: formatImages(app.globalData.userInfo.avatar) })
     }
+    // 从服务器获取最新用户信息（包含头像）
+    api.getUserInfo().then(res => {
+      if (res.data && res.data.avatar) {
+        this.setData({ userAvatar: formatImages(res.data.avatar) })
+        // 更新缓存
+        app.globalData.userInfo = { ...app.globalData.userInfo, ...res.data }
+      }
+    }).catch(() => {})
     this.loadAdminInfo()
     this.loadChatHistory()
   },

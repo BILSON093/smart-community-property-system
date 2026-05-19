@@ -22,9 +22,13 @@
             <img :src="userInfo.avatar" alt="头像" />
           </div>
           <div class="avatar" v-else>
-            <span>{{ userInfo.realName.charAt(0) }}</span>
+            <span>{{ (userInfo.realName || userInfo.username || '?').charAt(0) }}</span>
           </div>
-          <span class="username">{{ userInfo.realName }}</span>
+          <span class="username">{{ userInfo.realName || userInfo.username || '用户' }}</span>
+          <div class="notification-bell" @click="goToNotification">
+            <span class="bell-icon">🔔</span>
+            <span v-if="unreadCount > 0" class="unread-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
+          </div>
           <div class="reminder-btn" v-if="hasUnpaidFees" @click="goToPay">
             <span class="reminder-dot"></span>
             <span class="reminder-text">缴费提醒</span>
@@ -57,6 +61,7 @@ import request from '@/utils/request'
 const router = useRouter()
 const userInfo = ref(null)
 const hasUnpaidFees = ref(false)
+const unreadCount = ref(0)
 
 onMounted(() => {
   const token = localStorage.getItem('token')
@@ -65,6 +70,7 @@ onMounted(() => {
     userInfo.value = JSON.parse(userData)
     if (token) {
       loadUnpaidFees()
+      loadUnreadCount()
     }
   }
 })
@@ -83,6 +89,21 @@ const loadUnpaidFees = async () => {
 
 const goToPay = () => {
   router.push('/pay')
+}
+
+const goToNotification = () => {
+  router.push('/home/notification')
+}
+
+const loadUnreadCount = async () => {
+  try {
+    const res = await request.get('/notification/unread-count')
+    if (res.code === 200) {
+      unreadCount.value = res.data.count || 0
+    }
+  } catch (e) {
+    // ignore
+  }
 }
 
 const handleLogout = () => {
@@ -281,6 +302,37 @@ const handleLogout = () => {
 .logout-btn:active {
   transform: translateY(0);
   transition: all 0.1s;
+}
+
+.notification-bell {
+  position: relative;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.notification-bell:hover {
+  background-color: rgba(64, 158, 255, 0.1);
+}
+
+.bell-icon {
+  font-size: 18px;
+}
+
+.unread-badge {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  background-color: #F56C6C;
+  color: white;
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: 8px;
+  padding: 0 4px;
 }
 
 .content {

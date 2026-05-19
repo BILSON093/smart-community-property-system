@@ -2,6 +2,7 @@ package com.wye.agent;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wye.entity.BusActivity;
+import com.wye.entity.BusActivitySignup;
 import com.wye.entity.BusEvaluation;
 import com.wye.entity.BusFee;
 import com.wye.entity.BusFeeSettings;
@@ -10,10 +11,12 @@ import com.wye.entity.BusForum;
 import com.wye.entity.BusForumCategory;
 import com.wye.entity.BusNotice;
 import com.wye.entity.BusRepair;
+import com.wye.entity.SysNotification;
 import com.wye.entity.SysOwner;
 import com.wye.entity.SysRepairWorker;
 import com.wye.entity.SysUser;
 import com.wye.mapper.BusActivityMapper;
+import com.wye.mapper.BusActivitySignupMapper;
 import com.wye.mapper.BusEvaluationMapper;
 import com.wye.mapper.BusFeeMapper;
 import com.wye.mapper.BusFeedbackMapper;
@@ -22,6 +25,7 @@ import com.wye.mapper.BusForumMapper;
 import com.wye.mapper.BusNoticeMapper;
 import com.wye.mapper.BusRepairMapper;
 import com.wye.mapper.FeeSettingsMapper;
+import com.wye.mapper.SysNotificationMapper;
 import com.wye.mapper.SysOwnerMapper;
 import com.wye.mapper.SysRepairWorkerMapper;
 import com.wye.mapper.SysUserMapper;
@@ -77,6 +81,12 @@ public class PropertyAgentTools {
 
     @Autowired
     private BusForumCategoryMapper busForumCategoryMapper;
+
+    @Autowired
+    private BusActivitySignupMapper busActivitySignupMapper;
+
+    @Autowired
+    private SysNotificationMapper sysNotificationMapper;
 
     public static List<Map<String, Object>> getToolList() {
         List<Map<String, Object>> tools = new ArrayList<>();
@@ -182,6 +192,26 @@ public class PropertyAgentTools {
                 {"limit", "integer", "返回结果数量，默认5", "false"}
             })));
 
+        tools.add(buildTool("signup_activity",
+            "报名参加社区活动",
+            buildParams(new String[][]{
+                {"user_id", "integer", "用户ID", "true"},
+                {"activity_id", "integer", "活动ID", "true"}
+            })));
+
+        tools.add(buildTool("query_notifications",
+            "查询用户的通知消息列表",
+            buildParams(new String[][]{
+                {"user_id", "integer", "用户ID", "true"},
+                {"limit", "integer", "返回数量，默认5", "false"}
+            })));
+
+        tools.add(buildTool("mark_notification_read",
+            "标记通知为已读",
+            buildParams(new String[][]{
+                {"notification_id", "integer", "通知ID", "true"}
+            })));
+
         return tools;
     }
 
@@ -254,6 +284,12 @@ public class PropertyAgentTools {
                     return createForumPost(arguments);
                 case "search_forum_posts":
                     return searchForumPosts(arguments);
+                case "signup_activity":
+                    return signupActivity(arguments);
+                case "query_notifications":
+                    return queryNotifications(arguments);
+                case "mark_notification_read":
+                    return markNotificationRead(arguments);
                 default:
                     return "{\"error\": \"未知工具: " + toolName + "\"}";
             }
@@ -796,5 +832,84 @@ public class PropertyAgentTools {
         result.put("count", posts.size());
         result.put("items", items);
         return JSONUtil.toJsonStr(result);
+    }
+
+    private String signupActivity(Map<String, Object> args) {
+        Long userId = getLong(args, "user_id");
+        Long activityId = getLong(args, "activity_id");
+
+        BusActivity activity = busActivityMapper.selectById(activityId);
+        if (activity == null) {
+            return "{\"error\": \"活动不存在\"}";
+        }
+
+        Long existing = busActivitySignupMapper.selectCount(
+            new QueryWrapper<BusActivitySignup>()
+                .eq("activity_id", activityId)
+                .eq("user_id", userId)
+        );
+        if (existing > 0) {
+            return "{\"error\": \"您已报名该活动\"}";
+        }
+
+        BusActivitySignup signup = new BusActivitySignup();
+        signup.setActivityId(activityId);
+        signup.setUserId(userId);
+        signup.setCreateTime(new Date());
+        busActivitySignupMapper.insert(signup);
+
+        Long count = busActivitySignupMapper.countByActivityId(activityId);
+        return "{\"result\": \"报名成功\", \"activity\": \"" + activity.getTitle()
+             + "\", \"signup_count\": " + count + "}";
+    }
+
+    private String queryNotifications(Map<String, Object> args) {
+        Long userId = getLong(args, "user_id");
+        int limit = getInt(args, "limit", 5);
+
+        List<SysNotification> notifications = sysNotificationMapper.selectList(
+            new QueryWrapper<SysNotification>()
+                .eq("user_id", userId)
+                .orderByDesc("create_time")
+                .last("LIMIT " + limit)
+        );
+
+        if (notifications == null || notifications.isEmpty()) {
+            return "{\"result\": \"暂无通知消息\"}";
+        }
+
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (SysNotification n : notifications) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", n.getId());
+            item.put("title", n.getTitle());
+            item.put("content", n.getContent());
+            item.put("type", n.getType());
+            item.put("is_read", n.getIsRead());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            item.put("create_time", n.getCreateTime() != null ? sdf.format(n.getCreateTime()) : "");
+            items.add(item);
+        }
+
+        long unreadCount = sysNotificationMapper.countUnread(userId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("unread_count", unreadCount);
+        result.put("count", notifications.size());
+        result.put("items", items);
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String markNotificationRead(Map<String, Object> args) {
+        Long notificationId = getLong(args, "notification_id");
+
+        SysNotification notification = sysNotificationMapper.selectById(notificationId);
+        if (notification == null) {
+            return "{\"error\": \"通知不存在\"}";
+        }
+
+        notification.setIsRead(1);
+        sysNotificationMapper.updateById(notification);
+        return "{\"result\": \"已标记已读\", \"notification_id\": " + notificationId + "}";
     }
 }

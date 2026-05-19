@@ -92,6 +92,10 @@
   background-color: #f0f5ff;
 }
 
+.menu-icon.notification {
+  background-color: #fff2e8;
+}
+
 .menu-text {
   font-size: 24rpx;
   color: #646566;

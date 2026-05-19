@@ -17,6 +17,15 @@
         </view>
       </view>
 
+      <view class="signup-section" wx:if="{{activity.id}}">
+        <button wx:if="{{!signedUp}}" class="btn-signup" bindtap="handleSignup" loading="{{signupLoading}}">
+          立即报名 ({{signupCount}} 人已报名)
+        </button>
+        <button wx:else class="btn-cancel-signup" bindtap="handleCancelSignup" loading="{{signupLoading}}">
+          取消报名 ({{signupCount}} 人已报名)
+        </button>
+      </view>
+
       <view class="description-section">
         <view class="section-title">活动介绍</view>
         <rich-text class="description" nodes="{{activity.description}}"></rich-text>

@@ -1,5 +1,6 @@
 package com.wye.controller;
 
+import com.wye.common.RequireRole;
 import com.wye.common.Result;
 import com.wye.entity.ChatRecord;
 import com.wye.service.ChatService;
@@ -20,6 +21,7 @@ public class ChatController {
     /**
      * 发送消息
      */
+    @RequireRole({1})
     @PostMapping("/send")
     public Result<String> send(@RequestBody ChatRecord record, HttpServletRequest request) {
         try {
@@ -39,6 +41,7 @@ public class ChatController {
     /**
      * 获取会话记录
      */
+    @RequireRole({1})
     @GetMapping("/session")
     public Result<List<Map<String, Object>>> getSession(HttpServletRequest request) {
         try {
@@ -56,6 +59,7 @@ public class ChatController {
     /**
      * 获取管理员信息
      */
+    @RequireRole({0, 1})
     @GetMapping("/admin/info")
     public Result<Map<String, Object>> getAdminInfo() {
         try {
@@ -69,6 +73,7 @@ public class ChatController {
     /**
      * 管理员获取所有会话列表
      */
+    @RequireRole({0})
     @GetMapping("/admin/sessions")
     public Result<List<Map<String, Object>>> getAllSessions() {
         try {
@@ -82,6 +87,7 @@ public class ChatController {
     /**
      * 管理员向指定会话发送消息
      */
+    @RequireRole({0})
     @PostMapping("/admin/reply")
     public Result<String> adminReply(@RequestBody ChatRecord record) {
         try {
@@ -96,6 +102,7 @@ public class ChatController {
     /**
      * 管理员获取指定会话的消息
      */
+    @RequireRole({0})
     @GetMapping("/admin/session")
     public Result<List<Map<String, Object>>> getSessionById(@RequestParam Long sessionId) {
         try {

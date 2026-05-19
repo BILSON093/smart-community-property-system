@@ -104,6 +104,12 @@ const routes = [
         name: 'AgentChat',
         component: () => import('@/views/AgentChat.vue'),
         meta: { title: 'AI智能助手' }
+      },
+      {
+        path: 'notification',
+        name: 'Notification',
+        component: () => import('@/views/Notification.vue'),
+        meta: { title: '通知管理' }
       }
     ]
   },
@@ -130,31 +136,16 @@ const routes = [
         meta: { title: '个人中心' }
       }
     ]
-  }
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/dashboard"
+  }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes
-})
-
-// 路由守卫
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
-  const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
-  
-  if (to.path !== '/login' && !token) {
-    next('/login')
-  } else if (to.path === '/login' && token) {
-    if (userInfo.role === 0) {
-      next('/dashboard')
-    } else if (userInfo.role === 2) {
-      next('/worker-home')
-    }
-  } else {
-    next()
-  }
+  history: createWebHistory(),
+  routes
 })
 
 export default router
-

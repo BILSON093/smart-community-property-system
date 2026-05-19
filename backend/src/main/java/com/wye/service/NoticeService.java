@@ -3,15 +3,22 @@ package com.wye.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wye.entity.BusNotice;
+import com.wye.entity.BusNoticeRead;
 import com.wye.mapper.BusNoticeMapper;
+import com.wye.mapper.BusNoticeReadMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class NoticeService {
-    
+
     @Autowired
     private BusNoticeMapper busNoticeMapper;
+
+    @Autowired
+    private BusNoticeReadMapper busNoticeReadMapper;
     
     /**
      * 分页查询通知列表
@@ -48,5 +55,27 @@ public class NoticeService {
      */
     public void delete(Long id) {
         busNoticeMapper.deleteById(id);
+    }
+
+    public void markAsRead(Long noticeId, Long userId) {
+        if (isRead(noticeId, userId)) {
+            return;
+        }
+        BusNoticeRead read = new BusNoticeRead();
+        read.setNoticeId(noticeId);
+        read.setUserId(userId);
+        read.setReadTime(new Date());
+        busNoticeReadMapper.insert(read);
+    }
+
+    public boolean isRead(Long noticeId, Long userId) {
+        return busNoticeReadMapper.selectCount(new QueryWrapper<BusNoticeRead>()
+            .eq("notice_id", noticeId)
+            .eq("user_id", userId)
+        ) > 0;
+    }
+
+    public Long getReadCount(Long noticeId) {
+        return busNoticeReadMapper.countByNoticeId(noticeId);
     }
 }

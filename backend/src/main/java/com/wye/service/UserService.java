@@ -18,6 +18,8 @@ import com.wye.mapper.SysUserMapper;
 import com.wye.mapper.BusRepairMapper;
 import com.wye.mapper.BusFeeMapper;
 import com.wye.mapper.BusForumMapper;
+import com.wye.mapper.BusEvaluationMapper;
+import com.wye.entity.BusEvaluation;
 import com.wye.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +57,9 @@ public class UserService {
 
     @Autowired
     private BusForumMapper busForumMapper;
+
+    @Autowired
+    private BusEvaluationMapper busEvaluationMapper;
     
     /**
      * 用户登录
@@ -120,6 +125,13 @@ public class UserService {
      */
     @Transactional
     public Result<String> registerWorker(RegisterRequest request) {
+        if (request.getUsername() == null || request.getUsername().trim().isEmpty()) {
+            return Result.error("用户名不能为空");
+        }
+        if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+            return Result.error("密码不能为空");
+        }
+
         // 检查用户名是否存在
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("username", request.getUsername());
@@ -151,6 +163,13 @@ public class UserService {
      */
     @Transactional
     public Result<String> registerOwner(RegisterRequest request) {
+        if (request.getUsername() == null || request.getUsername().trim().isEmpty()) {
+            return Result.error("用户名不能为空");
+        }
+        if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+            return Result.error("密码不能为空");
+        }
+
         // 检查用户名是否存在
         QueryWrapper<SysUser> wrapper = new QueryWrapper<>();
         wrapper.eq("username", request.getUsername());
@@ -342,6 +361,10 @@ public class UserService {
      * 审核维修员
      */
     public Result<String> approveWorker(Long workerId, Integer status) {
+        if (status == null || (status != 0 && status != 1 && status != 2)) {
+            return Result.error("状态值无效，必须为 0、1 或 2");
+        }
+
         SysUser user = sysUserMapper.selectById(workerId);
         if (user == null || user.getRole() != 2) {
             return Result.error("维修员不存在");
@@ -489,16 +512,20 @@ public class UserService {
      * 修改密码
      */
     public Result<String> changePassword(Long userId, String oldPassword, String newPassword) {
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            return Result.error("新密码不能为空");
+        }
+
         SysUser user = sysUserMapper.selectById(userId);
         if (user == null) {
             return Result.error("用户不存在");
         }
-        
+
         // 验证旧密码
         if (!BCrypt.checkpw(oldPassword, user.getPassword())) {
             return Result.error("旧密码错误");
         }
-        
+
         // 更新密码
         user.setPassword(BCrypt.hashpw(newPassword));
         sysUserMapper.updateById(user);
@@ -537,43 +564,46 @@ public class UserService {
         }
         stats.put("monthFee", monthFee);
 
-        // 今日活跃（简化为所有已登录的业主）
-        // 由于没有登录记录表，这里暂时返回业主总数的一部分作为模拟
-        QueryWrapper<SysUser> activeWrapper = new QueryWrapper<>();
-        activeWrapper.eq("role", 1);
-        long totalOwners = sysUserMapper.selectCount(activeWrapper);
-        // 假设40%的业主今日活跃
-        stats.put("todayActive", (int) (totalOwners * 0.4));
+        // 今日活跃用户：当天有报修、缴费、论坛、聊天记录的业主数
+        SimpleDateFormat dayFmt = new SimpleDateFormat("yyyy-MM-dd");
+        String today = dayFmt.format(new Date());
+        java.util.Set<Long> activeUserIds = new java.util.HashSet<>();
 
-        // 报修类型占比
+        // 当天提交报修的业主
+        QueryWrapper<BusRepair> todayRepairWrapper = new QueryWrapper<>();
+        todayRepairWrapper.apply("DATE_FORMAT(create_time, '%Y-%m-%d') = {0}", today);
+        todayRepairWrapper.select("owner_id");
+        busRepairMapper.selectList(todayRepairWrapper).forEach(r -> {
+            if (r.getOwnerId() != null) activeUserIds.add(r.getOwnerId());
+        });
+
+        // 当天缴费的业主
+        QueryWrapper<BusFee> todayFeeWrapper = new QueryWrapper<>();
+        todayFeeWrapper.apply("DATE_FORMAT(pay_time, '%Y-%m-%d') = {0}", today);
+        todayFeeWrapper.select("owner_id");
+        busFeeMapper.selectList(todayFeeWrapper).forEach(f -> {
+            if (f.getOwnerId() != null) activeUserIds.add(f.getOwnerId());
+        });
+
+        // 当天发帖的用户
+        QueryWrapper<BusForum> todayForumWrapper = new QueryWrapper<>();
+        todayForumWrapper.apply("DATE_FORMAT(create_time, '%Y-%m-%d') = {0}", today);
+        todayForumWrapper.select("user_id");
+        busForumMapper.selectList(todayForumWrapper).forEach(f -> {
+            if (f.getUserId() != null) activeUserIds.add(f.getUserId());
+        });
+
+        stats.put("todayActive", activeUserIds.size());
+
+        // 报修类型占比（使用数据库 type 字段）
         Map<String, Integer> repairTypes = new HashMap<>();
-        repairTypes.put("水电维修", 0);
-        repairTypes.put("家具维修", 0);
-        repairTypes.put("电器维修", 0);
-        repairTypes.put("管道疏通", 0);
-        repairTypes.put("其他", 0);
-
-        QueryWrapper<BusRepair> allRepairWrapper = new QueryWrapper<>();
-        List<BusRepair> allRepairs = busRepairMapper.selectList(allRepairWrapper);
-
+        List<BusRepair> allRepairs = busRepairMapper.selectList(new QueryWrapper<>());
         for (BusRepair repair : allRepairs) {
-            // 由于数据库可能没有type字段，使用content进行分析
-            String content = repair.getContent();
-            if (content != null) {
-                if (content.contains("水") || content.contains("电")) {
-                    repairTypes.put("水电维修", repairTypes.get("水电维修") + 1);
-                } else if (content.contains("家具")) {
-                    repairTypes.put("家具维修", repairTypes.get("家具维修") + 1);
-                } else if (content.contains("电器") || content.contains("家电") || content.contains("空调") || content.contains("冰箱") || content.contains("洗衣机")) {
-                    repairTypes.put("电器维修", repairTypes.get("电器维修") + 1);
-                } else if (content.contains("管道") || content.contains("堵塞") || content.contains("疏通")) {
-                    repairTypes.put("管道疏通", repairTypes.get("管道疏通") + 1);
-                } else {
-                    repairTypes.put("其他", repairTypes.get("其他") + 1);
-                }
-            } else {
-                repairTypes.put("其他", repairTypes.get("其他") + 1);
+            String type = repair.getType();
+            if (type == null || type.isEmpty()) {
+                type = "其他";
             }
+            repairTypes.put(type, repairTypes.getOrDefault(type, 0) + 1);
         }
         stats.put("repairTypes", repairTypes);
 
@@ -613,6 +643,45 @@ public class UserService {
             weekForumTrend.put(date, dayCount);
         }
         stats.put("weekForumTrend", weekForumTrend);
+
+        // 维修员总数
+        QueryWrapper<SysRepairWorker> workerWrapper = new QueryWrapper<>();
+        long workerCount = sysRepairWorkerMapper.selectCount(workerWrapper);
+        stats.put("workerCount", workerCount);
+
+        // 维修员平均评分
+        List<BusEvaluation> evaluations = busEvaluationMapper.selectList(new QueryWrapper<>());
+        double avgScore = 0;
+        if (evaluations != null && !evaluations.isEmpty()) {
+            double totalScore = 0;
+            int count = 0;
+            for (BusEvaluation eval : evaluations) {
+                if (eval.getScore() != null) {
+                    totalScore += eval.getScore();
+                    count++;
+                }
+            }
+            if (count > 0) {
+                avgScore = Math.round(totalScore / count * 10.0) / 10.0;
+            }
+        }
+        stats.put("avgWorkerScore", avgScore);
+
+        // 缴费收缴率
+        List<BusFee> allFees = busFeeMapper.selectList(new QueryWrapper<>());
+        int paidCount = 0;
+        int unpaidCount = 0;
+        for (BusFee fee : allFees) {
+            if (fee.getStatus() != null && fee.getStatus() == 1) {
+                paidCount++;
+            } else {
+                unpaidCount++;
+            }
+        }
+        Map<String, Integer> feeRate = new HashMap<>();
+        feeRate.put("paid", paidCount);
+        feeRate.put("unpaid", unpaidCount);
+        stats.put("feeRate", feeRate);
 
         return stats;
     }

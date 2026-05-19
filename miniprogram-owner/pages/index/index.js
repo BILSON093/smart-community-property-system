@@ -10,6 +10,7 @@ Page({
     noticeList: [],
     activityList: [],
     pendingPayCount: 0,
+    unreadCount: 0,
     loading: false
   },
 
@@ -25,6 +26,7 @@ Page({
     this.loadNotice()
     this.loadActivity()
     this.loadPendingPayCount()
+    this.loadUnreadCount()
   },
 
   // 加载轮播图
@@ -73,6 +75,21 @@ Page({
     })
   },
 
+  // 加载未读通知数
+  loadUnreadCount() {
+    if (!app.checkLogin()) {
+      this.setData({ unreadCount: 0 })
+      return
+    }
+    api.getUnreadCount().then(res => {
+      if (res.code === 200 && res.data) {
+        this.setData({ unreadCount: res.data.count || 0 })
+      }
+    }).catch(() => {
+      this.setData({ unreadCount: 0 })
+    })
+  },
+
   // 加载待缴费数量
   loadPendingPayCount() {
     if (!app.checkLogin()) {
@@ -110,6 +127,14 @@ Page({
   goToNews() {
     wx.navigateTo({
       url: '/pages/news/news'
+    })
+  },
+
+  goToNotification() {
+    this.checkAuth(() => {
+      wx.navigateTo({
+        url: '/pages/notification/notification'
+      })
     })
   },
 

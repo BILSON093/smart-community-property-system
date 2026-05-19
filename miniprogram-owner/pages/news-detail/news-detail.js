@@ -32,6 +32,8 @@ Page({
         },
         loading: false
       })
+      // 标记已读
+      api.markNoticeRead(id).catch(() => {})
     }).catch(() => {
       this.setData({
         notice: null,

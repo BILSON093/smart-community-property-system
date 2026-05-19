@@ -96,7 +96,6 @@ Page({
         wx.showLoading({ title: '上传中...' })
 
         const uploadUrl = `${app.globalData.baseURL}/common/upload`
-        console.log('上传URL:', uploadUrl)
 
         wx.uploadFile({
           url: uploadUrl,
@@ -106,12 +105,10 @@ Page({
             'Authorization': `Bearer ${app.globalData.token}`
           },
           success: (uploadRes) => {
-            console.log('上传成功:', uploadRes)
             wx.hideLoading()
 
             try {
               const data = JSON.parse(uploadRes.data)
-              console.log('解析后的数据:', data)
 
               if (data.code === 200) {
                 // 服务器返回的 data.url 是 /upload/xxx.jpg 格式
@@ -208,9 +205,15 @@ Page({
       room: formData.room
     }
 
-    // 如果有头像，添加到更新数据中
+    // 如果有头像，保存原始路径（不包含baseURL前缀）
     if (formData.avatar) {
-      updateData.avatar = formData.avatar
+      const baseURL = app.globalData.baseURL || 'http://localhost:8080/api'
+      let avatarPath = formData.avatar
+      // 如果是完整URL，提取相对路径部分
+      if (avatarPath.startsWith(baseURL)) {
+        avatarPath = avatarPath.substring(baseURL.length)
+      }
+      updateData.avatar = avatarPath
     }
 
     api.updateUserInfo(updateData).then(res => {

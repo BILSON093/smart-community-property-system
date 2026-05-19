@@ -1,10 +1,35 @@
 <template>
-  <el-card>
-    <template #header>
-      <span>我的工单</span>
-    </template>
+  <div>
+    <el-row :gutter="20" style="margin-bottom: 20px">
+      <el-col :span="8">
+        <el-card class="stat-card">
+          <el-statistic title="已完成工单" :value="workerStats.completedCount">
+            <template #suffix>单</template>
+          </el-statistic>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="stat-card">
+          <el-statistic title="平均评分" :value="workerStats.avgScore" :precision="1">
+            <template #suffix>分</template>
+          </el-statistic>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="stat-card">
+          <el-statistic title="平均耗时" :value="workerStats.avgMinutes" :precision="0">
+            <template #suffix>分钟</template>
+          </el-statistic>
+        </el-card>
+      </el-col>
+    </el-row>
 
-    <el-table :data="repairList" border stripe>
+    <el-card>
+      <template #header>
+        <span>我的工单</span>
+      </template>
+
+      <el-table :data="repairList" border stripe>
       <el-table-column prop="id" label="工单号" width="100" />
       <el-table-column prop="content" label="故障描述" width="300" />
       <el-table-column label="图片" width="200">
@@ -54,8 +79,9 @@
           </el-button>
         </template>
       </el-table-column>
-    </el-table>
-  </el-card>
+      </el-table>
+    </el-card>
+  </div>
 </template>
 
 <script setup>
@@ -64,10 +90,23 @@ import { ElMessage } from 'element-plus'
 import request from '@/utils/request'
 
 const repairList = ref([])
+const workerStats = ref({ completedCount: 0, avgScore: 0, avgMinutes: 0 })
 
 onMounted(() => {
   loadRepairs()
+  loadWorkerStats()
 })
+
+const loadWorkerStats = async () => {
+  try {
+    const res = await request.get('/repair/worker/stats')
+    if (res.code === 200 && res.data) {
+      workerStats.value = res.data
+    }
+  } catch (e) {
+    // ignore
+  }
+}
 
 const loadRepairs = async () => {
   const res = await request.get('/repair/worker', { params: { page: 1, size: 100 } })

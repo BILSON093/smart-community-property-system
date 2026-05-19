@@ -38,7 +38,12 @@
           <div class="message-content-wrapper">
             <div class="message-bubble">
               <img v-if="msg.image" :src="msg.image" class="message-image" />
-              <div class="message-content" v-html="formatContentWithLinks(msg.content)"></div>
+              <div class="message-content">
+                <template v-for="(segment, sIdx) in parseContent(msg.content)" :key="sIdx">
+                  <a v-if="segment.type === 'link'" href="#" class="chat-link" @click.prevent="handleLinkClick(segment.path || segment.url)">{{ segment.text }}</a>
+                  <span v-else>{{ segment.text }}</span>
+                </template>
+              </div>
             </div>
             <div class="message-time">{{ formatTime(msg.createTime) }}</div>
           </div>
@@ -95,7 +100,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick, computed } from 'vue'
 import { showToast } from 'vant'
 import request from '@/utils/request'
 import router from '@/router'
@@ -200,36 +205,44 @@ const formatTime = (time) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
-const formatContentWithLinks = (content) => {
-  if (!content) return ''
-  
-  // 替换Markdown链接为HTML链接
-  let formattedContent = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
-    // 处理内部路由链接
-    if (url.startsWith('/')) {
-      // 映射AI生成的路径到实际路由
-      let routePath = url
-      if (url.includes('/pages/activity/')) {
-        routePath = '/activity'
-      } else if (url.includes('/pages/fee/')) {
-        routePath = '/pay'
-      } else if (url.includes('/pages/repair/')) {
-        routePath = '/repair'
-      } else if (url.includes('/pages/report/')) {
-        routePath = '/repair'
-      } else if (url.includes('/pages/forum/')) {
-        routePath = '/forum'
-      } else if (url.includes('/pages/parking/')) {
-        routePath = '/pay'
-      }
-      
-      return `<a href="#" class="chat-link" data-path="${routePath}">${text}</a>`
+const parseContent = (content) => {
+  if (!content) return []
+  const segments = []
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g
+  let lastIndex = 0
+  let match
+  while ((match = regex.exec(content)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ type: 'text', text: content.slice(lastIndex, match.index) })
     }
-    // 外部链接
-    return `<a href="${url}" target="_blank" class="chat-link">${text}</a>`
-  })
-  
-  return formattedContent
+    const text = match[1]
+    let url = match[2]
+    if (url.startsWith('/')) {
+      let routePath = url
+      if (url.includes('/pages/activity/')) routePath = '/activity'
+      else if (url.includes('/pages/fee/')) routePath = '/pay'
+      else if (url.includes('/pages/repair/')) routePath = '/repair'
+      else if (url.includes('/pages/report/')) routePath = '/repair'
+      else if (url.includes('/pages/forum/')) routePath = '/forum'
+      else if (url.includes('/pages/parking/')) routePath = '/pay'
+      segments.push({ type: 'link', text, path: routePath })
+    } else {
+      segments.push({ type: 'link', text, url })
+    }
+    lastIndex = regex.lastIndex
+  }
+  if (lastIndex < content.length) {
+    segments.push({ type: 'text', text: content.slice(lastIndex) })
+  }
+  return segments
+}
+
+const handleLinkClick = (target) => {
+  if (target && target.startsWith('/')) {
+    router.push(target)
+  } else if (target) {
+    window.open(target, '_blank')
+  }
 }
 
 const switchToAgent = () => {
@@ -404,23 +417,9 @@ const loadChatHistory = async () => {
 }
 
 onMounted(() => {
-  // 加载用户信息和管理员信息
   loadUserInfo()
   loadAdminInfo()
-  
-  // 加载聊天记录
   loadChatHistory()
-  
-  // 添加点击事件监听器
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('chat-link')) {
-      e.preventDefault()
-      const path = e.target.dataset.path
-      if (path) {
-        router.push(path)
-      }
-    }
-  })
 })
 </script>
 

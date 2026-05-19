@@ -17,9 +17,15 @@
       <el-table-column prop="title" label="标题" width="200" />
       <el-table-column prop="location" label="地点" width="260" />
       <el-table-column prop="startTime" label="开始时间" width="180" />
-      <el-table-column label="操作" width="200">
+      <el-table-column label="报名人数" width="100" align="center">
+        <template #default="{ row }">
+          <el-tag type="info">{{ row.signupCount ?? 0 }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="280">
         <template #default="{ row }">
           <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="success" size="small" @click="handleViewSignups(row)">查看报名</el-button>
           <el-button type="danger" size="small" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -164,6 +170,25 @@
         <el-button type="primary" @click="handleUpdate">更新</el-button>
       </template>
     </el-dialog>
+
+    <!-- 报名列表对话框 -->
+    <el-dialog v-model="showSignupDialog" title="报名列表" width="700px">
+      <div style="margin-bottom: 12px;">
+        <el-tag>活动：{{ signupActivityTitle }}</el-tag>
+        <el-tag type="success" style="margin-left: 8px;">报名人数：{{ signupList.length }}</el-tag>
+      </div>
+      <el-table :data="signupList" border stripe v-loading="signupLoading">
+        <el-table-column prop="id" label="ID" width="80" />
+        <el-table-column prop="username" label="用户名" width="150" />
+        <el-table-column prop="realName" label="姓名" width="120" />
+        <el-table-column prop="phone" label="联系电话" width="150" />
+        <el-table-column prop="signupTime" label="报名时间" />
+      </el-table>
+      <el-empty v-if="!signupLoading && signupList.length === 0" description="暂无报名记录" />
+      <template #footer>
+        <el-button @click="showSignupDialog = false">关闭</el-button>
+      </template>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -177,6 +202,10 @@ const uploadUrl = '/api/common/upload'
 const activityList = ref([])
 const showAddDialog = ref(false)
 const showEditDialog = ref(false)
+const showSignupDialog = ref(false)
+const signupLoading = ref(false)
+const signupList = ref([])
+const signupActivityTitle = ref('')
 const formData = ref({
   id: null,
   title: '',
@@ -325,6 +354,21 @@ const handleDelete = async (id) => {
   await request.delete(`/activity/${id}`)
   ElMessage.success('删除成功')
   loadActivities()
+}
+
+const handleViewSignups = async (row) => {
+  signupActivityTitle.value = row.title
+  signupList.value = []
+  showSignupDialog.value = true
+  signupLoading.value = true
+  try {
+    const res = await request.get(`/activity/${row.id}/signups`)
+    signupList.value = res.data || []
+  } catch (e) {
+    ElMessage.error('获取报名列表失败')
+  } finally {
+    signupLoading.value = false
+  }
 }
 </script>
 

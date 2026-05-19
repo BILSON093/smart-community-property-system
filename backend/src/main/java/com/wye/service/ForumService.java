@@ -42,23 +42,37 @@ public class ForumService {
     public Page<BusForum> list(int page, int size, Long categoryId, String keyword) {
         try {
             QueryWrapper<BusForum> wrapper = new QueryWrapper<BusForum>()
+                .eq("status", 1)
                 .orderByDesc("is_pinned")
                 .orderByDesc("id");
-            
+
             if (categoryId != null) {
                 wrapper.eq("category_id", categoryId);
             }
-            
+
             if (keyword != null && !keyword.trim().isEmpty()) {
                 wrapper.and(w -> w.like("title", keyword).or().like("content", keyword));
             }
-            
+
             Page<BusForum> pageResult = busForumMapper.selectPage(new Page<>(page, size), wrapper);
-            
-            pageResult.getRecords().forEach(forum -> {
-                enrichForumInfo(forum, null);
-            });
-            
+            pageResult.getRecords().forEach(forum -> enrichForumInfo(forum, null));
+            return pageResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Page<>(page, size);
+        }
+    }
+
+    public Page<BusForum> listAll(int page, int size, Integer status) {
+        try {
+            QueryWrapper<BusForum> wrapper = new QueryWrapper<BusForum>()
+                .orderByDesc("is_pinned")
+                .orderByDesc("id");
+            if (status != null) {
+                wrapper.eq("status", status);
+            }
+            Page<BusForum> pageResult = busForumMapper.selectPage(new Page<>(page, size), wrapper);
+            pageResult.getRecords().forEach(forum -> enrichForumInfo(forum, null));
             return pageResult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,8 +133,7 @@ public class ForumService {
     
     public void add(BusForum forum) {
         if (forum.getUserId() == null) {
-            forum.setUserId(1L);
-            forum.setUserName("管理员");
+            throw new RuntimeException("用户ID不能为空");
         }
         busForumMapper.insert(forum);
     }
@@ -139,5 +152,21 @@ public class ForumService {
                 .eq("user_id", userId)
                 .orderByDesc("create_time")
         );
+    }
+
+    public void approve(Long id) {
+        BusForum forum = busForumMapper.selectById(id);
+        if (forum != null) {
+            forum.setStatus(1);
+            busForumMapper.updateById(forum);
+        }
+    }
+
+    public void reject(Long id) {
+        BusForum forum = busForumMapper.selectById(id);
+        if (forum != null) {
+            forum.setStatus(2);
+            busForumMapper.updateById(forum);
+        }
     }
 }

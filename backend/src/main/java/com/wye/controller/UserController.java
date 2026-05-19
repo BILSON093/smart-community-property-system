@@ -43,6 +43,14 @@ public class UserController {
     }
 
     /**
+     * 管理员注册
+     */
+    @PostMapping("/register/admin")
+    public Result<String> registerAdmin(@RequestBody RegisterRequest request) {
+        return userService.registerAdmin(request);
+    }
+
+    /**
      * 获取当前用户信息
      */
     @GetMapping("/info")

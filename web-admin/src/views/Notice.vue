@@ -17,6 +17,11 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="已读人数" width="100">
+        <template #default="{ row }">
+          {{ readCountMap[row.id] ?? '-' }}
+        </template>
+      </el-table-column>
       <el-table-column prop="publishTime" label="发布时间" width="180" />
       <el-table-column label="操作" width="200">
         <template #default="{ row }">
@@ -202,6 +207,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import request from '@/utils/request'
 
 const noticeList = ref([])
+const readCountMap = ref({})
 const showAddDialog = ref(false)
 const showEditDialog = ref(false)
 const imageFileList = ref([])
@@ -235,6 +241,21 @@ onMounted(() => {
 const loadNotices = async () => {
   const res = await request.get('/notice/list', { params: { page: 1, size: 100 } })
   noticeList.value = res.data.records || []
+  loadReadCounts()
+}
+
+const loadReadCounts = async () => {
+  const map = {}
+  const promises = noticeList.value.map(async (notice) => {
+    try {
+      const res = await request.get(`/notice/${notice.id}/read-status`)
+      map[notice.id] = res.data.readCount
+    } catch {
+      map[notice.id] = 0
+    }
+  })
+  await Promise.all(promises)
+  readCountMap.value = map
 }
 
 const resetFormData = () => {

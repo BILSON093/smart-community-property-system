@@ -71,6 +71,21 @@ const getNoticeList = (data) => get('/notice/list', data)
 // 获取通知详情
 const getNoticeDetail = (id) => get(`/notice/${id}`)
 
+// 标记公告已读
+const markNoticeRead = (id) => post(`/notice/${id}/read`)
+
+// 获取我的通知（推送通知）
+const getMyNotifications = (data) => get('/notification/my', data)
+
+// 获取未读通知数
+const getUnreadCount = () => get('/notification/unread-count')
+
+// 标记通知已读
+const markNotificationRead = (id) => post(`/notification/read/${id}`)
+
+// 全部标记已读
+const markAllNotificationsRead = () => post('/notification/read-all')
+
 // ==================== 活动相关 ====================
 
 // 获取活动列表
@@ -78,6 +93,15 @@ const getActivityList = (data) => get('/activity/list', data)
 
 // 获取活动详情
 const getActivityDetail = (id) => get(`/activity/${id}`)
+
+// 活动报名
+const signupActivity = (id) => post(`/activity/${id}/signup`)
+
+// 取消报名
+const cancelSignupActivity = (id) => del(`/activity/${id}/signup`)
+
+// 获取报名状态
+const getSignupStatus = (id) => get(`/activity/${id}/signup-status`)
 
 // ==================== 留言反馈相关 ====================
 
@@ -206,10 +230,18 @@ module.exports = {
   // 通知相关
   getNoticeList,
   getNoticeDetail,
+  markNoticeRead,
+  getMyNotifications,
+  getUnreadCount,
+  markNotificationRead,
+  markAllNotificationsRead,
 
   // 活动相关
   getActivityList,
   getActivityDetail,
+  signupActivity,
+  cancelSignupActivity,
+  getSignupStatus,
 
   // 留言反馈相关
   getMyFeedbacks,

@@ -34,6 +34,9 @@ public class FeeService {
     
     @Autowired
     private BusNoticeMapper busNoticeMapper;
+
+    @Autowired
+    private NotificationService notificationService;
     
     /**
      * 分页查询缴费列表
@@ -123,6 +126,9 @@ public class FeeService {
     public void pay(Long id) {
         BusFee fee = busFeeMapper.selectById(id);
         if (fee != null) {
+            if (fee.getStatus() != null && fee.getStatus() == 1) {
+                return; // 已缴费，不重复处理
+            }
             fee.setStatus(1);
             fee.setReminded(0); // 缴费后重置提醒状态
             fee.setPayTime(new Date());
@@ -159,24 +165,17 @@ public class FeeService {
             feesByOwner.computeIfAbsent(fee.getOwnerId(), k -> new ArrayList<>()).add(fee);
         }
         
-        // 这里可以添加发送短信或其他通知方式的逻辑
-        // 例如：调用短信服务API向业主发送催缴短信
         for (Map.Entry<Long, List<BusFee>> entry : feesByOwner.entrySet()) {
             Long ownerId = entry.getKey();
             List<BusFee> fees = entry.getValue();
-            
-            // 计算总未缴费金额
+
             BigDecimal totalAmount = BigDecimal.ZERO;
             for (BusFee fee : fees) {
                 totalAmount = totalAmount.add(fee.getAmount());
             }
-            
-            // 获取业主信息
-            SysUser owner = sysUserMapper.selectById(ownerId);
-            if (owner != null) {
-                // 这里可以添加发送通知的逻辑
-                // 例如：System.out.println("向业主 " + owner.getRealName() + " 发送催缴通知，总金额：" + totalAmount + "元");
-            }
+
+            notificationService.create(ownerId, "缴费提醒",
+                "您有 " + fees.size() + " 笔费用未缴，合计 " + totalAmount + " 元，请及时缴纳", "fee");
         }
     }
 }

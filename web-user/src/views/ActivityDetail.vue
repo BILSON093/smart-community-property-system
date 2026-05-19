@@ -35,6 +35,27 @@
         <p>{{ activity.description }}</p>
       </div>
       
+      <div class="signup-section" v-if="token">
+        <van-button
+          v-if="!signupStatus.signedUp"
+          type="primary"
+          block
+          @click="handleSignup"
+          :loading="signupLoading"
+        >
+          立即报名 ({{ signupStatus.count || 0 }} 人已报名)
+        </van-button>
+        <van-button
+          v-else
+          type="default"
+          block
+          @click="handleCancelSignup"
+          :loading="signupLoading"
+        >
+          取消报名 ({{ signupStatus.count || 0 }} 人已报名)
+        </van-button>
+      </div>
+
       <div class="images" v-if="activityImages.length > 0">
         <h2>活动图片</h2>
         <div class="image-grid">
@@ -56,6 +77,9 @@ import request from '@/utils/request'
 const route = useRoute()
 const activity = ref({})
 const activityImages = ref([])
+const token = localStorage.getItem('token')
+const signupStatus = ref({ signedUp: false, count: 0 })
+const signupLoading = ref(false)
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
@@ -82,7 +106,7 @@ onMounted(async () => {
     const res = await request.get(`/activity/${id}`)
     console.log('活动详情响应:', res)
     activity.value = res.data
-    
+
     // 处理活动图片
     if (activity.value.images) {
       try {
@@ -91,11 +115,61 @@ onMounted(async () => {
         console.error('解析图片失败', e)
       }
     }
+
+    // 加载报名状态
+    if (token) {
+      loadSignupStatus()
+    }
   } catch (error) {
     console.error('加载活动详情失败:', error)
     showToast('加载活动详情失败')
   }
 })
+
+const loadSignupStatus = async () => {
+  try {
+    const res = await request.get(`/activity/${route.params.id}/signup-status`)
+    if (res.code === 200) {
+      signupStatus.value = res.data
+    }
+  } catch (e) {
+    // ignore
+  }
+}
+
+const handleSignup = async () => {
+  signupLoading.value = true
+  try {
+    const res = await request.post(`/activity/${route.params.id}/signup`)
+    if (res.code === 200) {
+      showToast('报名成功')
+      loadSignupStatus()
+    } else {
+      showToast(res.message || '报名失败')
+    }
+  } catch (e) {
+    showToast('报名失败')
+  } finally {
+    signupLoading.value = false
+  }
+}
+
+const handleCancelSignup = async () => {
+  signupLoading.value = true
+  try {
+    const res = await request.delete(`/activity/${route.params.id}/signup`)
+    if (res.code === 200) {
+      showToast('取消报名成功')
+      loadSignupStatus()
+    } else {
+      showToast(res.message || '取消失败')
+    }
+  } catch (e) {
+    showToast('取消失败')
+  } finally {
+    signupLoading.value = false
+  }
+}
 
 const previewImage = (index) => {
   if (activityImages.value.length === 0) return
@@ -234,5 +308,12 @@ const previewCoverImage = () => {
 .btn-back:hover {
   background: #e6f7ff;
   transform: translateY(-2px);
+}
+
+.signup-section {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f0f9ff;
+  border-radius: 8px;
 }
 </style>

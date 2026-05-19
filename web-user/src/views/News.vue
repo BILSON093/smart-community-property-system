@@ -83,6 +83,16 @@ const showDetail = (item) => {
     router.push('/pay')
   } else {
     selectedNotice.value = item
+    // 标记为已读
+    markNoticeAsRead(item.id)
+  }
+}
+
+const markNoticeAsRead = async (noticeId) => {
+  try {
+    await request.post(`/notice/${noticeId}/read`)
+  } catch (e) {
+    // ignore
   }
 }
 

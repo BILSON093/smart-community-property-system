@@ -1,5 +1,6 @@
 package com.wye.controller;
 
+import com.wye.common.RequireRole;
 import com.wye.common.Result;
 import com.wye.dto.RegisterRequest;
 import com.wye.service.UserService;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
+@RequireRole({0})
 public class AdminController {
 
     @Autowired

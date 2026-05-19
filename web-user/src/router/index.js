@@ -68,6 +68,12 @@ const routes = [
         name: 'Feedback',
         component: () => import('@/views/Feedback.vue'),
         meta: { needAuth: true }
+      },
+      {
+        path: 'notification',
+        name: 'Notification',
+        component: () => import('@/views/Notification.vue'),
+        meta: { needAuth: true }
       }
     ]
   },

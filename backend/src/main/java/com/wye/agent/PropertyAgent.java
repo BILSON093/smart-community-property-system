@@ -71,12 +71,14 @@ public class PropertyAgent {
             Map<String, Object> assistantMessage = (Map<String, Object>) choices.get(0).get("message");
             messages.add(assistantMessage);
 
-            if (!assistantMessage.containsKey("tool_calls") || assistantMessage.get("tool_calls") == null) {
-                finalContent = (String) assistantMessage.get("content");
+            Object toolCallsObj = assistantMessage.get("tool_calls");
+            if (toolCallsObj == null || toolCallsObj instanceof cn.hutool.json.JSONNull || !(toolCallsObj instanceof List)) {
+                Object contentObj = assistantMessage.get("content");
+                finalContent = contentObj != null && !(contentObj instanceof cn.hutool.json.JSONNull) ? contentObj.toString() : null;
                 break;
             }
 
-            List<Map<String, Object>> toolCalls = (List<Map<String, Object>>) assistantMessage.get("tool_calls");
+            List<Map<String, Object>> toolCalls = (List<Map<String, Object>>) toolCallsObj;
             for (Map<String, Object> toolCall : toolCalls) {
                 String toolCallId = (String) toolCall.get("id");
                 Map<String, Object> function = (Map<String, Object>) toolCall.get("function");
@@ -85,8 +87,14 @@ public class PropertyAgent {
 
                 log.info("Agent调用工具: {}({})", functionName, argumentsJson);
 
-                Map<String, Object> arguments = JSONUtil.toBean(argumentsJson, Map.class);
-                String toolResult = propertyAgentTools.executeTool(functionName, arguments);
+                String toolResult;
+                try {
+                    Map<String, Object> arguments = JSONUtil.toBean(argumentsJson, Map.class);
+                    toolResult = propertyAgentTools.executeTool(functionName, arguments);
+                } catch (Exception e) {
+                    log.error("工具执行异常: {}", functionName, e);
+                    toolResult = "{\"error\":\"工具执行失败: " + e.getMessage() + "\"}";
+                }
 
                 log.info("工具返回结果: {}", toolResult);
 
@@ -138,12 +146,15 @@ public class PropertyAgent {
             "9. submit_feedback - 提交意见反馈或投诉建议\n" +
             "10. create_forum_post - 在社区论坛发帖，不指定分区时自动判断\n" +
             "11. search_forum_posts - 模糊搜索论坛帖子\n\n" +
+            "12. signup_activity - 报名参加社区活动\n" +
+            "13. query_notifications - 查询用户的通知消息\n" +
+            "14. mark_notification_read - 标记通知为已读\n\n" +
             "【管理员专用工具】\n" +
-            "12. dispatch_repair - 为报修工单派单，指定维修员处理\n" +
-            "13. query_available_workers - 查询当前可用的维修员列表\n" +
-            "14. query_dashboard_stats - 查询系统仪表盘统计数据\n" +
-            "15. urge_payment - 一键催缴，对所有未缴费业主发送催缴提醒\n" +
-            "16. publish_notice - 一键发布小区通知公告，可设置普通或紧急类型\n\n" +
+            "15. dispatch_repair - 为报修工单派单，指定维修员处理\n" +
+            "16. query_available_workers - 查询当前可用的维修员列表\n" +
+            "17. query_dashboard_stats - 查询系统仪表盘统计数据\n" +
+            "18. urge_payment - 一键催缴，对所有未缴费业主发送催缴提醒\n" +
+            "19. publish_notice - 一键发布小区通知公告，可设置普通或紧急类型\n\n" +
             "工作原则：\n" +
             "- 当用户反映设施故障、漏水、停电等问题时，主动使用create_repair创建报修单\n" +
             "- 当用户询问费用相关问题时，调用query_unpaid_fees查询欠费，或调用query_fee_settings查询收费标准\n" +
@@ -154,6 +165,8 @@ public class PropertyAgent {
             "- 当管理员询问系统概况时，调用query_dashboard_stats获取统计数据\n" +
             "- 当管理员需要催缴时，调用urge_payment一键催缴\n" +
             "- 当管理员需要发布通知时，调用publish_notice，标题和内容由管理员提供，紧急通知设置type=1\n" +
+            "- 当用户想报名活动时，调用signup_activity\n" +
+            "- 当用户想查看通知时，调用query_notifications\n" +
             "- 回答要简洁友好，执行操作后告知用户结果\n" +
             "- 如果用户只是闲聊，正常回答即可，无需调用工具"
         );

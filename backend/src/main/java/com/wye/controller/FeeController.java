@@ -1,6 +1,7 @@
 package com.wye.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wye.common.RequireRole;
 import com.wye.common.Result;
 import com.wye.entity.BusFee;
 import com.wye.entity.BusFeeSettings;
@@ -24,6 +25,7 @@ public class FeeController {
     /**
      * 缴费列表（管理员）
      */
+    @RequireRole({0})
     @GetMapping("/list")
     public Result<Page<BusFee>> list(@RequestParam(defaultValue = "1") int page,
                                      @RequestParam(defaultValue = "10") int size,
@@ -37,6 +39,7 @@ public class FeeController {
     /**
      * 我的缴费列表（业主）
      */
+    @RequireRole({1})
     @GetMapping("/my")
     public Result<Page<BusFee>> myFees(HttpServletRequest request,
                                      @RequestParam(defaultValue = "1") int page,
@@ -48,6 +51,7 @@ public class FeeController {
     /**
      * 添加缴费记录
      */
+    @RequireRole({0})
     @PostMapping("/add")
     public Result<String> add(@RequestBody BusFee fee) {
         feeService.add(fee);
@@ -57,6 +61,7 @@ public class FeeController {
     /**
      * 支付
      */
+    @RequireRole({1})
     @PostMapping("/pay/{id}")
     public Result<String> pay(@PathVariable Long id) {
         feeService.pay(id);
@@ -66,6 +71,7 @@ public class FeeController {
     /**
      * 删除缴费记录
      */
+    @RequireRole({0})
     @DeleteMapping("/{id}")
     public Result<String> delete(@PathVariable Long id) {
         feeService.delete(id);
@@ -83,6 +89,7 @@ public class FeeController {
     /**
      * 保存费用单价设置
      */
+    @RequireRole({0})
     @PostMapping("/settings")
     public Result<String> saveSettings(@RequestBody BusFeeSettings settings) {
         feeSettingsService.saveSettings(settings);
@@ -92,6 +99,7 @@ public class FeeController {
     /**
      * 一键催缴
      */
+    @RequireRole({0})
     @PostMapping("/urge-payment")
     public Result<String> urgePayment() {
         feeService.urgePayment();

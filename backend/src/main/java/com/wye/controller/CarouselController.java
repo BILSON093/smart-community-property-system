@@ -1,5 +1,6 @@
 package com.wye.controller;
 
+import com.wye.common.RequireRole;
 import com.wye.common.Result;
 import com.wye.entity.BusCarousel;
 import com.wye.service.CarouselService;
@@ -26,6 +27,7 @@ public class CarouselController {
     /**
      * 添加轮播图
      */
+    @RequireRole({0})
     @PostMapping("/add")
     public Result<String> add(@RequestBody BusCarousel carousel) {
         carouselService.add(carousel);
@@ -35,6 +37,7 @@ public class CarouselController {
     /**
      * 更新轮播图
      */
+    @RequireRole({0})
     @PutMapping("/update")
     public Result<String> update(@RequestBody BusCarousel carousel) {
         carouselService.update(carousel);
@@ -44,6 +47,7 @@ public class CarouselController {
     /**
      * 删除轮播图
      */
+    @RequireRole({0})
     @DeleteMapping("/{id}")
     public Result<String> delete(@PathVariable Long id) {
         carouselService.delete(id);

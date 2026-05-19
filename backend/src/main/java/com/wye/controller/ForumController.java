@@ -1,6 +1,7 @@
 package com.wye.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wye.common.RequireRole;
 import com.wye.common.Result;
 import com.wye.entity.BusForum;
 import com.wye.entity.BusForumCategory;
@@ -53,6 +54,7 @@ public class ForumController {
         return Result.success(forumService.getById(id, userId));
     }
     
+    @RequireRole({0, 1})
     @PostMapping("/add")
     public Result<String> add(@RequestBody BusForum forum, HttpServletRequest request) {
         System.out.println("=== [ForumController.add] 接收到 images: " + forum.getImages());
@@ -62,18 +64,21 @@ public class ForumController {
         return Result.success("发布成功");
     }
     
+    @RequireRole({0, 1})
     @DeleteMapping("/{id}")
     public Result<String> delete(@PathVariable Long id) {
         forumService.delete(id);
         return Result.success("删除成功");
     }
 
+    @RequireRole({0, 1})
     @PutMapping("/update")
     public Result<String> update(@RequestBody BusForum forum) {
         forumService.update(forum);
         return Result.success("更新成功");
     }
     
+    @RequireRole({0})
     @PutMapping("/{id}/pin")
     public Result<String> pin(@PathVariable Long id) {
         BusForum forum = new BusForum();
@@ -83,6 +88,7 @@ public class ForumController {
         return Result.success("置顶成功");
     }
     
+    @RequireRole({0})
     @PutMapping("/{id}/unpin")
     public Result<String> unpin(@PathVariable Long id) {
         BusForum forum = new BusForum();
@@ -92,6 +98,28 @@ public class ForumController {
         return Result.success("取消置顶成功");
     }
     
+    @RequireRole({0})
+    @GetMapping("/list/all")
+    public Result<Page<BusForum>> listAll(@RequestParam(defaultValue = "1") int page,
+                                          @RequestParam(defaultValue = "10") int size,
+                                          @RequestParam(required = false) Integer status) {
+        return Result.success(forumService.listAll(page, size, status));
+    }
+
+    @RequireRole({0})
+    @PutMapping("/{id}/approve")
+    public Result<String> approve(@PathVariable Long id) {
+        forumService.approve(id);
+        return Result.success("审核通过");
+    }
+
+    @RequireRole({0})
+    @PutMapping("/{id}/reject")
+    public Result<String> reject(@PathVariable Long id) {
+        forumService.reject(id);
+        return Result.success("已拒绝");
+    }
+
     @GetMapping("/my-posts")
     public Result<List<BusForum>> getMyPosts(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
@@ -114,18 +142,21 @@ public class ForumController {
         return Result.success(forumCategoryService.getById(id));
     }
     
+    @RequireRole({0})
     @PostMapping("/category/add")
     public Result<String> categoryAdd(@RequestBody BusForumCategory category) {
         forumCategoryService.add(category);
         return Result.success("添加成功");
     }
     
+    @RequireRole({0})
     @PutMapping("/category/update")
     public Result<String> categoryUpdate(@RequestBody BusForumCategory category) {
         forumCategoryService.update(category);
         return Result.success("更新成功");
     }
     
+    @RequireRole({0})
     @DeleteMapping("/category/{id}")
     public Result<String> categoryDelete(@PathVariable Long id) {
         forumCategoryService.delete(id);
@@ -157,6 +188,7 @@ public class ForumController {
         }
     }
     
+    @RequireRole({0, 1})
     @DeleteMapping("/comments/{id}")
     public Result<String> deleteComment(@PathVariable Long id) {
         forumCommentService.delete(id);

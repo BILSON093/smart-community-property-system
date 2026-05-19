@@ -361,6 +361,17 @@
   margin-top: 12rpx;
 }
 
+/* 分类选择器 */
+.picker-value {
+  padding: 20rpx;
+  font-size: 28rpx;
+  background-color: #f7f8fa;
+  border-radius: 8rpx;
+  color: #323233;
+  min-height: 40rpx;
+  line-height: 40rpx;
+}
+
 .modal-footer {
   display: flex;
   gap: 20rpx;

@@ -1,5 +1,16 @@
 <template>
   <div>
+    <div style="margin-bottom: 16px; display: flex; gap: 12px; align-items: center;">
+      <el-select v-model="selectedType" placeholder="报修分类" clearable style="width: 150px" @change="loadRepairs">
+        <el-option label="全部分类" :value="null" />
+        <el-option label="水电维修" value="水电维修" />
+        <el-option label="家电维修" value="家电维修" />
+        <el-option label="管道疏通" value="管道疏通" />
+        <el-option label="门窗维修" value="门窗维修" />
+        <el-option label="其他" value="其他" />
+      </el-select>
+    </div>
+
     <el-table :data="repairList" border stripe>
       <el-table-column prop="id" label="ID" width="80" />
       <el-table-column prop="ownerName" label="业主" width="120" />
@@ -8,6 +19,7 @@
           {{ row.building }} {{ row.unit }} {{ row.room }}
         </template>
       </el-table-column>
+      <el-table-column prop="type" label="分类" width="100" />
       <el-table-column prop="content" label="故障描述" width="300" />
       <el-table-column label="图片" width="200">
         <template #default="{ row }">
@@ -108,6 +120,7 @@ const showDetailDialog = ref(false)
 const selectedWorkerId = ref(null)
 const currentRepairId = ref(null)
 const currentRepair = ref({})
+const selectedType = ref(null)
 
 onMounted(() => {
   loadRepairs()
@@ -121,7 +134,9 @@ watch(() => props.status, () => {
 
 const loadRepairs = async () => {
   const statusValue = props.status !== null ? parseInt(props.status) : null
-  const res = await request.get('/repair/list', { params: { status: statusValue, page: 1, size: 100 } })
+  const params = { status: statusValue, page: 1, size: 100 }
+  if (selectedType.value) params.type = selectedType.value
+  const res = await request.get('/repair/list', { params })
   repairList.value = res.data.records || []
 }
 
@@ -141,13 +156,21 @@ const loadWorkers = async () => {
 
 const getImage = (images) => {
   if (!images) return ''
-  const arr = JSON.parse(images)
-  return arr[0]
+  try {
+    const arr = JSON.parse(images)
+    return arr[0]
+  } catch (e) {
+    return ''
+  }
 }
 
 const getImages = (images) => {
   if (!images) return []
-  return JSON.parse(images)
+  try {
+    return JSON.parse(images)
+  } catch (e) {
+    return []
+  }
 }
 
 const handleDispatch = (row) => {

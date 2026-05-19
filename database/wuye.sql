@@ -13,6 +13,10 @@
 
  Date: 19/05/2026 17:39:34
 */
+CREATE DATABASE IF NOT EXISTS wuye CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+/* 自动切换到 wuye 数据库 */
+USE wuye;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -142,6 +146,7 @@ CREATE TABLE `bus_forum`  (
   `images` json NULL COMMENT '图片数组',
   `is_public` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=匿名, 1=实名',
   `is_pinned` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=普通, 1=置顶',
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '0=待审核, 1=通过, 2=拒绝',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
@@ -230,6 +235,7 @@ CREATE TABLE `bus_repair`  (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `complete_time` datetime NULL DEFAULT NULL COMMENT '完成时间',
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '其他' COMMENT '报修分类',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_owner_id`(`owner_id` ASC) USING BTREE,
   INDEX `idx_worker_id`(`worker_id` ASC) USING BTREE,
@@ -295,5 +301,52 @@ CREATE TABLE `sys_user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统用户表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sys_notification
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notification`;
+CREATE TABLE `sys_notification`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` bigint(20) NOT NULL COMMENT '接收用户ID',
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '通知标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '通知内容',
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '通知类型',
+  `is_read` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=未读, 1=已读',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  INDEX `idx_is_read`(`is_read` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统通知表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for bus_activity_signup
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_activity_signup`;
+CREATE TABLE `bus_activity_signup`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `activity_id` bigint(20) NOT NULL COMMENT '活动ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '报名时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_activity_user`(`activity_id`, `user_id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  CONSTRAINT `fk_signup_activity` FOREIGN KEY (`activity_id`) REFERENCES `bus_activity` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '活动报名表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for bus_notice_read
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_notice_read`;
+CREATE TABLE `bus_notice_read`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `notice_id` bigint(20) NOT NULL COMMENT '公告ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `read_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '阅读时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_notice_user`(`notice_id`, `user_id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  CONSTRAINT `fk_read_notice` FOREIGN KEY (`notice_id`) REFERENCES `bus_notice` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '公告已读表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

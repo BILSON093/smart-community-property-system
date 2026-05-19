@@ -4,7 +4,10 @@
   <view class="custom-nav-bar">
     <view class="nav-content">
       <text class="title">维修工作台</text>
-      <text class="logout" bindtap="logout">退出登录</text>
+      <view class="nav-actions">
+        <text class="refresh-btn" bindtap="refreshOrders">刷新</text>
+        <text class="logout" bindtap="logout">退出登录</text>
+      </view>
     </view>
   </view>
 

@@ -18,19 +18,24 @@ public class AgentController {
     @PostMapping("/chat")
     public Result<Map<String, Object>> chat(@RequestBody Map<String, Object> request,
                                             HttpServletRequest httpRequest) {
-        Long userId = (Long) httpRequest.getAttribute("userId");
-        String message = (String) request.get("message");
+        try {
+            Long userId = (Long) httpRequest.getAttribute("userId");
+            String message = (String) request.get("message");
 
-        List<Map<String, Object>> history = null;
-        if (request.containsKey("history") && request.get("history") != null) {
-            history = (List<Map<String, Object>>) request.get("history");
+            List<Map<String, Object>> history = null;
+            if (request.containsKey("history") && request.get("history") != null) {
+                history = (List<Map<String, Object>>) request.get("history");
+            }
+
+            if (message == null || message.trim().isEmpty()) {
+                return Result.error("消息不能为空");
+            }
+
+            Map<String, Object> result = propertyAgent.chat(userId, message, history);
+            return Result.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("AI服务异常，请稍后再试");
         }
-
-        if (message == null || message.trim().isEmpty()) {
-            return Result.error("消息不能为空");
-        }
-
-        Map<String, Object> result = propertyAgent.chat(userId, message, history);
-        return Result.success(result);
     }
 }

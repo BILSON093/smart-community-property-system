@@ -45,7 +45,12 @@
                 <el-avatar :src="msg.avatar" :size="40" class="message-avatar" />
                 <div class="message-content-wrapper">
                   <div class="sender-name">{{ msg.senderName }}</div>
-                  <div class="content" v-html="formatContentWithLinks(msg.content)"></div>
+                  <div class="content">
+                    <template v-for="(segment, idx) in parseContent(msg.content)" :key="idx">
+                      <a v-if="segment.type === 'link'" :href="segment.url" :target="segment.url.startsWith('/') ? '_self' : '_blank'" class="chat-link">{{ segment.text }}</a>
+                      <span v-else>{{ segment.text }}</span>
+                    </template>
+                  </div>
                   <div class="time">{{ formatTime(msg.createTime) }}</div>
                 </div>
               </div>
@@ -66,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import request from '@/utils/request'
 
@@ -79,17 +84,23 @@ const messagesContainer = ref(null)
 const sending = ref(false)
 const adminInfo = ref({ avatar: '', name: '管理员' })
 
-const formatContentWithLinks = (content) => {
-  if (!content) return ''
-  
-  let formattedContent = content.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
-    if (url.startsWith('/')) {
-      return `<a href="${url}" class="chat-link">${text}</a>`
+const parseContent = (content) => {
+  if (!content) return []
+  const segments = []
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g
+  let lastIndex = 0
+  let match
+  while ((match = regex.exec(content)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ type: 'text', text: content.slice(lastIndex, match.index) })
     }
-    return `<a href="${url}" target="_blank" class="chat-link">${text}</a>`
-  })
-  
-  return formattedContent
+    segments.push({ type: 'link', text: match[1], url: match[2] })
+    lastIndex = regex.lastIndex
+  }
+  if (lastIndex < content.length) {
+    segments.push({ type: 'text', text: content.slice(lastIndex) })
+  }
+  return segments
 }
 
 const formatTime = (timeStr) => {
@@ -110,14 +121,23 @@ const formatTime = (timeStr) => {
   }
 }
 
+let pollingTimer = null
+
 onMounted(() => {
   loadAdminInfo()
   loadUsers()
-  setInterval(() => {
+  pollingTimer = setInterval(() => {
     if (selectedUserId.value) {
       loadMessages()
     }
   }, 3000)
+})
+
+onBeforeUnmount(() => {
+  if (pollingTimer) {
+    clearInterval(pollingTimer)
+    pollingTimer = null
+  }
 })
 
 const loadAdminInfo = async () => {

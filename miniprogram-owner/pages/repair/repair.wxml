@@ -107,6 +107,13 @@
 
     <view class="modal-body">
       <view class="form-item">
+        <text class="form-label">报修分类</text>
+        <picker mode="selector" range="{{repairTypes}}" value="{{typePickerIndex}}" bindchange="onTypeChange">
+          <view class="picker-value">{{form.type || '请选择报修分类'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-item">
         <text class="form-label">故障描述</text>
         <textarea
           class="form-textarea"

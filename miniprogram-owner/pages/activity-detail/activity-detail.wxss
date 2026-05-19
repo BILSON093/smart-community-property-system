@@ -113,3 +113,43 @@
   color: #969799;
   font-size: 28rpx;
 }
+
+/* 报名按钮 */
+.signup-section {
+  margin-bottom: 30rpx;
+  padding: 24rpx;
+  background-color: #f0f9ff;
+  border-radius: 12rpx;
+}
+
+.btn-signup {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 500;
+  border-radius: 44rpx;
+  border: none;
+}
+
+.btn-signup::after {
+  border: none;
+}
+
+.btn-cancel-signup {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: #f7f8fa;
+  color: #606266;
+  font-size: 30rpx;
+  font-weight: 500;
+  border-radius: 44rpx;
+  border: 2rpx solid #dcdfe6;
+}
+
+.btn-cancel-signup::after {
+  border: none;
+}

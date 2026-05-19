@@ -61,6 +61,10 @@
           <el-icon><Message /></el-icon>
           <span>留言反馈</span>
         </el-menu-item>
+        <el-menu-item index="/notification">
+          <el-icon><Bell /></el-icon>
+          <span>通知管理</span>
+        </el-menu-item>
         <el-menu-item index="/ai-config">
           <el-icon><Setting /></el-icon>
           <span>AI模型配置</span>

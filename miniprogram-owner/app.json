@@ -19,7 +19,8 @@
     "pages/login/login",
     "pages/register/register",
     "pages/edit-profile/edit-profile",
-    "pages/change-password/change-password"
+    "pages/change-password/change-password",
+    "pages/notification/notification"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -46,11 +46,9 @@ Page({
   },
 
   togglePassword() {
-    console.log('togglePassword被调用，当前showPassword:', this.data.showPassword)
     this.setData({
       showPassword: !this.data.showPassword
     })
-    console.log('切换后showPassword:', !this.data.showPassword)
   },
 
   handleLogin() {
@@ -79,23 +77,11 @@ Page({
     const { loginType } = this.data
 
     api.login({ username, password, loginType }).then(res => {
-      // 先关闭 loading
       try {
         wx.hideLoading()
-      } catch (e) {
-        // 忽略 hideLoading 错误
-      }
+      } catch (e) {}
 
-      // 调试：打印返回的数据结构
-      console.log('登录返回数据:', res)
-      console.log('完整res:', JSON.stringify(res))
-      console.log('res.data:', res.data)
-      console.log('用户角色:', res.data?.role, '类型:', typeof res.data?.role)
-      console.log('token:', res.data?.token)
-
-      // 检查用户角色（0：管理员，1：业主，2：维修员）
       const userRole = res.data?.role
-      console.log('角色判断:', userRole, '类型:', typeof userRole)
 
       // 保存 token
       const token = res.data?.token || res.token
@@ -115,26 +101,17 @@ Page({
       app.globalData.userInfo = userInfo
       wx.setStorageSync('userInfo', userInfo)
 
-      console.log('保存的token:', token)
-      console.log('保存的userInfo:', userInfo)
-      console.log('用户角色:', userRole, '是否为维修员:', userRole === 2)
-
       wx.showToast({
         title: '登录成功',
         icon: 'success'
       })
 
       setTimeout(() => {
-        // 根据角色跳转到不同页面
         if (userRole === 2) {
-          // 维修员跳转到维修工作台
-          console.log('跳转到维修工作台')
           wx.reLaunch({
             url: '/pages/repairer-home/repairer-home'
           })
         } else {
-          // 业主和管理员跳转到首页
-          console.log('跳转到首页')
           wx.switchTab({
             url: '/pages/index/index'
           })

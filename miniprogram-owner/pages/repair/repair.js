@@ -12,6 +12,8 @@ const STATUS_MAP = {
   4: '已取消'
 }
 
+const REPAIR_TYPES = ['水电维修', '家电维修', '管道疏通', '门窗维修', '其他']
+
 Page({
   data: {
     repairList: [],
@@ -21,10 +23,14 @@ Page({
     isLoggedIn: false,
     showModal: false,
     form: {
-      content: ''
+      content: '',
+      type: ''
     },
     fileList: [],
-    submitting: false
+    submitting: false,
+    repairTypes: REPAIR_TYPES,
+    showTypePicker: false,
+    typePickerIndex: -1
   },
 
   onLoad() {
@@ -138,8 +144,18 @@ Page({
 
     this.setData({
       showModal: true,
-      form: { content: '' },
-      fileList: []
+      form: { content: '', type: '' },
+      fileList: [],
+      typePickerIndex: -1
+    })
+  },
+
+  // 选择报修分类
+  onTypeChange(e) {
+    const index = parseInt(e.detail.value)
+    this.setData({
+      typePickerIndex: index,
+      'form.type': REPAIR_TYPES[index]
     })
   },
 
@@ -167,14 +183,15 @@ Page({
     const { fileList } = this.data
     const count = 3 - fileList.length
 
-    wx.chooseImage({
+    wx.chooseMedia({
       count,
-      sizeType: ['compressed'],
+      mediaType: ['image'],
       sourceType: ['album', 'camera'],
+      sizeType: ['compressed'],
       success: (res) => {
-        const tempFilePaths = res.tempFilePaths
+        const tempFiles = res.tempFiles.map(file => file.tempFilePath)
         this.setData({
-          fileList: [...fileList, ...tempFilePaths]
+          fileList: [...fileList, ...tempFiles]
         })
       }
     })
@@ -253,10 +270,12 @@ Page({
 
     Promise.all(uploadPromises)
       .then(imageUrls => {
-        return api.addRepair({
+        const data = {
           content: form.content.trim(),
           images: JSON.stringify(imageUrls)
-        })
+        }
+        if (form.type) data.type = form.type
+        return api.addRepair(data)
       })
       .then(() => {
         try {

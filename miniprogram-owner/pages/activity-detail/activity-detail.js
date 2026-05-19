@@ -7,11 +7,15 @@ Page({
   data: {
     activity: null,
     activityImages: [],
-    loading: false
+    loading: false,
+    signedUp: false,
+    signupCount: 0,
+    signupLoading: false
   },
 
   onLoad(options) {
     if (options.id) {
+      this.activityId = options.id
       this.loadActivityDetail(options.id)
     }
   },
@@ -26,7 +30,6 @@ Page({
           activityImages = typeof activity.images === 'string'
             ? JSON.parse(activity.images)
             : activity.images
-          // 处理图片路径
           activityImages = formatImages(activityImages)
         } catch (e) {
           activityImages = []
@@ -46,11 +49,65 @@ Page({
         activityImages,
         loading: false
       })
+
+      this.loadSignupStatus()
     }).catch(() => {
       this.setData({
         activity: null,
         loading: false
       })
+    })
+  },
+
+  loadSignupStatus() {
+    if (!this.activityId) return
+    api.getSignupStatus(this.activityId).then(res => {
+      if (res.code === 200 && res.data) {
+        this.setData({
+          signedUp: res.data.signedUp || false,
+          signupCount: res.data.count || 0
+        })
+      }
+    }).catch(() => {})
+  },
+
+  handleSignup() {
+    this.setData({ signupLoading: true })
+    api.signupActivity(this.activityId).then(res => {
+      if (res.code === 200) {
+        wx.showToast({ title: '报名成功', icon: 'success' })
+        this.loadSignupStatus()
+      } else {
+        wx.showToast({ title: res.message || '报名失败', icon: 'none' })
+      }
+    }).catch(() => {
+      wx.showToast({ title: '报名失败', icon: 'none' })
+    }).finally(() => {
+      this.setData({ signupLoading: false })
+    })
+  },
+
+  handleCancelSignup() {
+    wx.showModal({
+      title: '提示',
+      content: '确定取消报名吗？',
+      success: (res) => {
+        if (res.confirm) {
+          this.setData({ signupLoading: true })
+          api.cancelSignupActivity(this.activityId).then(res => {
+            if (res.code === 200) {
+              wx.showToast({ title: '取消成功', icon: 'success' })
+              this.loadSignupStatus()
+            } else {
+              wx.showToast({ title: res.message || '取消失败', icon: 'none' })
+            }
+          }).catch(() => {
+            wx.showToast({ title: '取消失败', icon: 'none' })
+          }).finally(() => {
+            this.setData({ signupLoading: false })
+          })
+        }
+      }
     })
   },
 

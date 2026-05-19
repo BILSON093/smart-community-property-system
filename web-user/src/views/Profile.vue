@@ -35,8 +35,17 @@
       <div class="user-info">
         <h3>{{ userInfo.realName || userInfo.username }}</h3>
         <p class="user-role">业主</p>
+        <p class="user-address" v-if="userInfo.building">{{ userInfo.building }}{{ userInfo.unit ? userInfo.unit + '单元' : '' }}{{ userInfo.room || '' }}</p>
       </div>
       <div class="user-arrow">→</div>
+    </div>
+
+    <div class="fee-summary" v-if="unpaidCount > 0">
+      <div class="fee-summary-content">
+        <span class="fee-icon">💰</span>
+        <span class="fee-text">您有 <strong>{{ unpaidCount }}</strong> 笔待缴费，共计 <strong>¥{{ unpaidAmount.toFixed(2) }}</strong></span>
+        <button class="fee-btn" @click="goTo('/pay')">去缴费</button>
+      </div>
     </div>
 
     <div class="profile-sections">
@@ -90,19 +99,36 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast, showConfirmDialog } from 'vant'
+import request from '@/utils/request'
 
 const router = useRouter()
 const userInfo = ref({})
 const defaultAvatar = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=default%20user%20avatar%20portrait%20professional%20clean%20design&image_size=square'
 const showAboutDialog = ref(false)
 const showSettingsDialog = ref(false)
+const unpaidCount = ref(0)
+const unpaidAmount = ref(0)
 
 onMounted(() => {
   const stored = localStorage.getItem('userInfo')
   if (stored) {
     userInfo.value = JSON.parse(stored)
   }
+  loadUnpaidFees()
 })
+
+const loadUnpaidFees = async () => {
+  try {
+    const res = await request.get('/fee/my', { params: { page: 1, size: 100 } })
+    if (res.data && res.data.records) {
+      const unpaid = res.data.records.filter(fee => fee.status === 0)
+      unpaidCount.value = unpaid.length
+      unpaidAmount.value = unpaid.reduce((sum, fee) => sum + (fee.amount || 0), 0)
+    }
+  } catch (e) {
+    // ignore
+  }
+}
 
 const goTo = (path) => {
   router.push(path)
@@ -129,7 +155,11 @@ const showSettings = () => {
 }
 
 const clearCache = () => {
+  const token = localStorage.getItem('token')
+  const userInfoData = localStorage.getItem('userInfo')
   localStorage.clear()
+  if (token) localStorage.setItem('token', token)
+  if (userInfoData) localStorage.setItem('userInfo', userInfoData)
   showToast('缓存已清除')
 }
 </script>
@@ -189,6 +219,56 @@ const clearCache = () => {
   font-size: 14px;
   opacity: 0.9;
   margin: 0;
+}
+
+.user-address {
+  font-size: 13px;
+  opacity: 0.8;
+  margin: 4px 0 0 0;
+}
+
+.fee-summary {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border: 1px solid #ffb74d;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.fee-summary-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fee-icon {
+  font-size: 24px;
+}
+
+.fee-text {
+  flex: 1;
+  font-size: 14px;
+  color: #e65100;
+}
+
+.fee-text strong {
+  color: #bf360c;
+}
+
+.fee-btn {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.fee-btn:hover {
+  background: #f57c00;
 }
 
 .user-arrow {

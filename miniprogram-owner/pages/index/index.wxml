@@ -9,6 +9,12 @@
 
   <!-- 快捷入口 -->
   <view class="quick-menu">
+    <view class="menu-item" bindtap="goToNotification">
+      <view class="menu-icon notification">🔔</view>
+      <text class="menu-text">消息通知</text>
+      <view class="badge" wx:if="{{unreadCount > 0}}">{{unreadCount > 99 ? '99+' : unreadCount}}</view>
+    </view>
+
     <view class="menu-item" bindtap="goToRepair">
       <view class="menu-icon repair">🔧</view>
       <text class="menu-text">在线报修</text>

@@ -32,6 +32,8 @@ public class BusForum implements Serializable {
     @TableField("is_pinned")
     private Integer isPinned; // 0=普通, 1=置顶
 
+    private Integer status; // 0=待审核, 1=通过, 2=拒绝
+
     @TableField(exist = false)
     private String userName;
 
@@ -116,6 +118,14 @@ public class BusForum implements Serializable {
 
     public void setIsPinned(Integer isPinned) {
         this.isPinned = isPinned;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getUserName() {

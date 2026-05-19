@@ -14,8 +14,9 @@ function request(options) {
       header.Authorization = `Bearer ${token}`
     }
 
+    const baseURL = app.globalData.baseURL || 'http://localhost:8080/api'
     wx.request({
-      url: `${app.globalData.baseURL}${url}`,
+      url: `${baseURL}${url}`,
       method,
       data,
       timeout: 60000,
@@ -33,7 +34,7 @@ function request(options) {
             icon: 'none'
           })
           setTimeout(() => {
-            wx.navigateTo({
+            wx.reLaunch({
               url: '/pages/login/login'
             })
           }, 1500)
@@ -54,7 +55,7 @@ function request(options) {
                 icon: 'none'
               })
               setTimeout(() => {
-                wx.navigateTo({
+                wx.reLaunch({
                   url: '/pages/login/login'
                 })
               }, 1500)

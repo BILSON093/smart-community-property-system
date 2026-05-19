@@ -24,6 +24,12 @@
         <el-option label="全部分类" :value="null" />
         <el-option v-for="category in categoryList" :key="category.id" :label="category.name" :value="category.id" />
       </el-select>
+      <el-select v-model="selectedStatus" placeholder="审核状态" style="width: 150px" clearable @change="loadForums">
+        <el-option label="全部" :value="null" />
+        <el-option label="待审核" :value="0" />
+        <el-option label="已通过" :value="1" />
+        <el-option label="已拒绝" :value="2" />
+      </el-select>
       <el-button type="primary" @click="loadForums">搜索</el-button>
     </div>
 
@@ -70,6 +76,13 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="审核状态" width="100">
+        <template #default="{ row }">
+          <el-tag :type="row.status === 1 ? 'success' : row.status === 2 ? 'danger' : 'warning'" size="small">
+            {{ row.status === 1 ? '已通过' : row.status === 2 ? '已拒绝' : '待审核' }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="互动" width="90">
         <template #default="{ row }">
           <div style="display: flex; gap: 8px">
@@ -79,8 +92,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="发布时间" width="160" />
-      <el-table-column label="操作" width="280" fixed="right">
+      <el-table-column label="操作" width="360" fixed="right">
         <template #default="{ row }">
+          <el-button v-if="row.status === 0" type="success" size="small" @click="handleApprove(row.id)">通过</el-button>
+          <el-button v-if="row.status === 0" type="danger" size="small" @click="handleReject(row.id)">拒绝</el-button>
           <el-button v-if="!row.isPinned" type="warning" size="small" @click="handlePin(row.id)">置顶</el-button>
           <el-button v-else type="info" size="small" @click="handleUnpin(row.id)">取消置顶</el-button>
           <el-button type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
@@ -268,6 +283,7 @@ const pageSize = ref(10)
 const total = ref(0)
 const searchKeyword = ref('')
 const selectedCategory = ref(null)
+const selectedStatus = ref(null)
 const showAddDialog = ref(false)
 const showEditDialog = ref(false)
 const showCommentDialog = ref(false)
@@ -306,7 +322,10 @@ const loadForums = async () => {
   if (selectedCategory.value) {
     params.categoryId = selectedCategory.value
   }
-  const res = await request.get('/forum/list', { params })
+  if (selectedStatus.value !== null) {
+    params.status = selectedStatus.value
+  }
+  const res = await request.get('/forum/list/all', { params })
   forumList.value = res.data.records || []
   total.value = res.data.total || 0
 }
@@ -500,6 +519,20 @@ const handlePin = async (id) => {
 const handleUnpin = async (id) => {
   await request.put(`/forum/${id}/unpin`)
   ElMessage.success('取消置顶成功')
+  loadForums()
+}
+
+const handleApprove = async (id) => {
+  await ElMessageBox.confirm('确认通过该帖子的审核吗?', '提示', { type: 'info' })
+  await request.put(`/forum/${id}/approve`)
+  ElMessage.success('审核通过')
+  loadForums()
+}
+
+const handleReject = async (id) => {
+  await ElMessageBox.confirm('确认拒绝该帖子吗?', '提示', { type: 'warning' })
+  await request.put(`/forum/${id}/reject`)
+  ElMessage.success('已拒绝')
   loadForums()
 }
 

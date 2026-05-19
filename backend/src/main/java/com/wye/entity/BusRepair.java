@@ -24,7 +24,6 @@ public class BusRepair implements Serializable {
 
     private Integer status; // 0=待审核, 1=已派单, 2=维修中, 3=已完成
 
-    @TableField(exist = false)
     private String type; // 报修类型
 
     @TableField(exist = false)

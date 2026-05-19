@@ -1,5 +1,6 @@
 package com.wye.controller;
 
+import com.wye.common.RequireRole;
 import com.wye.common.Result;
 import com.wye.entity.AiConfig;
 import com.wye.service.AiConfigService;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ai-config")
+@RequireRole({0})
 public class AiConfigController {
 
     @Autowired

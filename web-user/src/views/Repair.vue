@@ -21,9 +21,20 @@
             rows="4"
           ></textarea>
         </div>
-        
 
-        
+        <div class="form-item">
+          <label class="form-label">报修分类</label>
+          <div class="type-selector">
+            <button
+              v-for="t in repairTypes"
+              :key="t"
+              type="button"
+              :class="['type-btn', { active: form.type === t }]"
+              @click="form.type = t"
+            >{{ t }}</button>
+          </div>
+        </div>
+
         <div class="form-item">
           <label class="form-label">上传图片</label>
           <div class="uploader">
@@ -71,11 +82,11 @@
           <span class="repair-time">{{ item.createTime }}</span>
           <div class="footer-right">
             <div v-if="item.images" class="repair-images">
-              <img 
-                v-for="(img, index) in JSON.parse(item.images)" 
-                :key="index" 
-                :src="img" 
-                alt="故障图片" 
+              <img
+                v-for="(img, index) in parseImages(item.images)"
+                :key="index"
+                :src="img"
+                alt="故障图片"
                 class="repair-image"
               />
             </div>
@@ -137,8 +148,10 @@ import request from '@/utils/request'
 const router = useRouter()
 const form = ref({
   content: '',
-  images: ''
+  images: '',
+  type: ''
 })
+const repairTypes = ['水电维修', '家电维修', '管道疏通', '门窗维修', '其他']
 const fileList = ref([])
 const list = ref([])
 const loading = ref(false)
@@ -155,19 +168,24 @@ const handleSubmit = async () => {
     return
   }
 
-  // 上传图片
-  const imageUrls = []
-  for (let file of fileList.value) {
-    const res = await uploadImage(file.file)
-    imageUrls.push(res.url)
-  }
-  form.value.images = JSON.stringify(imageUrls)
+  try {
+    // 上传图片
+    const imageUrls = []
+    for (let file of fileList.value) {
+      const res = await uploadImage(file.file)
+      imageUrls.push(res.url)
+    }
+    form.value.images = JSON.stringify(imageUrls)
 
-  await request.post('/repair/add', form.value)
-  showToast('报修成功')
-  form.value.content = ''
-  fileList.value = []
-  onLoad()
+    await request.post('/repair/add', form.value)
+    showToast('报修成功')
+    form.value.content = ''
+    form.value.type = ''
+    fileList.value = []
+    onLoad()
+  } catch (e) {
+    showToast('提交失败，请重试')
+  }
 }
 
 const uploadImage = async (file) => {
@@ -192,6 +210,15 @@ const onLoad = async () => {
 const getStatusText = (status) => {
   const map = { 0: '待派单', 1: '已派单', 2: '维修中', 3: '已完成' }
   return map[status]
+}
+
+const parseImages = (imagesStr) => {
+  if (!imagesStr) return []
+  try {
+    return JSON.parse(imagesStr)
+  } catch (e) {
+    return []
+  }
 }
 
 const triggerFileInput = () => {
@@ -247,15 +274,18 @@ const submitEvaluation = async () => {
     return
   }
 
-  await request.post('/repair/evaluate', {
-    repairId: currentEvaluateRepairId.value,
-    score: evaluateForm.value.score,
-    comment: evaluateForm.value.comment
-  })
-
-  showToast('评价成功')
-  closeEvaluateDialog()
-  onLoad() // 重新加载数据，显示评价结果
+  try {
+    await request.post('/repair/evaluate', {
+      repairId: currentEvaluateRepairId.value,
+      score: evaluateForm.value.score,
+      comment: evaluateForm.value.comment
+    })
+    showToast('评价成功')
+    closeEvaluateDialog()
+    onLoad()
+  } catch (e) {
+    showToast('评价失败，请重试')
+  }
 }
 
 onMounted(() => {

@@ -182,6 +182,8 @@
           stripe
           style="width: 100%"
           max-height="300px"
+          @selection-change="handleSelectionChange"
+          row-key="userId"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column prop="realName" label="业主姓名" width="120" />
@@ -289,6 +291,7 @@ const filterData = ref({
 const showBatchAddDialog = ref(false)
 const searchKeyword = ref('')
 const searchedOwners = ref([])
+const selectedOwners = ref([])
 const batchFormData = ref({
   type: '物业费',
   month: '',
@@ -369,7 +372,7 @@ const calculateAmount = () => {
       return
   }
   
-  formData.value.amount = (formData.value.usage * unitPrice).toFixed(2)
+  formData.value.amount = Number((formData.value.usage * unitPrice).toFixed(2))
 }
 
 // 处理批量新增费用类型变更
@@ -399,7 +402,7 @@ const calculateBatchAmount = () => {
       return
   }
   
-  batchFormData.value.amount = (batchFormData.value.usage * unitPrice).toFixed(2)
+  batchFormData.value.amount = Number((batchFormData.value.usage * unitPrice).toFixed(2))
 }
 
 // 监听批量新增对话框的显示状态，自动搜索业主
@@ -513,45 +516,34 @@ const searchOwners = async () => {
 const resetSearch = () => {
   searchKeyword.value = ''
   searchedOwners.value = []
+  selectedOwners.value = []
+}
+
+const handleSelectionChange = (selection) => {
+  selectedOwners.value = selection
 }
 
 const handleBatchAdd = async () => {
-  // 获取选中的业主
-  const selectedRows = document.querySelector('.el-table__body-wrapper .el-table__row')
-  if (!selectedRows) {
+  if (selectedOwners.value.length === 0) {
     ElMessage.warning('请选择至少一个业主')
     return
   }
 
-  // 获取所有选中的行
-  const checkboxes = document.querySelectorAll('.el-table__body-wrapper .el-checkbox__input.is-checked')
-  if (checkboxes.length === 0) {
-    ElMessage.warning('请选择至少一个业主')
-    return
-  }
-
-  // 验证缴费信息
   if (!batchFormData.value.type || !batchFormData.value.month || batchFormData.value.amount <= 0) {
     ElMessage.warning('请填写完整的缴费信息')
     return
   }
 
-  // 批量添加缴费
-  const promises = []
-  checkboxes.forEach(checkbox => {
-    const row = checkbox.closest('.el-table__row')
-    const ownerId = row.dataset.rowKey
-    promises.push(
-      request.post('/fee/add', {
-        ownerId: ownerId,
-        type: batchFormData.value.type,
-        month: batchFormData.value.month,
-        amount: batchFormData.value.amount,
-        status: batchFormData.value.status,
-        remark: batchFormData.value.remark
-      })
-    )
-  })
+  const promises = selectedOwners.value.map(owner =>
+    request.post('/fee/add', {
+      ownerId: owner.userId,
+      type: batchFormData.value.type,
+      month: batchFormData.value.month,
+      amount: batchFormData.value.amount,
+      status: batchFormData.value.status,
+      remark: batchFormData.value.remark
+    })
+  )
 
   try {
     await Promise.all(promises)
