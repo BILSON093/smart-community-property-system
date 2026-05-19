@@ -2,7 +2,7 @@
 .container {
   min-height: 100vh;
   /* 深蓝灰色渐变背景 */
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +22,7 @@
 .header-icon {
   display: block;
   font-size: 128rpx;
-  color: #304156;
+  color: #4F6EF7;
   margin-bottom: 32rpx;
 }
 
@@ -37,13 +37,13 @@
 .subtitle {
   display: block;
   font-size: 28rpx;
-  color: #909399;
+  color: #94A3B8;
   margin: 0;
 }
 
 .login-form {
   background: white;
-  border-radius: 32rpx;
+  border-radius: 48rpx;
   padding: 80rpx 64rpx;
   box-shadow: 0 40rpx 120rpx rgba(0, 0, 0, 0.4);
   margin-bottom: 40rpx;
@@ -52,7 +52,7 @@
 .form-item {
   display: flex;
   align-items: center;
-  background: #f5f7fa;
+  background: #F8FAFC;
   border-radius: 16rpx;
   padding: 24rpx 32rpx;
   margin-bottom: 40rpx;
@@ -65,7 +65,7 @@
 
 .label {
   font-size: 28rpx;
-  color: #606266;
+  color: #64748B;
   width: 140rpx;
   flex-shrink: 0;
   white-space: nowrap;
@@ -74,7 +74,7 @@
 .input {
   flex: 1;
   font-size: 30rpx;
-  color: #303133;
+  color: #1E293B;
 }
 
 .placeholder {
@@ -84,7 +84,7 @@
 .eye-icon {
   font-size: 32rpx;
   margin-left: 20rpx;
-  color: #909399;
+  color: #94A3B8;
   padding: 0;
   display: flex;
   align-items: center;
@@ -105,15 +105,15 @@
   flex: 1;
   text-align: center;
   padding: 20rpx;
-  background: #e4e7ed;
+  background: #F1F5F9;
   border-radius: 12rpx;
   font-size: 28rpx;
-  color: #606266;
+  color: #64748B;
   transition: all 0.3s;
 }
 
 .role-item.active {
-  background: #304156;
+  background: #4F6EF7;
   color: #fff;
 }
 
@@ -121,7 +121,7 @@
   width: 100%;
   height: 96rpx;
   line-height: 96rpx;
-  background: #304156;
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   color: #ffffff;
   font-size: 32rpx;
   font-weight: 600;
@@ -129,7 +129,7 @@
   margin-top: 64rpx;
   border: none;
   transition: opacity 0.3s;
-  box-shadow: 0 8rpx 24rpx rgba(48, 65, 86, 0.3);
+  box-shadow: 0 8rpx 24rpx rgba(79, 110, 247, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,7 +146,7 @@
 
 .register-link {
   text-align: center;
-  color: #3a4b63;
+  color: #4F6EF7;
   font-size: 28rpx;
   margin-top: 32rpx;
   padding-top: 16rpx;
@@ -159,5 +159,5 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 16rpx;
   font-size: 24rpx;
-  color: #909399;
+  color: #94A3B8;
 }

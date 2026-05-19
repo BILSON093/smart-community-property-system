@@ -120,12 +120,12 @@ const handleLogout = () => {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f0f2f5;
+  background-color: var(--bg-page);
 }
 
 .header {
-  background-color: #304156;
-  box-shadow: 0 2px 8px rgba(0, 0, 21, 0.08);
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -134,7 +134,7 @@ const handleLogout = () => {
 .header-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
   height: 64px;
   display: flex;
   align-items: center;
@@ -147,47 +147,54 @@ const handleLogout = () => {
 
 .logo h1 {
   color: white;
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
   margin: 0;
   letter-spacing: 1px;
+  background: linear-gradient(135deg, #fff 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .nav {
   display: flex;
-  gap: 16px;
+  gap: 4px;
   flex: 1;
-  margin-left: 60px;
+  margin-left: 40px;
 }
 
 .nav-item {
-  color: #bfcbd9;
+  color: #94A3B8;
   text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
   font-size: 14px;
   font-weight: 500;
   position: relative;
   display: inline-block;
-  overflow: hidden;
 }
 
 .nav-item:hover {
-  color: #409EFF;
-  background-color: rgba(64, 158, 255, 0.1);
-  transform: translateY(-1px);
-}
-
-.nav-item:active {
-  transform: translateY(0);
-  transition: all 0.1s;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .nav-item.router-link-exact-active {
-  color: #409EFF;
-  background-color: rgba(64, 158, 255, 0.1);
-  border-bottom: 2px solid #409EFF;
+  color: white;
+  background-color: rgba(79, 110, 247, 0.2);
+}
+
+.nav-item.router-link-exact-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--primary-gradient);
+  border-radius: 1px;
 }
 
 .user-info {
@@ -204,14 +211,15 @@ const handleLogout = () => {
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background-color: #409EFF;
+  background: var(--primary-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.3);
 }
 
 .avatar img {
@@ -229,91 +237,86 @@ const handleLogout = () => {
 .reminder-btn {
   position: relative;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: rgba(255, 102, 102, 0.1);
-  border: 1px solid rgba(255, 102, 102, 0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   display: flex;
   align-items: center;
   gap: 4px;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
 }
 
 .reminder-btn:hover {
-  background-color: rgba(255, 102, 102, 0.2);
+  background-color: rgba(239, 68, 68, 0.25);
 }
 
 .reminder-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background-color: #F56C6C;
+  background-color: var(--danger);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .reminder-text {
-  color: #F56C6C;
+  color: var(--danger);
   font-size: 12px;
   font-weight: 500;
 }
 
 .login-btn {
-  background-color: #409EFF;
+  background: var(--primary-gradient);
   color: white;
   border: none;
   padding: 8px 24px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.2s ease;
   display: inline-block;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.3);
 }
 
 .login-btn:hover {
-  background-color: #66b1ff;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
-}
-
-.login-btn:active {
-  transform: translateY(0);
-  transition: all 0.1s;
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.4);
 }
 
 .logout-btn {
   background-color: transparent;
-  color: #bfcbd9;
-  border: 1px solid #409EFF;
+  color: #94A3B8;
+  border: 1px solid rgba(148, 163, 184, 0.3);
   padding: 6px 16px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.2s ease;
 }
 
 .logout-btn:hover {
-  color: #409EFF;
-  border-color: #66b1ff;
-  background-color: rgba(64, 158, 255, 0.1);
-  transform: translateY(-1px);
-}
-
-.logout-btn:active {
-  transform: translateY(0);
-  transition: all 0.1s;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .notification-bell {
   position: relative;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s;
 }
 
 .notification-bell:hover {
-  background-color: rgba(64, 158, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .bell-icon {
@@ -324,7 +327,7 @@ const handleLogout = () => {
   position: absolute;
   top: -2px;
   right: 0;
-  background-color: #F56C6C;
+  background: linear-gradient(135deg, #EF4444 0%, #F87171 100%);
   color: white;
   font-size: 10px;
   min-width: 16px;
@@ -333,6 +336,7 @@ const handleLogout = () => {
   text-align: center;
   border-radius: 8px;
   padding: 0 4px;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
 }
 
 .content {
@@ -340,20 +344,20 @@ const handleLogout = () => {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px;
-  background: white;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  margin-top: 16px;
-  margin-bottom: 16px;
-  border-radius: 8px;
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-lg);
 }
 
 .footer {
   text-align: center;
-  padding: 24px;
-  color: #909399;
-  font-size: 14px;
-  background: white;
-  border-top: 1px solid #e4e7ed;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  background: var(--bg-card);
+  border-top: 1px solid #F1F5F9;
 }
 </style>

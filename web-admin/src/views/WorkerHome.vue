@@ -24,9 +24,14 @@
       </el-col>
     </el-row>
 
-    <el-card>
+    <el-card class="page-card">
       <template #header>
-        <span>我的工单</span>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>我的工单</span>
+          </div>
+        </div>
       </template>
 
       <el-table :data="repairList" border stripe>

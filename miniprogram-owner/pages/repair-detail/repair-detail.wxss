@@ -1,14 +1,14 @@
 /* pages/repair-detail/repair-detail.wxss */
 .container {
   min-height: 100vh;
-  background-color: #f7f8fa;
+  background-color: #F7F8FB;
   padding: 20rpx;
   padding-bottom: 40rpx;
 }
 
 .detail-card {
   background-color: #ffffff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
@@ -25,11 +25,11 @@
 }
 
 .status-1 {
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
 }
 
 .status-2 {
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
 }
 
 .status-3 {
@@ -54,7 +54,7 @@
 
 .section {
   padding: 30rpx;
-  border-bottom: 1rpx solid #ebedf0;
+  border-bottom: 1rpx solid #F1F5F9;
 }
 
 .section:last-child {
@@ -64,7 +64,7 @@
 .section-title {
   font-size: 32rpx;
   font-weight: 600;
-  color: #323233;
+  color: #1E293B;
   margin-bottom: 24rpx;
 }
 
@@ -81,14 +81,14 @@
 .label {
   width: 160rpx;
   font-size: 28rpx;
-  color: #969799;
+  color: #94A3B8;
   flex-shrink: 0;
 }
 
 .value {
   flex: 1;
   font-size: 28rpx;
-  color: #323233;
+  color: #1E293B;
   line-height: 1.6;
 }
 
@@ -116,7 +116,7 @@
   width: 100%;
   height: 88rpx;
   line-height: 88rpx;
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   color: #ffffff;
   font-size: 32rpx;
   border-radius: 44rpx;
@@ -137,7 +137,7 @@
   align-items: center;
   justify-content: center;
   padding: 200rpx 0;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .empty-icon {
@@ -155,7 +155,7 @@
   align-items: center;
   justify-content: center;
   padding: 200rpx 0;
-  color: #969799;
+  color: #94A3B8;
   font-size: 28rpx;
 }
 
@@ -177,7 +177,7 @@
   width: 90%;
   max-width: 600rpx;
   background-color: #ffffff;
-  border-radius: 16rpx;
+  border-radius: 24rpx;
   overflow: hidden;
   animation: modalShow 0.3s ease;
 }
@@ -198,18 +198,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 30rpx;
-  border-bottom: 1rpx solid #ebedf0;
+  border-bottom: 1rpx solid #F1F5F9;
 }
 
 .modal-title {
   font-size: 32rpx;
   font-weight: 600;
-  color: #323233;
+  color: #1E293B;
 }
 
 .modal-close {
   font-size: 48rpx;
-  color: #969799;
+  color: #94A3B8;
   line-height: 1;
   padding: 0 10rpx;
 }
@@ -225,7 +225,7 @@
 .rate-label {
   display: block;
   font-size: 28rpx;
-  color: #323233;
+  color: #1E293B;
   margin-bottom: 20rpx;
 }
 
@@ -254,7 +254,7 @@
 .comment-label {
   display: block;
   font-size: 28rpx;
-  color: #323233;
+  color: #1E293B;
   margin-bottom: 16rpx;
 }
 
@@ -263,7 +263,7 @@
   min-height: 160rpx;
   padding: 20rpx;
   font-size: 28rpx;
-  background-color: #f7f8fa;
+  background-color: #F8FAFC;
   border-radius: 8rpx;
   border: none;
   box-sizing: border-box;
@@ -273,7 +273,7 @@
   display: block;
   text-align: right;
   font-size: 24rpx;
-  color: #969799;
+  color: #94A3B8;
   margin-top: 8rpx;
 }
 
@@ -289,7 +289,7 @@
   height: 80rpx;
   line-height: 80rpx;
   background-color: #f7f8fa;
-  color: #323233;
+  color: #1E293B;
   font-size: 28rpx;
   border-radius: 44rpx;
   border: none;
@@ -307,7 +307,7 @@
   flex: 1;
   height: 80rpx;
   line-height: 80rpx;
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   color: #ffffff;
   font-size: 28rpx;
   border-radius: 44rpx;

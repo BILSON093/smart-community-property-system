@@ -172,25 +172,25 @@ const clearCache = () => {
 .page-header {
   margin-bottom: 30px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .page-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .user-card {
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #304156 0%, #409EFF 100%);
+  background: var(--primary-gradient);
   color: white;
   padding: 40px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   margin-bottom: 30px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(79, 110, 247, 0.25);
 }
 
 .user-avatar {
@@ -230,7 +230,7 @@ const clearCache = () => {
 .fee-summary {
   background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
   border: 1px solid #ffb74d;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 16px;
   margin-bottom: 24px;
 }
@@ -292,20 +292,20 @@ const clearCache = () => {
 }
 
 .section {
-  background: #f9fafc;
-  border-radius: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s;
 }
 
 .section:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-2px);
 }
 
 .section-title {
-  background: #304156;
+  background: var(--text-primary);
   color: white;
   padding: 16px 24px;
   margin: 0;
@@ -323,7 +323,7 @@ const clearCache = () => {
   padding: 16px 24px;
   cursor: pointer;
   transition: all 0.3s;
-  border-bottom: 1px solid #f0f2f5;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .menu-item:last-child {
@@ -331,7 +331,7 @@ const clearCache = () => {
 }
 
 .menu-item:hover {
-  background-color: rgba(64, 158, 255, 0.05);
+  background-color: var(--primary-bg);
   padding-left: 30px;
 }
 
@@ -345,19 +345,19 @@ const clearCache = () => {
 .menu-text {
   flex: 1;
   font-size: 14px;
-  color: #304156;
+  color: var(--text-primary);
 }
 
 .menu-arrow {
   font-size: 18px;
-  color: rgba(48, 65, 86, 0.3);
+  color: var(--text-muted);
   transition: all 0.3s;
   font-weight: 300;
 }
 
 .menu-item:hover .menu-arrow {
   transform: translateX(4px);
-  color: #409EFF;
+  color: var(--primary);
 }
 
 .action-buttons {
@@ -366,11 +366,11 @@ const clearCache = () => {
 }
 
 .logout-btn {
-  background-color: #f56c6c;
+  background: var(--danger);
   color: white;
   border: none;
   padding: 12px 48px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -378,8 +378,8 @@ const clearCache = () => {
 }
 
 .logout-btn:hover {
-  background-color: #f78989;
-  box-shadow: 0 4px 12px rgba(245, 108, 108, 0.3);
+  opacity: 0.9;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .logout-btn:active {
@@ -421,7 +421,7 @@ const clearCache = () => {
 
 .dialog-content {
   background: white;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 32px;
   width: 90%;
   max-width: 400px;
@@ -431,14 +431,14 @@ const clearCache = () => {
 .dialog-content h3 {
   font-size: 18px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0 0 20px 0;
   text-align: center;
 }
 
 .dialog-content p {
   font-size: 14px;
-  color: #606266;
+  color: var(--text-secondary);
   margin: 10px 0;
   line-height: 1.6;
 }
@@ -448,32 +448,32 @@ const clearCache = () => {
   justify-content: space-between;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid #f0f2f5;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .setting-btn {
-  background: #f0f9ff;
-  color: #409eff;
-  border: 1px solid #409eff;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border: 1px solid var(--primary);
   padding: 4px 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 12px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .setting-btn:hover {
-  background: #e6f7ff;
+  background: rgba(79, 110, 247, 0.12);
 }
 
 .dialog-btn {
   width: 100%;
   margin-top: 24px;
-  background: #409eff;
+  background: var(--primary);
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -481,7 +481,7 @@ const clearCache = () => {
 }
 
 .dialog-btn:hover {
-  background: #66b1ff;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+  background: var(--primary-light);
+  box-shadow: 0 4px 12px rgba(79, 110, 247, 0.3);
 }
 </style>

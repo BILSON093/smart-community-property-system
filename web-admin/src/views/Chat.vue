@@ -1,8 +1,14 @@
 <template>
-  <el-card>
-    <template #header>
-      <span>在线客服</span>
-    </template>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>在线客服</span>
+          </div>
+        </div>
+      </template>
 
     <el-row :gutter="20">
       <el-col :span="6">
@@ -67,7 +73,8 @@
         </el-card>
       </el-col>
     </el-row>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>
@@ -248,17 +255,18 @@ const scrollToBottom = () => {
   align-items: center;
   padding: 12px;
   cursor: pointer;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  transition: background-color 0.3s;
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+  transition: all 0.2s ease;
 }
 
 .user-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--primary-bg);
 }
 
 .user-item.active {
-  background-color: #e6f7ff;
+  background-color: rgba(79, 110, 247, 0.1);
+  box-shadow: inset 3px 0 0 var(--primary);
 }
 
 .user-info {
@@ -270,13 +278,13 @@ const scrollToBottom = () => {
 .user-name {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .user-address {
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -289,7 +297,7 @@ const scrollToBottom = () => {
 
 .user-detail-address {
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
   margin-left: 12px;
 }
 
@@ -303,7 +311,8 @@ const scrollToBottom = () => {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #F8FAFC;
+  border-radius: var(--radius-sm);
 }
 
 .message {
@@ -340,7 +349,7 @@ const scrollToBottom = () => {
 
 .sender-name {
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
@@ -354,7 +363,7 @@ const scrollToBottom = () => {
 
 .content {
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: 16px;
   font-size: 14px;
   line-height: 1.5;
   word-break: break-word;
@@ -365,33 +374,35 @@ const scrollToBottom = () => {
 
 .message.user .content {
   background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border-top-left-radius: 4px;
 }
 
 .message.admin .content {
-  background-color: #409EFF;
+  background: var(--primary-gradient);
   color: white;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.25);
   border-top-right-radius: 4px;
 }
 
 .message-content a.chat-link {
-  color: #409EFF;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 500;
-  border-bottom: 1px solid #409EFF;
+  border-bottom: 1px solid var(--primary);
   padding-bottom: 2px;
   transition: all 0.3s;
 }
 
 .message-content a.chat-link:hover {
-  color: #66b1ff;
-  border-bottom-color: #66b1ff;
+  color: var(--primary-light);
+  border-bottom-color: var(--primary-light);
   text-decoration: none;
 }
 
 .message.admin .message-content a.chat-link {
-  color: #e6f7ff;
-  border-bottom-color: #e6f7ff;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom-color: rgba(255, 255, 255, 0.9);
 }
 
 .message.admin .message-content a.chat-link:hover {
@@ -401,7 +412,7 @@ const scrollToBottom = () => {
 
 .time {
   font-size: 12px;
-  color: #999;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -410,6 +421,7 @@ const scrollToBottom = () => {
   gap: 10px;
   padding: 16px;
   background-color: white;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #F1F5F9;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 </style>

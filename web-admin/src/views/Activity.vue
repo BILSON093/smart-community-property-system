@@ -1,13 +1,19 @@
 <template>
-  <el-card>
-    <template #header>
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <span>社区活动</span>
-        <el-button type="primary" @click="showAddDialog = true">发布活动</el-button>
-      </div>
-    </template>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>社区活动</span>
+          </div>
+          <div class="page-actions">
+            <el-button type="primary" @click="showAddDialog = true">发布活动</el-button>
+          </div>
+        </div>
+      </template>
 
-    <el-table :data="activityList" border stripe>
+      <el-table :data="activityList" border stripe>
       <el-table-column prop="id" label="ID" width="80" />
       <el-table-column label="封面" width="160">
         <template #default="{ row }">
@@ -189,7 +195,8 @@
         <el-button @click="showSignupDialog = false">关闭</el-button>
       </template>
     </el-dialog>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>

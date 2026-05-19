@@ -1,13 +1,18 @@
 <template>
-  <div class="admin-container">
-    <el-card>
+  <div class="page-container">
+    <el-card class="page-card">
       <template #header>
-        <div class="card-header">
-          <span>管理员账号管理</span>
-          <el-button type="primary" size="small" @click="openAddAdminDialog">添加管理员</el-button>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>管理员账号管理</span>
+          </div>
+          <div class="page-actions">
+            <el-button type="primary" @click="openAddAdminDialog">添加管理员</el-button>
+          </div>
         </div>
       </template>
-      
+
       <el-table :data="adminList" border stripe>
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column label="头像" width="100">
@@ -261,10 +266,4 @@ const deleteAdmin = async (id) => {
 </script>
 
 <style scoped>
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
 </style>

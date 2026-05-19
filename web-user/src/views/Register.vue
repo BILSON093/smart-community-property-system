@@ -208,7 +208,7 @@ const handleRegister = async (values) => {
 <style scoped>
 .register-container {
   min-height: 100vh;
-  background-color: #304156;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,7 +217,7 @@ const handleRegister = async (values) => {
 
 .register-box {
   background: white;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 40px 32px; /* 调整内边距，更紧凑 */
   width: 100%;
   max-width: 480px; /* 稍微调小一点最大宽度，适配移动端 */
@@ -232,12 +232,12 @@ const handleRegister = async (values) => {
 .register-header h1 {
   font-size: 24px;
   font-weight: 700;
-  color: #304156; /* 标题颜色 */
+  color: var(--text-primary);
   margin: 16px 0 8px;
 }
 
 .register-header p {
-  color: #909399;
+  color: var(--text-muted);
   font-size: 14px;
   margin: 0;
 }
@@ -259,8 +259,7 @@ const handleRegister = async (values) => {
   overflow: hidden;
   margin: 0 auto;
   cursor: pointer;
-  /* 边框颜色改为主题色 */
-  border: 3px solid #304156; 
+  border: 3px solid var(--primary);
 }
 
 .avatar-preview img {
@@ -274,8 +273,7 @@ const handleRegister = async (values) => {
   bottom: 0;
   left: 0;
   right: 0;
-  /* 背景改为主题色半透明 */
-  background: rgba(48, 65, 86, 0.85); 
+  background: rgba(79, 110, 247, 0.85);
   color: white;
   padding: 6px 0;
   text-align: center;
@@ -284,8 +282,8 @@ const handleRegister = async (values) => {
 
 .register-form .van-field {
   margin-bottom: 16px;
-  background: #f5f7fa;
-  border-radius: 8px;
+  background: #F8FAFC;
+  border-radius: var(--radius-sm);
   padding: 12px 16px;
 }
 
@@ -296,10 +294,9 @@ const handleRegister = async (values) => {
   gap: 16px;
 }
 
-/* 注册按钮强制样式 */
 .register-btn {
-  background: #304156 !important;
-  border-color: #304156 !important;
+  background: var(--primary-gradient) !important;
+  border: none !important;
   height: 48px;
   font-size: 16px;
   font-weight: 600;
@@ -311,7 +308,7 @@ const handleRegister = async (values) => {
 
 .login-link {
   text-align: center;
-  color: #345473; /* 链接颜色使用较浅的主题色 */
+  color: var(--primary);
   text-decoration: none;
   font-size: 14px;
   transition: all 0.3s;

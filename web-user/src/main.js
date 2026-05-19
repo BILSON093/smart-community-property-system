@@ -6,6 +6,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import Vant from 'vant'
 import 'vant/lib/index.css'
+import './styles/variables.css'
 
 const app = createApp(App)
 

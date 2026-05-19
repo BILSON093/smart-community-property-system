@@ -14,11 +14,11 @@
 }
 
 .login-card {
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   border-radius: 24rpx;
   padding: 80rpx 60rpx;
   text-align: center;
-  box-shadow: 0 8rpx 32rpx rgba(48, 65, 86, 0.3);
+  box-shadow: 0 8rpx 32rpx rgba(79, 110, 247, 0.3);
 }
 
 .welcome-text {
@@ -41,7 +41,7 @@
   height: 80rpx;
   line-height: 80rpx;
   background-color: #ffffff;
-  color: #304156;
+  color: #4F6EF7;
   font-size: 30rpx;
   border-radius: 40rpx;
   border: none;
@@ -61,13 +61,13 @@
 }
 
 .user-card {
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   border-radius: 16rpx;
   padding: 40rpx 30rpx;
   margin-bottom: 20rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 4rpx 16rpx rgba(48, 65, 86, 0.3);
+  box-shadow: 0 4rpx 16rpx rgba(79, 110, 247, 0.3);
 }
 
 .avatar {
@@ -106,7 +106,7 @@
 
 .address-card {
   background-color: #ffffff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   padding: 30rpx;
   margin-bottom: 20rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
@@ -115,19 +115,19 @@
 .section-title {
   font-size: 28rpx;
   font-weight: 600;
-  color: #969799;
+  color: #94A3B8;
   margin-bottom: 16rpx;
 }
 
 .address-text {
   font-size: 32rpx;
-  color: #323233;
+  color: #1E293B;
   font-weight: 500;
 }
 
 .menu-list {
   background-color: #ffffff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   margin-bottom: 20rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
@@ -137,7 +137,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 30rpx;
-  border-bottom: 1rpx solid #f7f8fa;
+  border-bottom: 1rpx solid #F1F5F9;
 }
 
 .menu-item:last-child {
@@ -156,14 +156,14 @@
 
 .menu-text {
   font-size: 30rpx;
-  color: #323233;
+  color: #1E293B;
 }
 
 .arrow {
   font-size: 24rpx;
-  color: #c8c9cc;
+  color: #94A3B8;
 }
 
 .logout .menu-text {
-  color: #dc2626;
+  color: #EF4444;
 }

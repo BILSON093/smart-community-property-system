@@ -1,7 +1,7 @@
 /* pages/notification/notification.wxss */
 .container {
   padding: 20rpx;
-  background: #f5f5f5;
+  background: #F7F8FB;
   min-height: 100vh;
 }
 
@@ -15,12 +15,12 @@
 
 .unread-text {
   font-size: 28rpx;
-  color: #606266;
+  color: #64748B;
 }
 
 .read-all-btn {
   font-size: 28rpx;
-  color: #409eff;
+  color: #4F6EF7;
   cursor: pointer;
 }
 
@@ -32,7 +32,7 @@
 
 .notification-item {
   background: #fff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   padding: 24rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
   position: relative;
@@ -40,8 +40,8 @@
 }
 
 .notification-item.unread {
-  background: #f0f9ff;
-  border-left: 6rpx solid #409eff;
+  background: rgba(79, 110, 247, 0.06);
+  border-left: 6rpx solid #4F6EF7;
 }
 
 .item-header {
@@ -54,14 +54,14 @@
 .item-title {
   font-size: 30rpx;
   font-weight: 600;
-  color: #303133;
+  color: #1E293B;
   flex: 1;
   margin-right: 16rpx;
 }
 
 .item-time {
   font-size: 24rpx;
-  color: #909399;
+  color: #94A3B8;
   flex-shrink: 0;
 }
 
@@ -71,7 +71,7 @@
 
 .item-content {
   font-size: 28rpx;
-  color: #606266;
+  color: #64748B;
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -86,7 +86,7 @@
   width: 16rpx;
   height: 16rpx;
   border-radius: 50%;
-  background: #f56c6c;
+  background: #EF4444;
 }
 
 .empty {
@@ -104,12 +104,12 @@
 
 .empty-text {
   font-size: 28rpx;
-  color: #909399;
+  color: #94A3B8;
 }
 
 .loading {
   text-align: center;
   padding: 40rpx 0;
-  color: #909399;
+  color: #94A3B8;
   font-size: 28rpx;
 }

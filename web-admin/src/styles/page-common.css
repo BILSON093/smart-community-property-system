@@ -1,0 +1,70 @@
+/* 页面通用样式 */
+
+.page-container {
+  min-height: 100%;
+}
+
+.page-card {
+  margin-bottom: 20px;
+}
+
+.page-card .el-card__header {
+  padding: 16px 20px !important;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.page-title .title-bar {
+  width: 4px;
+  height: 18px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-area {
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: #FAFBFD;
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.table-container {
+  margin-top: 0;
+}
+
+.table-container .el-table {
+  font-size: 14px;
+}
+
+.table-container .el-table th.el-table__cell {
+  font-size: 13px;
+}
+
+.empty-state {
+  padding: 60px 0;
+  text-align: center;
+}

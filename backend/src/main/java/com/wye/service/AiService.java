@@ -1,5 +1,6 @@
 package com.wye.service;
 
+import java.io.File;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONUtil;
@@ -208,7 +209,7 @@ public class AiService {
                     if (imagePath.startsWith("upload/")) {
                         imagePath = imagePath.substring(7);
                     }
-                    String fullPath = uploadPath + "/" + imagePath;
+                    String fullPath = new File(uploadPath).getAbsoluteFile() + "/" + imagePath;
                     byte[] imageBytes = Files.readAllBytes(Paths.get(fullPath));
                     base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(imageBytes);
                     imageUrlMap.put("url", base64Image);

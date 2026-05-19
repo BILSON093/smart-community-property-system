@@ -1,13 +1,17 @@
 <template>
-  <el-card>
-    <template #header>
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <span>留言反馈管理</span>
-      </div>
-    </template>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>留言反馈管理</span>
+          </div>
+        </div>
+      </template>
 
-    <!-- 筛选条件 -->
-    <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap">
+      <!-- 筛选条件 -->
+      <div class="filter-area">
       <el-select
         v-model="filterData.status"
         placeholder="状态"
@@ -81,7 +85,8 @@
         <el-button type="primary" @click="handleUpdate">回复</el-button>
       </template>
     </el-dialog>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>

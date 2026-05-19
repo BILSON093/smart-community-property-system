@@ -258,15 +258,15 @@ const goBack = () => {
   gap: 12px;
   margin-bottom: 30px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .btn-back {
-  background: #f0f9ff;
-  color: #409eff;
-  border: 1px solid #409eff;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border: 1px solid rgba(79, 110, 247, 0.2);
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   display: flex;
@@ -276,14 +276,14 @@ const goBack = () => {
 }
 
 .btn-back:hover {
-  background: #e6f7ff;
+  background: rgba(79, 110, 247, 0.12);
   transform: translateY(-2px);
 }
 
 .page-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -306,7 +306,7 @@ const goBack = () => {
   overflow: hidden;
   margin: 0 auto;
   cursor: pointer;
-  border: 3px solid #409EFF;
+  border: 3px solid var(--primary);
 }
 
 .avatar-preview img {
@@ -320,7 +320,7 @@ const goBack = () => {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(64, 158, 255, 0.8);
+  background: rgba(79, 110, 247, 0.85);
   color: white;
   padding: 8px 0;
   text-align: center;
@@ -335,8 +335,8 @@ const goBack = () => {
 .info-form .van-field,
 .password-form .van-field {
   margin-bottom: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  background: #F8FAFC;
+  border-radius: var(--radius-sm);
   padding: 12px 16px;
 }
 
@@ -347,7 +347,7 @@ const goBack = () => {
 .password-section h3 {
   font-size: 16px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 

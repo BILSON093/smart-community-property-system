@@ -39,7 +39,7 @@ mybatis-plus:
 # 文件存储配置
 file:
   upload:
-    path: C:\Users\Administrator\Desktop\trae\elysia1\backend\upload
+    path: upload
     url-prefix: /upload
 
 # JWT配置

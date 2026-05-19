@@ -1,11 +1,15 @@
 <template>
-  <el-card>
-    <template #header>
-      <div class="agent-header">
-        <span>AI智能助手</span>
-        <el-tag type="success" size="small">Agent模式 - 可执行操作</el-tag>
-      </div>
-    </template>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>AI智能助手</span>
+            <el-tag type="success" size="small">Agent模式 - 可执行操作</el-tag>
+          </div>
+        </div>
+      </template>
 
     <el-card class="chat-card">
       <div class="chat-container">
@@ -67,7 +71,8 @@
         </div>
       </div>
     </el-card>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>
@@ -155,14 +160,9 @@ const scrollToBottom = () => {
 </script>
 
 <style scoped>
-.agent-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .chat-card {
   height: 600px;
+  border-radius: var(--radius-md);
 }
 
 .chat-container {
@@ -175,24 +175,26 @@ const scrollToBottom = () => {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
-  background-color: #fafafa;
-  border-radius: 8px;
+  background-color: #F8FAFC;
+  border-radius: var(--radius-sm);
 }
 
 .welcome-msg {
   text-align: center;
   padding: 60px 20px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .welcome-msg h3 {
   margin: 16px 0 8px;
-  color: #303133;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .welcome-msg p {
   margin: 4px 0;
   font-size: 14px;
+  color: var(--text-secondary);
 }
 
 .message {
@@ -221,21 +223,22 @@ const scrollToBottom = () => {
 
 .message-content {
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: 16px;
   font-size: 14px;
   line-height: 1.6;
   word-break: break-word;
 }
 
 .message.user .message-content {
-  background-color: #409EFF;
+  background: var(--primary-gradient);
   color: white;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.25);
   border-top-right-radius: 4px;
 }
 
 .message.assistant .message-content {
   background-color: white;
-  border: 1px solid #e4e7ed;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border-top-left-radius: 4px;
 }
 
@@ -251,10 +254,11 @@ const scrollToBottom = () => {
   align-items: center;
   gap: 6px;
   font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .tool-result {
-  color: #67C23A;
+  color: var(--success);
   font-size: 12px;
 }
 
@@ -263,8 +267,8 @@ const scrollToBottom = () => {
   gap: 4px;
   padding: 12px 16px;
   background: white;
-  border: 1px solid #e4e7ed;
-  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
   border-top-left-radius: 4px;
 }
 
@@ -272,7 +276,7 @@ const scrollToBottom = () => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #c0c4cc;
+  background-color: #CBD5E1;
   animation: typing 1.4s infinite;
 }
 

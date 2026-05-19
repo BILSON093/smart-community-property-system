@@ -2,39 +2,34 @@
   <div class="notification-page">
     <div class="page-header">
       <h2>我的通知</h2>
-      <van-button v-if="notifications.length > 0" size="small" type="primary" plain @click="markAllRead">
-        全部已读
-      </van-button>
+      <button v-if="notifications.length > 0" class="btn-mark-all" @click="markAllRead">
+        <van-icon name="passed" /> 全部标为已读
+      </button>
     </div>
 
-    <van-list
-      v-model:loading="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="loadNotifications"
-    >
-      <van-cell-group v-if="notifications.length > 0">
-        <van-cell
-          v-for="item in notifications"
-          :key="item.id"
-          :title="item.title"
-          :label="item.content"
-          :value="item.isRead === 0 ? '未读' : ''"
-          @click="readNotification(item)"
-        >
-          <template #right-icon>
-            <van-tag v-if="item.isRead === 0" type="danger" size="small">未读</van-tag>
-            <van-tag v-else type="success" size="small">已读</van-tag>
-          </template>
-        </van-cell>
-      </van-cell-group>
-      <van-empty v-else description="暂无通知" />
-    </van-list>
+    <div class="notification-list" v-if="notifications.length > 0">
+      <div
+        v-for="item in notifications"
+        :key="item.id"
+        :class="['notification-item', { unread: item.isRead === 0 }]"
+        @click="readNotification(item)"
+      >
+        <div class="item-dot" v-if="item.isRead === 0"></div>
+        <div class="item-body">
+          <div class="item-header">
+            <span class="item-title">{{ item.title }}</span>
+            <span class="item-time" v-if="item.createTime">{{ item.createTime }}</span>
+          </div>
+          <div class="item-content">{{ item.content }}</div>
+        </div>
+      </div>
+    </div>
+    <van-empty v-else description="暂无通知" />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { showToast } from 'vant'
 import request from '@/utils/request'
 
@@ -43,7 +38,13 @@ const loading = ref(false)
 const finished = ref(false)
 const page = ref(1)
 
+onMounted(() => {
+  loadNotifications()
+})
+
 const loadNotifications = async () => {
+  if (loading.value || finished.value) return
+  loading.value = true
   try {
     const res = await request.get('/notification/my', {
       params: { page: page.value, size: 20 }
@@ -91,16 +92,119 @@ const markAllRead = async () => {
 
 <style scoped>
 .notification-page {
-  padding: 16px;
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
 }
+
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
+
 .page-header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-mark-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-mark-all:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.notification-item:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.notification-item.unread {
+  background: #FAFBFF;
+  border-left: 3px solid var(--primary);
+}
+
+.item-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.item-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.item-content {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

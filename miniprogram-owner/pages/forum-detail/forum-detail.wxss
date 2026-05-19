@@ -1,14 +1,14 @@
 /* pages/forum-detail/forum-detail.wxss */
 .container {
   min-height: 100vh;
-  background-color: #f7f8fa;
+  background-color: #F7F8FB;
   padding-bottom: 120rpx;
 }
 
 .post-detail {
   background-color: #ffffff;
   margin: 20rpx;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   padding: 24rpx;
-  border-bottom: 1rpx solid #ebedf0;
+  border-bottom: 1rpx solid #F1F5F9;
 }
 
 .avatar {
@@ -35,19 +35,19 @@
 
 .username {
   font-size: 30rpx;
-  color: #323233;
+  color: #1E293B;
   font-weight: 500;
   margin-bottom: 4rpx;
 }
 
 .time {
   font-size: 24rpx;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .pin-badge {
   padding: 6rpx 16rpx;
-  background-color: #ff6b00;
+  background-color: #EF4444;
   color: #ffffff;
   font-size: 22rpx;
   border-radius: 4rpx;
@@ -55,7 +55,7 @@
 
 .delete-post-btn {
   padding: 8rpx 16rpx;
-  background-color: #f56c6c;
+  background-color: #EF4444;
   color: #ffffff;
   font-size: 24rpx;
   border-radius: 6rpx;
@@ -69,14 +69,14 @@
   display: block;
   font-size: 36rpx;
   font-weight: bold;
-  color: #323233;
+  color: #1E293B;
   margin-bottom: 20rpx;
   line-height: 1.4;
 }
 
 .content {
   font-size: 30rpx;
-  color: #646566;
+  color: #64748B;
   line-height: 1.8;
 }
 
@@ -96,8 +96,8 @@
 .action-bar {
   display: flex;
   padding: 20rpx 24rpx;
-  border-top: 1rpx solid #ebedf0;
-  border-bottom: 1rpx solid #ebedf0;
+  border-top: 1rpx solid #F1F5F9;
+  border-bottom: 1rpx solid #F1F5F9;
 }
 
 .action-item {
@@ -117,7 +117,7 @@
 
 .count {
   font-size: 28rpx;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .comment-section {
@@ -139,7 +139,7 @@
 .comment-item {
   display: flex;
   padding: 20rpx 0;
-  border-bottom: 1rpx solid #f7f8fa;
+  border-bottom: 1rpx solid #F1F5F9;
 }
 
 .comment-item:last-child {
@@ -167,7 +167,7 @@
 
 .comment-username {
   font-size: 28rpx;
-  color: #323233;
+  color: #1E293B;
   font-weight: 500;
 }
 
@@ -179,12 +179,12 @@
 
 .comment-time {
   font-size: 24rpx;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .delete-comment-btn {
   padding: 4rpx 12rpx;
-  background-color: #f56c6c;
+  background-color: #EF4444;
   color: #ffffff;
   font-size: 22rpx;
   border-radius: 4rpx;
@@ -193,7 +193,7 @@
 
 .comment-text {
   font-size: 28rpx;
-  color: #646566;
+  color: #64748B;
   line-height: 1.6;
 }
 
@@ -220,7 +220,7 @@
   display: flex;
   flex-direction: column;
   gap: 12rpx;
-  border-top: 1rpx solid #ebedf0;
+  border-top: 1rpx solid #F1F5F9;
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
 }
 
@@ -260,7 +260,7 @@
 
 .anonymous-label {
   font-size: 26rpx;
-  color: #646566;
+  color: #64748B;
 }
 
 .comment-image-preview {
@@ -270,7 +270,7 @@
   right: 0;
   padding: 20rpx;
   background-color: rgba(255, 255, 255, 0.95);
-  border-top: 1rpx solid #ebedf0;
+  border-top: 1rpx solid #F1F5F9;
   display: flex;
   gap: 12rpx;
   flex-wrap: wrap;
@@ -308,7 +308,7 @@
 .add-btn {
   width: 120rpx;
   height: 120rpx;
-  border: 2rpx dashed #dcdfe6;
+  border: 2rpx dashed #E2E8F0;
   border-radius: 8rpx;
   display: flex;
   align-items: center;
@@ -318,12 +318,12 @@
 
 .add-icon {
   font-size: 48rpx;
-  color: #c0c4cc;
+  color: #CBD5E1;
 }
 
 .btn-send {
   padding: 16rpx 32rpx;
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   color: #ffffff;
   font-size: 28rpx;
   border-radius: 44rpx;
@@ -343,7 +343,7 @@
   align-items: center;
   justify-content: center;
   padding: 200rpx 0;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .empty-icon {
@@ -361,6 +361,6 @@
   align-items: center;
   justify-content: center;
   padding: 200rpx 0;
-  color: #969799;
+  color: #94A3B8;
   font-size: 28rpx;
 }

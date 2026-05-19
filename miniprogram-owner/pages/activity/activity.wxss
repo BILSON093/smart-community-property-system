@@ -10,7 +10,7 @@
 
 .activity-card {
   background-color: #ffffff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   overflow: hidden;
   margin-bottom: 20rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
@@ -29,7 +29,7 @@
   display: block;
   font-size: 32rpx;
   font-weight: 600;
-  color: #323233;
+  color: #1E293B;
   margin-bottom: 16rpx;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -38,7 +38,7 @@
 
 .activity-desc {
   font-size: 28rpx;
-  color: #646566;
+  color: #64748B;
   line-height: 1.6;
   margin-bottom: 16rpx;
   display: -webkit-box;
@@ -55,7 +55,7 @@
 
 .meta-item {
   font-size: 26rpx;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .empty {
@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: center;
   padding: 200rpx 0;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .empty-icon {
@@ -80,6 +80,6 @@
 .loading {
   text-align: center;
   padding: 40rpx 0;
-  color: #969799;
+  color: #94A3B8;
   font-size: 28rpx;
 }

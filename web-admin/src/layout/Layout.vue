@@ -1,13 +1,17 @@
 <template>
   <el-container class="layout-container">
-    <el-aside width="200px">
-      <div class="logo">智慧社区</div>
+    <el-aside width="220px">
+      <div class="logo">
+        <div class="logo-icon">智</div>
+        <span>智慧社区</span>
+      </div>
       <el-menu
         :default-active="activeMenu"
         router
-        background-color="#304156"
-        text-color="#bfcbd9"
-        active-text-color="#409EFF"
+        background-color="transparent"
+        text-color="#94A3B8"
+        active-text-color="#4F6EF7"
+        class="sidebar-menu"
       >
         <el-menu-item index="/dashboard">
           <el-icon><DataLine /></el-icon>
@@ -81,10 +85,10 @@
         <div class="header-right">
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
-              <el-avatar :size="32" :src="userInfo.avatar || ''" style="margin-right: 8px;">
+              <el-avatar :size="34" :src="userInfo.avatar || ''" class="header-avatar">
                 {{ (userInfo.realName || userInfo.username || '管理员').charAt(0) }}
               </el-avatar>
-              {{ userInfo.realName || userInfo.username || '管理员' }}
+              <span class="header-username">{{ userInfo.realName || userInfo.username || '管理员' }}</span>
               <el-icon class="el-icon--right"><arrow-down /></el-icon>
             </span>
             <template #dropdown>
@@ -129,27 +133,86 @@ const handleCommand = (command) => {
 }
 
 .el-aside {
-  background-color: #304156;
+  background-color: var(--sidebar-bg);
   overflow-x: hidden;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-  height: 60px;
-  line-height: 60px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, rgba(79, 110, 247, 0.3) 0%, rgba(79, 110, 247, 0.1) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-gradient);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
   color: white;
-  background-color: #263445;
+}
+
+.sidebar-menu {
+  border-right: none !important;
+  padding: 8px;
+}
+
+.sidebar-menu .el-menu-item {
+  height: 44px;
+  line-height: 44px;
+  margin: 2px 0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu .el-menu-item:hover {
+  background-color: var(--sidebar-hover) !important;
+}
+
+.sidebar-menu .el-menu-item.is-active {
+  background-color: var(--sidebar-active-bg) !important;
+  color: var(--primary) !important;
+  font-weight: 600;
+  position: relative;
+}
+
+.sidebar-menu .el-menu-item.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--primary-gradient);
+  border-radius: 0 2px 2px 0;
+}
+
+.sidebar-menu .el-menu-item .el-icon {
+  font-size: 18px;
+  margin-right: 8px;
 }
 
 .el-header {
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  background-color: var(--bg-card);
+  border-bottom: 1px solid #F1F5F9;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
+  height: 60px !important;
 }
 
 .header-left {
@@ -165,12 +228,29 @@ const handleCommand = (command) => {
   cursor: pointer;
   display: flex;
   align-items: center;
+  gap: 8px;
   font-size: 14px;
-  color: #333;
+  color: var(--text-primary);
+  transition: color 0.2s;
+}
+
+.el-dropdown-link:hover {
+  color: var(--primary);
+}
+
+.header-avatar {
+  background: var(--primary-gradient) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.header-username {
+  font-weight: 500;
 }
 
 .el-main {
-  background-color: #f0f2f5;
-  padding: 20px;
+  background-color: var(--bg-page);
+  padding: var(--space-lg);
+  overflow-y: auto;
 }
 </style>

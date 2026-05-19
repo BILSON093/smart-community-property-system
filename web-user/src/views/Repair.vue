@@ -2,10 +2,6 @@
   <div class="repair">
     <div class="page-header">
       <div class="header-left">
-        <button @click="goBack" class="btn-back">
-          <van-icon name="arrow-left" size="18" />
-          返回
-        </button>
         <h2>在线报修</h2>
       </div>
     </div>
@@ -252,9 +248,6 @@ const removeFile = (index) => {
   fileList.value.splice(index, 1)
 }
 
-const goBack = () => {
-  router.back()
-}
 
 // 评价相关方法
 const showEvaluateDialog = (item) => {
@@ -302,7 +295,7 @@ onMounted(() => {
 .page-header {
   margin-bottom: 30px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .header-left {
@@ -312,47 +305,37 @@ onMounted(() => {
 }
 
 .btn-back {
-  background: #f0f9ff;
-  color: #409EFF;
-  border: 1px solid #d9ecff;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border: 1px solid rgba(79, 110, 247, 0.2);
   padding: 8px 20px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.2s;
   font-weight: 500;
-  box-shadow: 0 2px 4px rgba(64, 158, 255, 0.1);
 }
 
 .btn-back:hover {
-  background: #409EFF;
-  color: white;
-  border-color: #409EFF;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
-  transform: translateY(-1px);
-}
-
-.btn-back:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+  background: rgba(79, 110, 247, 0.12);
 }
 
 .page-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .repair-form {
-  background: #f9fafc;
+  background: var(--bg-card);
   padding: 24px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   margin-bottom: 40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .form-item {
@@ -363,15 +346,15 @@ onMounted(() => {
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #304156;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .form-textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   resize: vertical;
   transition: border-color 0.3s;
@@ -379,8 +362,8 @@ onMounted(() => {
 
 .form-textarea:focus {
   outline: none;
-  border-color: #409EFF;
-  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.1);
 }
 
 .uploader {
@@ -429,8 +412,8 @@ onMounted(() => {
 .upload-area {
   width: 100px;
   height: 100px;
-  border: 2px dashed #dcdfe6;
-  border-radius: 4px;
+  border: 2px dashed #E2E8F0;
+  border-radius: var(--radius-sm);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -440,8 +423,8 @@ onMounted(() => {
 }
 
 .upload-area:hover {
-  border-color: #409EFF;
-  background-color: rgba(64, 158, 255, 0.05);
+  border-color: var(--primary);
+  background-color: var(--primary-bg);
 }
 
 .upload-icon {
@@ -452,7 +435,7 @@ onMounted(() => {
 
 .upload-text {
   font-size: 12px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .form-actions {
@@ -469,33 +452,33 @@ onMounted(() => {
 
 .type-btn {
   padding: 8px 20px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid #E2E8F0;
   border-radius: 20px;
   background: white;
-  color: #606266;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.3s;
   font-size: 14px;
 }
 
 .type-btn:hover {
-  border-color: #409EFF;
-  color: #409EFF;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .type-btn.active {
-  background: #409EFF;
+  background: var(--primary);
   color: white;
-  border-color: #409EFF;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.3);
 }
 
 .submit-btn {
-  background-color: #409EFF;
+  background: var(--primary-gradient);
   color: white;
   border: none;
   padding: 10px 30px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -503,8 +486,8 @@ onMounted(() => {
 }
 
 .submit-btn:hover {
-  background-color: #66b1ff;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.4);
+  transform: translateY(-1px);
 }
 
 .submit-btn:active {
@@ -514,13 +497,13 @@ onMounted(() => {
 .section-header {
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .section-header h3 {
   font-size: 16px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -531,21 +514,22 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 60px 0;
-  color: #909399;
+  color: var(--text-muted);
   font-size: 14px;
 }
 
 .repair-item {
   padding: 20px;
-  border: 1px solid #e4e7ed;
-  border-radius: 8px;
+  border: none;
+  border-radius: var(--radius-sm);
   margin-bottom: 16px;
-  background: #f9fafc;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s;
 }
 
 .repair-item:hover {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-1px);
 }
 
@@ -559,36 +543,36 @@ onMounted(() => {
 .repair-content {
   flex: 1;
   font-size: 14px;
-  color: #304156;
+  color: var(--text-primary);
   line-height: 1.5;
 }
 
 .repair-status {
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
   margin-left: 16px;
 }
 
 .status-0 {
-  background: #ecf5ff;
-  color: #409EFF;
+  background: var(--primary-bg);
+  color: var(--primary);
 }
 
 .status-1 {
-  background: #e6f7ff;
-  color: #1890ff;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--info);
 }
 
 .status-2 {
-  background: #f6ffed;
-  color: #67c23a;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
 }
 
 .status-3 {
-  background: #f0f9ff;
-  color: #909399;
+  background: #F1F5F9;
+  color: var(--text-muted);
 }
 
 .repair-item-footer {
@@ -596,7 +580,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .repair-time {
@@ -623,17 +607,17 @@ onMounted(() => {
 
 .evaluate-btn {
   padding: 6px 16px;
-  background: #409EFF;
+  background: var(--primary);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 12px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .evaluate-btn:hover {
-  background: #66b1ff;
+  background: var(--primary-light);
 }
 
 .evaluation-info {
@@ -644,12 +628,12 @@ onMounted(() => {
 }
 
 .evaluation-score {
-  color: #E6A23C;
+  color: var(--warning);
   font-weight: 500;
 }
 
 .evaluation-comment {
-  color: #909399;
+  color: var(--text-muted);
 }
 
 /* 评价对话框样式 */
@@ -668,17 +652,17 @@ onMounted(() => {
 
 .modal-content {
   background: white;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   padding: 24px;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .modal-title {
   font-size: 16px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin-bottom: 20px;
   text-align: center;
 }
@@ -691,13 +675,13 @@ onMounted(() => {
 
 .star {
   font-size: 24px;
-  color: #dcdfe6;
+  color: #E2E8F0;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .star:hover, .star.active {
-  color: #E6A23C;
+  color: var(--warning);
 }
 
 .modal-actions {
@@ -709,31 +693,31 @@ onMounted(() => {
 
 .btn-cancel {
   padding: 8px 20px;
-  background: #f5f7fa;
-  color: #606266;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  background: #F8FAFC;
+  color: var(--text-secondary);
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .btn-cancel:hover {
-  background: #e4e7ed;
+  background: #F1F5F9;
 }
 
 .btn-submit {
   padding: 8px 20px;
-  background: #409EFF;
+  background: var(--primary);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .btn-submit:hover {
-  background: #66b1ff;
+  background: var(--primary-light);
 }
 </style>

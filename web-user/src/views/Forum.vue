@@ -2,16 +2,17 @@
   <div class="forum-container">
     <div class="forum-header">
       <div class="header-left">
-        <button @click="goBack" class="btn-back">
-          <van-icon name="arrow-left" style="font-size: 18px;" />
-          返回
-        </button>
         <h2>社区论坛</h2>
       </div>
       <div class="header-right">
-        <van-dropdown-menu style="width: 130px; margin-right: 10px">
-          <van-dropdown-item v-model="selectedCategory" :options="categoryOptions" @change="loadForums" />
-        </van-dropdown-menu>
+        <div class="category-tabs">
+          <span
+            v-for="cat in allCategories"
+            :key="cat.value"
+            :class="['category-tab', { active: selectedCategory === cat.value }]"
+            @click="selectedCategory = cat.value; loadForums()"
+          >{{ cat.text }}</span>
+        </div>
         <van-button type="primary" size="small" icon="plus" @click="showAddDialog = true">发布帖子</van-button>
       </div>
     </div>
@@ -70,21 +71,35 @@
       </div>
     </div>
 
-    <van-popup v-model:show="showAddDialog" position="bottom" round :style="{ padding: '24px', maxHeight: '85vh' }">
+    <van-popup v-model:show="showAddDialog" round :style="{ padding: '24px', width: '560px', maxWidth: '90vw', maxHeight: '85vh' }">
       <div class="popup-title">发布帖子</div>
-      <van-cell-group inset>
-        <van-field v-model="formData.title" label="标题" placeholder="请输入标题" />
-        <van-field v-model="formData.categoryId" label="分类" placeholder="请选择分类" readonly is-link @click="showCategoryPicker = true" :value="getCategoryName(formData.categoryId)" />
-        <van-field v-model="formData.content" label="内容" type="textarea" rows="4" placeholder="请输入内容" />
-      </van-cell-group>
-      <div class="upload-section">
-        <div class="upload-label">图片</div>
+      <div class="form-group">
+        <label class="form-label">标题</label>
+        <input v-model="formData.title" class="form-input" placeholder="请输入标题" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">分类</label>
+        <div class="category-select">
+          <span
+            v-for="cat in categoryList"
+            :key="cat.id"
+            :class="['cat-option', { active: formData.categoryId === cat.id }]"
+            @click="formData.categoryId = cat.id"
+          >{{ cat.name }}</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">内容</label>
+        <textarea v-model="formData.content" class="form-textarea" rows="5" placeholder="请输入内容"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">图片</label>
         <van-uploader v-model="imageFileList" :after-read="afterImageRead" :before-read="beforeImageUpload" multiple :max-count="9" />
       </div>
-      <div class="switch-section">
-        <span class="switch-label">是否匿名</span>
+      <div class="form-group form-row">
+        <span class="form-label" style="margin-bottom: 0">匿名发布</span>
         <van-switch v-model="formData.isPublic" :active-value="1" :inactive-value="0" size="20" />
-        <span style="margin-left: 10px; color: #909399">{{ formData.isPublic === 1 ? '实名' : '匿名' }}</span>
+        <span class="form-hint">{{ formData.isPublic === 1 ? '实名' : '匿名' }}</span>
       </div>
       <div class="popup-actions">
         <van-button @click="showAddDialog = false" style="margin-right: 12px">取消</van-button>
@@ -92,16 +107,7 @@
       </div>
     </van-popup>
 
-    <van-popup v-model:show="showCategoryPicker" position="bottom" round>
-      <van-picker
-        :columns="categoryPickerColumns"
-        @confirm="onCategoryConfirm"
-        @cancel="showCategoryPicker = false"
-        title="选择分类"
-      />
-    </van-popup>
-
-    <van-popup v-model:show="showCommentDialog" position="bottom" round :style="{ padding: '24px', maxHeight: '85vh' }">
+    <van-popup v-model:show="showCommentDialog" round :style="{ padding: '24px', width: '560px', maxWidth: '90vw', maxHeight: '85vh' }">
       <div class="popup-title">评论列表</div>
       <div style="max-height: 400px; overflow-y: auto; margin-bottom: 20px">
         <van-empty v-if="commentList.length === 0" description="暂无评论" />
@@ -160,10 +166,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { showToast, showDialog, showImagePreview } from 'vant'
+import { ref, computed, onMounted } from 'vue'
+import { showToast, showImagePreview } from 'vant'
 import request from '@/utils/request'
-import router from '@/router'
 
 const list = ref([])
 const categoryList = ref([])
@@ -178,7 +183,6 @@ const commentImageList = ref([])
 const commentImageFileList = ref([])
 const currentForumId = ref(null)
 const currentUserId = ref(null)
-const showCategoryPicker = ref(false)
 
 // Get current user ID from localStorage
 const getCurrentUserId = () => {
@@ -211,10 +215,6 @@ const commentForm = ref({
   images: '',
   isAnonymous: 0
 })
-
-const goBack = () => {
-  router.back()
-}
 
 const loadForums = async () => {
   try {
@@ -253,26 +253,15 @@ const loadCategories = async () => {
   }
 }
 
-const categoryOptions = [
-  { text: '全部分类', value: null },
+const allCategories = computed(() => [
+  { text: '全部', value: null },
   ...categoryList.value.map(c => ({ text: c.name, value: c.id }))
-]
+])
 
-const categoryPickerColumns = categoryList.value.map(c => ({ text: c.name, value: c.id }))
 
-const getCategoryName = (id) => {
-  if (!id) return ''
-  const cat = categoryList.value.find(c => c.id === id)
-  return cat ? cat.name : ''
-}
-
-const onCategoryConfirm = ({ selectedValues }) => {
-  formData.value.categoryId = selectedValues[0] || null
-  showCategoryPicker.value = false
-}
 
 const previewImage = (images, index) => {
-  showImagePreview({ images, startPosition: index })
+  showImagePreview({ images, startPosition: index, closeable: true })
 }
 
 const resetFormData = () => {
@@ -510,77 +499,128 @@ const formatTime = (time) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
+  gap: 16px;
 }
 
 .forum-header h2 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #303133;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-page);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+}
+
+.category-tab {
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.category-tab:hover {
+  color: var(--primary);
+  background: rgba(79, 110, 247, 0.06);
+}
+
+.category-tab.active {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 500;
 }
 
 .forum-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 12px;
 }
 
 .post-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
   position: relative;
 }
 
 .post-card.pinned {
-  border: 2px solid #f56c6c;
-  box-shadow: 0 4px 16px rgba(245, 108, 108, 0.2);
+  border-left: 3px solid var(--danger);
 }
 
 .pinned-badge {
   position: absolute;
-  top: -12px;
+  top: 12px;
   right: 12px;
-  background: linear-gradient(135deg, #f56c6c 0%, #ff8c00 100%);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  padding: 2px 10px;
+  border-radius: 12px;
   font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 2px 8px rgba(245, 108, 108, 0.3);
+  font-weight: 500;
 }
 
 .post-card:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
 }
 
 .post-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .user-avatar {
   flex-shrink: 0;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
 }
 
 .user-info {
@@ -591,69 +631,55 @@ const formatTime = (time) => {
 }
 
 .username {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  color: #303133;
+  color: var(--text-primary);
 }
 
 .time {
-  font-size: 13px;
-  color: #909399;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .post-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  color: #303133;
-  margin-bottom: 12px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
 }
 
 .post-content {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #606266;
-  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .post-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .post-actions {
   display: flex;
-  gap: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #e4e7ed;
-}
-
-.image-uploader {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
-
-.image-uploader:hover {
-  border-color: var(--el-color-primary);
-}
-
-.image-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #F1F5F9;
 }
 
 .comment-item {
   display: flex;
   gap: 12px;
-  margin-bottom: 20px;
-  padding: 16px;
-  background: #f5f7fa;
-  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 14px;
+  background: #FAFBFD;
+  border-radius: var(--radius-sm);
 }
 
 .comment-content {
@@ -669,17 +695,19 @@ const formatTime = (time) => {
 
 .comment-username {
   font-weight: 600;
-  color: #303133;
+  color: var(--text-primary);
+  font-size: 14px;
 }
 
 .comment-time {
   font-size: 12px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .comment-text {
-  color: #606266;
+  color: var(--text-secondary);
   line-height: 1.6;
+  font-size: 14px;
 }
 
 .comment-images {
@@ -689,22 +717,103 @@ const formatTime = (time) => {
   margin-top: 8px;
 }
 
-.btn-back {
-  background: #f0f9ff;
-  color: #409eff;
-  border: 1px solid #409eff;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.3s;
+.popup-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  text-align: center;
 }
 
-.btn-back:hover {
-  background: #e6f7ff;
-  transform: translateY(-2px);
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.form-textarea:focus {
+  border-color: var(--primary);
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.category-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cat-option {
+  padding: 6px 16px;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cat-option:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.cat-option.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #F1F5F9;
 }
 </style>

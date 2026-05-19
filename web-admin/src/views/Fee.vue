@@ -1,28 +1,30 @@
 <template>
-  <el-card>
-    <template #header>
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <div style="display: flex; align-items: center; gap: 10px">
-          <span>缴费管理</span>
-          <el-button 
-            type="info" 
-            size="small" 
-            @click="showSettingsDialog = true"
-            icon="Setting"
-          >
-            设置
-          </el-button>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>缴费管理</span>
+            <el-button
+              type="info"
+              size="small"
+              @click="showSettingsDialog = true"
+              icon="Setting"
+            >
+              设置
+            </el-button>
+          </div>
+          <div class="page-actions">
+            <el-button type="warning" @click="handleUrgePayment" icon="Bell">一键催缴</el-button>
+            <el-button type="primary" @click="showAddDialog = true">新增缴费</el-button>
+            <el-button type="success" @click="showBatchAddDialog = true">批量新增</el-button>
+          </div>
         </div>
-        <div>
-          <el-button type="warning" @click="handleUrgePayment" icon="Bell">一键催缴</el-button>
-          <el-button type="primary" @click="showAddDialog = true">新增缴费</el-button>
-          <el-button type="success" @click="showBatchAddDialog = true">批量新增</el-button>
-        </div>
-      </div>
-    </template>
+      </template>
 
-    <!-- 筛选条件 -->
-    <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap">
+      <!-- 筛选条件 -->
+      <div class="filter-area">
       <!-- 按月份筛选 -->
       <el-date-picker
         v-model="filterData.month"
@@ -258,7 +260,8 @@
         <el-button type="primary" @click="handleSaveSettings">保存设置</el-button>
       </template>
     </el-dialog>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>

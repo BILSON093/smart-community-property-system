@@ -1,16 +1,20 @@
 <template>
-  <el-card>
-    <template #header>
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <span>业主管理</span>
-        <div>
-          <el-input v-model="searchText" placeholder="搜索姓名、手机号或账号" style="width: 200px; margin-right: 10px" clearable @input="handleSearch" />
-          <el-button type="primary" @click="showAddDialog = true">新增业主</el-button>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>业主管理</span>
+          </div>
+          <div class="page-actions">
+            <el-input v-model="searchText" placeholder="搜索姓名、手机号或账号" style="width: 200px" clearable @input="handleSearch" />
+            <el-button type="primary" @click="showAddDialog = true">新增业主</el-button>
+          </div>
         </div>
-      </div>
-    </template>
+      </template>
 
-    <el-table :data="filteredOwnerList" border stripe>
+      <el-table :data="filteredOwnerList" border stripe>
       <el-table-column prop="id" label="ID" width="80" />
       <el-table-column label="头像" width="100">
         <template #default="{ row }">
@@ -124,7 +128,8 @@
         <el-button type="primary" @click="handleUpdate">确认</el-button>
       </template>
     </el-dialog>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>

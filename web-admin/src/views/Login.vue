@@ -183,24 +183,18 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-/* 定义主题变量，方便统一管理 */
 .login-container {
-  --theme-color: #304156;
-  --theme-light: #435a76;
-  --theme-dark: #1f2d3d;
-  
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* 背景改为 304156 渐变 */
-  background: linear-gradient(135deg, var(--theme-color) 0%, var(--theme-dark) 100%);
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
   padding: 20px;
 }
 
 .login-box {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 48px;
   width: 100%;
   max-width: 480px;
@@ -216,21 +210,19 @@ const handleRegister = async () => {
 .login-box h1 {
   text-align: center;
   margin-bottom: 32px;
-  /* 标题颜色改为主题色 */
-  color: #304156; 
+  color: var(--text-primary);
   font-size: 26px;
   font-weight: 700;
   letter-spacing: 1px;
 }
 
-/* 按钮区域 */
 .button-item {
   margin-top: 30px;
   margin-bottom: 0;
 }
 
 .button-item :deep(.el-form-item__content) {
-  margin-left: 0 !important; 
+  margin-left: 0 !important;
 }
 
 .button-group {
@@ -244,68 +236,57 @@ const handleRegister = async () => {
   width: 100%;
   height: 44px;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   margin-left: 0 !important;
 }
 
-/* 登录按钮 - 使用 #304156 */
 .login-btn {
-  background-color: #304156;
-  border-color: #304156;
+  background: var(--primary-gradient) !important;
+  border: none !important;
   color: white;
   font-weight: 600;
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.4);
   transition: all 0.3s;
 }
 
 .login-btn:hover {
-  /* 稍微变亮一点，增加交互感 */
-  background-color: #435a76;
-  border-color: #435a76;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(48, 65, 86, 0.3);
+  box-shadow: 0 6px 20px rgba(79, 110, 247, 0.5);
 }
 
-/* 注册按钮 - 样式调整 */
 .register-btn {
-  border: 1px solid #dcdfe6;
-  color: #606266;
+  border: 1px solid #E2E8F0;
+  color: var(--text-secondary);
 }
 
 .register-btn:hover {
-  color: #304156;
-  border-color: #304156;
-  background-color: #f0f2f5;
+  color: var(--primary);
+  border-color: var(--primary-light);
+  background-color: var(--primary-bg);
   transform: translateY(-2px);
 }
 
-/* 弹窗中的确认按钮也同步主题色 */
 .dialog-confirm-btn {
-  background-color: #304156;
-  border-color: #304156;
-}
-.dialog-confirm-btn:hover {
-  background-color: #435a76;
-  border-color: #435a76;
+  background: var(--primary-gradient) !important;
+  border: none !important;
 }
 
-/* 覆盖 Element Plus 默认的 Input Focus 颜色 */
 .login-container :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #304156 inset;
+  box-shadow: 0 0 0 2px rgba(79, 110, 247, 0.2) inset !important;
 }
 
 .login-container :deep(.el-radio__input.is-checked .el-radio__inner) {
-  border-color: #304156;
-  background: #304156;
+  border-color: var(--primary);
+  background: var(--primary);
 }
 
 .login-container :deep(.el-radio__input.is-checked + .el-radio__label) {
-  color: #304156;
+  color: var(--primary);
 }
 
-/* 头像上传样式 */
 .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
+  border: 1px dashed #E2E8F0;
+  border-radius: var(--radius-md);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -313,17 +294,17 @@ const handleRegister = async () => {
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: #304156;
+  border-color: var(--primary);
 }
 
 .avatar-uploader-icon {
   font-size: 28px;
-  color: #8c939d;
+  color: #94A3B8;
   width: 80px;
   height: 80px;
   text-align: center;
   line-height: 80px;
-  border: 1px dashed #dcdfe6;
-  border-radius: 4px;
+  border: 1px dashed #E2E8F0;
+  border-radius: var(--radius-sm);
 }
 </style>

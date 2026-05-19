@@ -1,8 +1,14 @@
 <template>
-  <el-card>
-    <template #header>
-      <span>个人中心</span>
-    </template>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>个人中心</span>
+          </div>
+        </div>
+      </template>
 
     <el-form :model="form" label-width="100px" style="max-width: 500px">
       <el-form-item label="头像">
@@ -29,7 +35,8 @@
         <el-button type="primary" @click="handleSave">保存</el-button>
       </el-form-item>
     </el-form>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>

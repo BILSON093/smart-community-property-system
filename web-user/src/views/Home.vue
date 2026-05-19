@@ -235,10 +235,12 @@ const formatDate = (dateStr) => {
 }
 
 .welcome-banner {
-  background: linear-gradient(135deg, #304156 0%, #345473 100%);
-  padding: 40px 20px;
+  background: var(--primary-gradient);
+  padding: 48px 24px;
   text-align: center;
   margin-bottom: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(79, 110, 247, 0.25);
 }
 
 .banner-content h2 {
@@ -255,24 +257,32 @@ const formatDate = (dateStr) => {
 }
 
 .section-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  color: #303133;
+  color: var(--text-primary);
   margin: 16px 0 20px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
 .carousel-section,
 .grid-section,
 .notice-section,
 .activity-section {
-  background: white;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .carousel-container {
@@ -285,17 +295,17 @@ const formatDate = (dateStr) => {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   border-radius: 50%;
   cursor: pointer;
   z-index: 10;
-  transition: all 0.3s;
+  transition: all 0.2s;
   opacity: 0;
 }
 
@@ -306,95 +316,72 @@ const formatDate = (dateStr) => {
 
 .arrow-left:hover,
 .arrow-right:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   transform: translateY(-50%) scale(1.1);
 }
 
 .arrow-left {
-  left: 15px;
+  left: 12px;
 }
 
 .arrow-right {
-  right: 15px;
-}
-
-/* 轮播图指示器样式 */
-.van-swipe__indicators {
-  position: absolute;
-  bottom: 15px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 10;
-}
-
-.van-swipe__indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.5);
-  margin: 0 4px;
-  cursor: pointer;
-}
-
-.van-swipe__indicator--active {
-  width: 16px;
-  background: white;
+  right: 12px;
 }
 
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  gap: 16px;
 }
 
 .grid-item {
   padding: 32px 24px;
-  background: linear-gradient(135deg, #f0f2f5 0%, #e4e7ed 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-bg) 0%, rgba(79, 110, 247, 0.03) 100%);
+  border-radius: var(--radius-md);
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(79, 110, 247, 0.08);
 }
 
 .grid-item:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(79, 110, 247, 0.2);
 }
 
 .item-title {
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  color: #303133;
-  margin: 16px 0 8px;
+  color: var(--text-primary);
+  margin: 12px 0 6px;
 }
 
 .item-desc {
-  font-size: 14px;
-  color: #606266;
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
 .notice-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .notice-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: 14px 16px;
+  background: #FAFBFD;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.2s;
 }
 
 .notice-item:hover {
-  background: #e9ecef;
+  background: var(--primary-bg);
 }
 
 .notice-content {
@@ -405,49 +392,50 @@ const formatDate = (dateStr) => {
 }
 
 .notice-tag {
-  padding: 4px 12px;
-  border-radius: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
 }
 
 .tag-type-0 {
-  background: #409eff;
-  color: white;
+  background: var(--primary-bg);
+  color: var(--primary);
 }
 
 .tag-type-1 {
-  background: #f56c6c;
-  color: white;
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 .notice-title {
-  font-size: 15px;
-  color: #303133;
+  font-size: 14px;
+  color: var(--text-primary);
 }
 
 .notice-time {
   font-size: 13px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .activity-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 16px;
 }
 
 .activity-item {
-  border: 1px solid #e4e7ed;
-  border-radius: 12px;
+  border: none;
+  border-radius: var(--radius-md);
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .activity-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
 }
 
 .activity-cover {
@@ -461,16 +449,16 @@ const formatDate = (dateStr) => {
 }
 
 .activity-title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
-  color: #303133;
-  margin: 0 0 12px;
+  color: var(--text-primary);
+  margin: 0 0 10px;
 }
 
 .activity-meta {
-  font-size: 14px;
-  color: #606266;
-  margin: 6px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 4px 0;
   display: flex;
   align-items: center;
   gap: 4px;

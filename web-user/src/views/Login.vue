@@ -82,7 +82,7 @@ const handleLogin = async (values) => {
 <style scoped>
 .login-container {
   min-height: 100vh;
-  background-color: #304156;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,11 +91,10 @@ const handleLogin = async (values) => {
 
 .login-box {
   background: white;
-  border-radius: 16px;
-  padding: 40px 32px; /* 稍微调整移动端的内边距 */
+  border-radius: var(--radius-xl);
+  padding: 40px 32px;
   width: 100%;
   max-width: 420px;
-  /* 阴影加深一点，适配深色背景 */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
@@ -107,12 +106,12 @@ const handleLogin = async (values) => {
 .login-header h1 {
   font-size: 26px;
   font-weight: 700;
-  color: #304156; /* 标题颜色呼应主题 */
+  color: var(--text-primary);
   margin: 16px 0 8px;
 }
 
 .login-header p {
-  color: #909399;
+  color: var(--text-muted);
   font-size: 14px;
   margin: 0;
 }
@@ -122,9 +121,9 @@ const handleLogin = async (values) => {
 }
 
 .login-form .van-field {
-  margin-bottom: 20px;
-  background: #f5f7fa;
-  border-radius: 8px;
+  margin-bottom: 16px;
+  background: #F8FAFC;
+  border-radius: var(--radius-sm);
   padding: 12px 16px;
 }
 
@@ -135,23 +134,25 @@ const handleLogin = async (values) => {
   gap: 16px;
 }
 
-/* 强制覆盖 Vant 默认的 primary 蓝色，使用主题色 */
 .login-btn {
-  background: #304156 !important;
-  border-color: #304156 !important;
+  background: var(--primary-gradient) !important;
+  border: none !important;
   height: 48px;
   font-size: 16px;
   font-weight: 600;
-  transition: opacity 0.3s;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.4);
+  transition: all 0.2s;
 }
 
 .login-btn:active {
   opacity: 0.9;
+  transform: scale(0.98);
 }
 
 .register-link {
   text-align: center;
-  color: #345473; /* 链接颜色使用较浅的主题色 */
+  color: var(--primary);
   text-decoration: none;
   font-size: 14px;
 }
@@ -159,10 +160,10 @@ const handleLogin = async (values) => {
 .login-tips {
   text-align: center;
   padding: 12px;
-  background: #f4f4f5;
-  border-radius: 8px;
+  background: #F8FAFC;
+  border-radius: var(--radius-sm);
   font-size: 12px;
-  color: #606266;
+  color: var(--text-secondary);
 }
 
 .login-tips p {

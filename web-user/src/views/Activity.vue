@@ -63,7 +63,7 @@ const showDetail = (item) => {
 <style scoped>
 .activity {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg-page);
 }
 
 .activity-card {
@@ -75,7 +75,7 @@ const showDetail = (item) => {
 .activity-card img {
   width: 100px;
   height: 100px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   object-fit: cover;
 }
 
@@ -90,7 +90,7 @@ const showDetail = (item) => {
 
 .info p {
   font-size: 13px;
-  color: #999;
+  color: var(--text-muted);
   margin-bottom: 5px;
   display: flex;
   align-items: center;
@@ -99,7 +99,7 @@ const showDetail = (item) => {
 
 .description {
   font-size: 12px;
-  color: #666;
+  color: var(--text-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

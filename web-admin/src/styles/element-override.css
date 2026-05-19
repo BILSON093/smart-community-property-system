@@ -1,0 +1,290 @@
+/* Element Plus 样式覆盖 - 现代简约风格 */
+
+/* ============ Card ============ */
+.el-card {
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+}
+
+.el-card:hover {
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.el-card__header {
+  border-bottom: 1px solid #F1F5F9 !important;
+  padding: 16px 20px !important;
+}
+
+/* ============ Button ============ */
+.el-button {
+  border-radius: var(--radius-sm) !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.el-button--primary {
+  background: var(--primary-gradient) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.3) !important;
+}
+
+.el-button--primary:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.4) !important;
+}
+
+.el-button--success {
+  background: linear-gradient(135deg, #10B981 0%, #34D399 100%) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+}
+
+.el-button--warning {
+  background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3) !important;
+}
+
+.el-button--danger {
+  background: linear-gradient(135deg, #EF4444 0%, #F87171 100%) !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+}
+
+.el-button--info {
+  background: linear-gradient(135deg, #6366F1 0%, #818CF8 100%) !important;
+  border: none !important;
+}
+
+.el-button + .el-button {
+  margin-left: 8px !important;
+}
+
+/* ============ Table ============ */
+.el-table {
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+  border: none !important;
+}
+
+.el-table th.el-table__cell {
+  background-color: #F8FAFC !important;
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  border-right: none !important;
+}
+
+.el-table td.el-table__cell {
+  border-bottom: 1px solid #F1F5F9 !important;
+  border-right: none !important;
+  padding: 14px 0 !important;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background-color: #FAFBFD !important;
+}
+
+.el-table__body tr:hover > td.el-table__cell {
+  background-color: var(--primary-bg) !important;
+}
+
+.el-table--border::after,
+.el-table--group::after {
+  display: none !important;
+}
+
+.el-table::before {
+  display: none !important;
+}
+
+/* ============ Tag ============ */
+.el-tag {
+  border-radius: 20px !important;
+  border: none !important;
+  font-weight: 500 !important;
+  padding: 0 12px !important;
+}
+
+.el-tag--success {
+  background-color: var(--success-bg) !important;
+  color: var(--success) !important;
+}
+
+.el-tag--warning {
+  background-color: var(--warning-bg) !important;
+  color: var(--warning) !important;
+}
+
+.el-tag--danger {
+  background-color: var(--danger-bg) !important;
+  color: var(--danger) !important;
+}
+
+.el-tag--info {
+  background-color: var(--info-bg) !important;
+  color: var(--info) !important;
+}
+
+/* ============ Dialog ============ */
+.el-dialog {
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.el-dialog__header {
+  padding: 20px 24px !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+}
+
+.el-dialog__title {
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+.el-dialog__body {
+  padding: 24px !important;
+}
+
+.el-dialog__footer {
+  padding: 16px 24px !important;
+  border-top: 1px solid #F1F5F9 !important;
+}
+
+/* ============ Input / Select ============ */
+.el-input__wrapper {
+  border-radius: var(--radius-sm) !important;
+  box-shadow: 0 0 0 1px #E2E8F0 inset !important;
+  transition: all 0.3s ease !important;
+}
+
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px var(--primary-light) inset !important;
+}
+
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 2px rgba(79, 110, 247, 0.2) inset !important;
+}
+
+.el-select .el-input__wrapper {
+  border-radius: var(--radius-sm) !important;
+}
+
+.el-textarea__inner {
+  border-radius: var(--radius-sm) !important;
+}
+
+.el-input-group__append,
+.el-input-group__prepend {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
+}
+
+/* ============ Date Picker ============ */
+.el-date-editor.el-input {
+  border-radius: var(--radius-sm) !important;
+}
+
+/* ============ Menu (Sidebar) ============ */
+.el-menu {
+  border-right: none !important;
+}
+
+/* ============ Statistic ============ */
+.el-statistic__number {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.el-statistic__head {
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+  margin-bottom: 8px !important;
+}
+
+/* ============ Badge ============ */
+.el-badge__content.is-fixed {
+  box-shadow: none !important;
+}
+
+/* ============ Form ============ */
+.el-form-item__label {
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+/* ============ Radio ============ */
+.el-radio__input.is-checked .el-radio__inner {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.el-radio__input.is-checked + .el-radio__label {
+  color: var(--primary) !important;
+}
+
+/* ============ Pagination ============ */
+.el-pagination {
+  margin-top: 16px !important;
+}
+
+.el-pager li {
+  border-radius: var(--radius-sm) !important;
+}
+
+.el-pager li.is-active {
+  background: var(--primary) !important;
+}
+
+/* ============ Dropdown ============ */
+.el-dropdown-menu {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: none !important;
+  padding: 6px !important;
+}
+
+.el-dropdown-menu__item {
+  border-radius: var(--radius-sm) !important;
+  padding: 8px 16px !important;
+}
+
+/* ============ Message ============ */
+.el-message {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: none !important;
+  padding: 12px 20px !important;
+}
+
+/* ============ Scrollbar ============ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* ============ Upload ============ */
+.el-upload--picture-card {
+  border-radius: var(--radius-md) !important;
+}
+
+.el-upload-dragger {
+  border-radius: var(--radius-md) !important;
+}

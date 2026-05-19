@@ -1,13 +1,19 @@
 <template>
-  <el-card>
-    <template #header>
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <span>论坛管理</span>
-        <el-button type="primary" @click="showAddDialog = true">发布帖子</el-button>
-      </div>
-    </template>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>论坛管理</span>
+          </div>
+          <div class="page-actions">
+            <el-button type="primary" @click="showAddDialog = true">发布帖子</el-button>
+          </div>
+        </div>
+      </template>
 
-    <div style="margin-bottom: 20px; display: flex; gap: 16px; align-items: center">
+      <div class="filter-area">
       <el-input
         v-model="searchKeyword"
         placeholder="搜索帖子标题或内容"
@@ -267,7 +273,8 @@
         <el-button type="primary" @click="handleAddComment">发表评论</el-button>
       </template>
     </el-dialog>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>

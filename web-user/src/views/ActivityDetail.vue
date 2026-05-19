@@ -196,7 +196,7 @@ const previewCoverImage = () => {
 <style scoped>
 .activity-detail {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg-page);
 }
 
 .header {
@@ -204,13 +204,13 @@ const previewCoverImage = () => {
   align-items: center;
   padding: 16px 20px;
   background: white;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .page-title {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: var(--text-primary);
   margin: 0;
   margin-left: 16px;
 }
@@ -224,13 +224,13 @@ const previewCoverImage = () => {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .cover-image {
   width: 100%;
   margin-bottom: 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
@@ -250,7 +250,7 @@ const previewCoverImage = () => {
   align-items: center;
   gap: 8px;
   margin-bottom: 10px;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -263,12 +263,12 @@ const previewCoverImage = () => {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .description p {
   line-height: 1.6;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -279,9 +279,9 @@ const previewCoverImage = () => {
 }
 
 .image-item {
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .image-item img {
@@ -292,11 +292,11 @@ const previewCoverImage = () => {
 }
 
 .btn-back {
-  background: #f0f9ff;
-  color: #409eff;
-  border: 1px solid #409eff;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border: 1px solid rgba(79, 110, 247, 0.2);
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   display: flex;
@@ -306,14 +306,14 @@ const previewCoverImage = () => {
 }
 
 .btn-back:hover {
-  background: #e6f7ff;
+  background: rgba(79, 110, 247, 0.12);
   transform: translateY(-2px);
 }
 
 .signup-section {
   margin-bottom: 20px;
   padding: 16px;
-  background: #f0f9ff;
-  border-radius: 8px;
+  background: var(--primary-bg);
+  border-radius: var(--radius-sm);
 }
 </style>

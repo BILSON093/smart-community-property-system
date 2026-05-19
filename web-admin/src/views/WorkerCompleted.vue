@@ -1,8 +1,14 @@
 <template>
-  <el-card>
-    <template #header>
-      <span>已完成订单</span>
-    </template>
+  <div class="page-container">
+    <el-card class="page-card">
+      <template #header>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>已完成订单</span>
+          </div>
+        </div>
+      </template>
 
     <el-table :data="completedList" border stripe>
       <el-table-column prop="id" label="工单号" width="100" />
@@ -88,7 +94,8 @@
         <el-button @click="showDetailDialog = false">关闭</el-button>
       </template>
     </el-dialog>
-  </el-card>
+    </el-card>
+  </div>
 </template>
 
 <script setup>

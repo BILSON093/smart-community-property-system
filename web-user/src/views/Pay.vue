@@ -2,10 +2,6 @@
   <div class="pay">
     <div class="page-header">
       <div class="header-left">
-        <button @click="goBack" class="btn-back">
-          <van-icon name="arrow-left" size="18" />
-          返回
-        </button>
         <h2>物业缴费</h2>
       </div>
     </div>
@@ -195,9 +191,6 @@ const selectMethod = (method) => {
   selectedMethod.value = method.id
 }
 
-const goBack = () => {
-  router.back()
-}
 
 onMounted(() => {
   onLoad()
@@ -212,7 +205,7 @@ onMounted(() => {
 .page-header {
   margin-bottom: 30px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .header-left {
@@ -222,56 +215,46 @@ onMounted(() => {
 }
 
 .btn-back {
-  background: #f0f9ff;
-  color: #409EFF;
-  border: 1px solid #d9ecff;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border: 1px solid rgba(79, 110, 247, 0.2);
   padding: 8px 20px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.2s;
   font-weight: 500;
-  box-shadow: 0 2px 4px rgba(64, 158, 255, 0.1);
 }
 
 .btn-back:hover {
-  background: #409EFF;
-  color: white;
-  border-color: #409EFF;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
-  transform: translateY(-1px);
-}
-
-.btn-back:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+  background: rgba(79, 110, 247, 0.12);
 }
 
 .page-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .payment-section {
-  background: #f9fafc;
-  border-radius: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .section-title {
   font-size: 16px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0 0 20px 0;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .payment-list {
@@ -283,7 +266,7 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 60px 0;
-  color: #909399;
+  color: var(--text-muted);
   font-size: 14px;
 }
 
@@ -291,15 +274,15 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background: white;
-  border-radius: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s;
 }
 
 .payment-item:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-2px);
 }
 
@@ -318,31 +301,31 @@ onMounted(() => {
 .type-name {
   font-size: 16px;
   font-weight: 500;
-  color: #304156;
+  color: var(--text-primary);
 }
 
 .payment-status {
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
 }
 
 .status-0 {
-  background: #ecf5ff;
-  color: #409EFF;
+  background: var(--primary-bg);
+  color: var(--primary);
 }
 
 .status-1 {
-  background: #f6ffed;
-  color: #67C23A;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
 }
 
 .payment-details {
   display: flex;
   gap: 24px;
   font-size: 14px;
-  color: #606266;
+  color: var(--text-secondary);
 }
 
 .detail-item {
@@ -352,7 +335,7 @@ onMounted(() => {
 }
 
 .detail-item label {
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .payment-actions {
@@ -365,15 +348,15 @@ onMounted(() => {
 .amount {
   font-size: 20px;
   font-weight: 600;
-  color: #f56c6c;
+  color: var(--danger);
 }
 
 .btn-pay {
-  background-color: #409EFF;
+  background: var(--primary);
   color: white;
   border: none;
   padding: 8px 24px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -381,8 +364,8 @@ onMounted(() => {
 }
 
 .btn-pay:hover {
-  background-color: #66b1ff;
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+  background: var(--primary-light);
+  box-shadow: 0 4px 12px rgba(79, 110, 247, 0.3);
 }
 
 .btn-pay:active {
@@ -391,7 +374,7 @@ onMounted(() => {
 
 .paid-label {
   font-size: 14px;
-  color: #67C23A;
+  color: var(--success);
   font-weight: 500;
 }
 
@@ -411,7 +394,7 @@ onMounted(() => {
 
 .pay-dialog {
   background: white;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   width: 90%;
   max-width: 500px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -423,14 +406,14 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #e4e7ed;
-  background: #f9fafc;
+  border-bottom: 1px solid #F1F5F9;
+  background: #F8FAFC;
 }
 
 .dialog-header h3 {
   font-size: 16px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -438,7 +421,7 @@ onMounted(() => {
   background: none;
   border: none;
   font-size: 20px;
-  color: #909399;
+  color: var(--text-muted);
   cursor: pointer;
   width: 24px;
   height: 24px;
@@ -450,8 +433,8 @@ onMounted(() => {
 }
 
 .dialog-close:hover {
-  background: #f0f2f5;
-  color: #606266;
+  background: #F1F5F9;
+  color: var(--text-secondary);
 }
 
 .dialog-content {
@@ -461,14 +444,14 @@ onMounted(() => {
 .payment-summary {
   margin-bottom: 24px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #f0f2f5;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .payment-summary h4,
 .payment-methods h4 {
   font-size: 14px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0 0 16px 0;
 }
 
@@ -481,13 +464,13 @@ onMounted(() => {
 }
 
 .summary-item label {
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .summary-amount {
   font-size: 18px;
   font-weight: 600;
-  color: #f56c6c;
+  color: var(--danger);
 }
 
 .payment-methods {
@@ -498,16 +481,16 @@ onMounted(() => {
   display: flex;
   align-items: center;
   padding: 12px;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
   margin-bottom: 12px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .method-item:hover {
-  border-color: #409EFF;
-  background: #ecf5ff;
+  border-color: var(--primary);
+  background: var(--primary-bg);
 }
 
 .method-item input[type="radio"] {
@@ -517,7 +500,7 @@ onMounted(() => {
 .method-item label {
   flex: 1;
   font-size: 14px;
-  color: #304156;
+  color: var(--text-primary);
   cursor: pointer;
 }
 
@@ -533,32 +516,32 @@ onMounted(() => {
   justify-content: flex-end;
   gap: 12px;
   padding: 20px 24px;
-  border-top: 1px solid #e4e7ed;
-  background: #f9fafc;
+  border-top: 1px solid #F1F5F9;
+  background: #F8FAFC;
 }
 
 .btn-cancel {
   background: white;
-  color: #606266;
-  border: 1px solid #dcdfe6;
+  color: var(--text-secondary);
+  border: 1px solid #E2E8F0;
   padding: 8px 20px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .btn-cancel:hover {
-  border-color: #c6e2ff;
-  color: #409EFF;
+  border-color: rgba(79, 110, 247, 0.3);
+  color: var(--primary);
 }
 
 .btn-confirm {
-  background-color: #409EFF;
+  background: var(--primary);
   color: white;
   border: none;
   padding: 8px 24px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -566,8 +549,8 @@ onMounted(() => {
 }
 
 .btn-confirm:hover {
-  background-color: #66b1ff;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+  background: var(--primary-light);
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.3);
 }
 
 @media (max-width: 768px) {

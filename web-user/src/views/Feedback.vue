@@ -138,21 +138,21 @@ const handleSubmit = async () => {
 .page-header {
   margin-bottom: 30px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .page-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .feedback-form {
-  background: #f9fafc;
-  border-radius: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 32px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   max-width: 800px;
   margin: 0 auto;
 }
@@ -160,13 +160,13 @@ const handleSubmit = async () => {
 .feedback-form h3 {
   font-size: 18px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin: 0 0 16px 0;
 }
 
 .form-description {
   font-size: 14px;
-  color: #606266;
+  color: var(--text-secondary);
   margin: 0 0 24px 0;
   line-height: 1.6;
 }
@@ -179,15 +179,15 @@ const handleSubmit = async () => {
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #304156;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .form-group textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   line-height: 1.6;
   resize: vertical;
@@ -196,8 +196,8 @@ const handleSubmit = async () => {
 
 .form-group textarea:focus {
   outline: none;
-  border-color: #409eff;
-  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.1);
 }
 
 .form-actions {
@@ -206,21 +206,20 @@ const handleSubmit = async () => {
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
+  background: var(--primary-gradient);
   color: white;
   border: none;
   padding: 12px 48px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.3);
 }
 
 .submit-btn:hover {
-  background: linear-gradient(135deg, #66b1ff 0%, #409eff 100%);
-  box-shadow: 0 4px 16px rgba(64, 158, 255, 0.4);
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.4);
   transform: translateY(-2px);
 }
 
@@ -236,23 +235,23 @@ const handleSubmit = async () => {
 .feedback-history h3 {
   font-size: 18px;
   font-weight: 600;
-  color: #304156;
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
 .empty-tip {
   text-align: center;
-  color: #909399;
+  color: var(--text-muted);
   padding: 40px 0;
   font-size: 14px;
 }
 
 .feedback-item {
-  background: white;
-  border-radius: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   padding: 20px;
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .feedback-content {
@@ -261,19 +260,19 @@ const handleSubmit = async () => {
 
 .feedback-text {
   font-size: 15px;
-  color: #303133;
+  color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: 8px;
 }
 
 .feedback-time {
   font-size: 12px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .feedback-reply {
-  background: #f0f9ff;
-  border-left: 3px solid #409eff;
+  background: var(--primary-bg);
+  border-left: 3px solid var(--primary);
   padding: 12px 16px;
   border-radius: 4px;
   margin-top: 12px;
@@ -281,21 +280,21 @@ const handleSubmit = async () => {
 
 .reply-label {
   font-size: 13px;
-  color: #409eff;
+  color: var(--primary);
   font-weight: 500;
   margin-bottom: 6px;
 }
 
 .reply-text {
   font-size: 14px;
-  color: #303133;
+  color: var(--text-primary);
   line-height: 1.6;
   margin-bottom: 6px;
 }
 
 .reply-time {
   font-size: 12px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .feedback-status {

@@ -2,10 +2,6 @@
   <div class="chat-container">
     <div class="chat-header">
       <div class="header-left">
-        <button @click="goBack" class="btn-back">
-          <van-icon name="arrow-left" size="20" color="white" />
-          返回
-        </button>
         <div class="header-title">
           <van-icon name="chat-o" size="28" color="#fff" />
           <h2>{{ modeLabel }}</h2>
@@ -138,9 +134,6 @@ const messageList = ref(null)
 const userInfo = ref({ avatar: '', name: '' })
 const adminInfo = ref({ avatar: '', name: '' })
 
-const goBack = () => {
-  router.back()
-}
 
 const loadUserInfo = async () => {
   try {
@@ -428,17 +421,17 @@ onMounted(() => {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f7fa;
+  background: var(--bg-page);
   overflow: hidden;
 }
 
 .chat-header {
-  background: linear-gradient(135deg, #304156 0%, #409EFF 100%);
+  background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-left {
@@ -454,22 +447,21 @@ onMounted(() => {
 }
 
 .btn-back {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .btn-back:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .chat-header h2 {
@@ -564,10 +556,10 @@ onMounted(() => {
 }
 
 .message-bubble {
-  padding: 16px 20px;
+  padding: 14px 18px;
   border-radius: 16px;
   max-width: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   display: inline-block;
   width: fit-content;
 }
@@ -578,9 +570,10 @@ onMounted(() => {
 }
 
 .message.right .message-bubble {
-  background: linear-gradient(135deg, #304156 0%, #409EFF 100%);
+  background: var(--primary-gradient);
   color: white;
   border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.25);
 }
 
 .message-content {
@@ -630,9 +623,8 @@ onMounted(() => {
 
 .input-area {
   background: white;
-  border-top: 1px solid #e4e7ed;
+  border-top: 1px solid #F1F5F9;
   padding: 20px 24px;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .input-wrapper {
@@ -694,38 +686,39 @@ onMounted(() => {
 .chat-input {
   flex: 1;
   padding: 14px 20px;
-  border: 2px solid #dcdfe6;
-  border-radius: 8px;
+  border: 2px solid #E2E8F0;
+  border-radius: var(--radius-md);
   font-size: 15px;
   font-family: inherit;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .chat-input:focus {
   outline: none;
-  border-color: #409eff;
-  box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.1);
 }
 
 .btn-send {
-  background: linear-gradient(135deg, #304156 0%, #409EFF 100%);
+  background: var(--primary-gradient);
   color: white;
   border: none;
   padding: 14px 32px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s;
+  transition: all 0.2s;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.3);
 }
 
 .btn-send:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.4);
 }
 
 .quick-questions {
@@ -747,18 +740,17 @@ onMounted(() => {
 
 .quick-tag {
   padding: 8px 16px;
-  background: #f0f9ff;
-  color: #409eff;
+  background: var(--primary-bg);
+  color: var(--primary);
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
   border: 1px solid transparent;
 }
 
 .quick-tag:hover {
-  background: #e6f7ff;
-  border-color: #409eff;
-  transform: translateY(-2px);
+  background: rgba(79, 110, 247, 0.12);
+  border-color: rgba(79, 110, 247, 0.2);
 }
 </style>

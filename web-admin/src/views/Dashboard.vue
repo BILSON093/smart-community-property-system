@@ -3,88 +3,136 @@
     <el-row :gutter="20">
       <el-col :span="6">
         <el-card class="stat-card">
-          <el-statistic title="业主总数" :value="stats.ownerCount">
-            <template #suffix>人</template>
-          </el-statistic>
+          <div class="stat-card-inner">
+            <div class="stat-icon stat-icon-blue">
+              <el-icon :size="24"><User /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">业主总数</div>
+              <div class="stat-value">{{ stats.ownerCount }}<span class="stat-unit">人</span></div>
+            </div>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card class="stat-card">
-          <el-statistic title="待处理报修" :value="stats.pendingRepairs">
-            <template #suffix>单</template>
-          </el-statistic>
+          <div class="stat-card-inner">
+            <div class="stat-icon stat-icon-orange">
+              <el-icon :size="24"><DocumentChecked /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">待处理报修</div>
+              <div class="stat-value">{{ stats.pendingRepairs }}<span class="stat-unit">单</span></div>
+            </div>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card class="stat-card">
-          <el-statistic title="本月缴费" :value="stats.monthFee" :precision="2">
-            <template #prefix>¥</template>
-          </el-statistic>
+          <div class="stat-card-inner">
+            <div class="stat-icon stat-icon-green">
+              <el-icon :size="24"><Money /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">本月缴费</div>
+              <div class="stat-value"><span class="stat-prefix">¥</span>{{ stats.monthFee.toFixed(2) }}</div>
+            </div>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card class="stat-card">
-          <el-statistic title="今日活跃" :value="stats.todayActive">
-            <template #suffix>人</template>
-          </el-statistic>
+          <div class="stat-card-inner">
+            <div class="stat-icon stat-icon-purple">
+              <el-icon :size="24"><DataLine /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">今日活跃</div>
+              <div class="stat-value">{{ stats.todayActive }}<span class="stat-unit">人</span></div>
+            </div>
+          </div>
         </el-card>
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" style="margin-top: 20px">
+    <el-row :gutter="20" class="chart-row">
       <el-col :span="12">
-        <el-card>
+        <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>近七日缴费趋势</span>
+              <div class="card-title">
+                <div class="title-bar"></div>
+                <span>近七日缴费趋势</span>
+              </div>
             </div>
           </template>
-          <div ref="feeChart" style="height: 300px"></div>
+          <div ref="feeChart" class="chart-container"></div>
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card>
+        <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>近七日论坛发帖趋势</span>
+              <div class="card-title">
+                <div class="title-bar"></div>
+                <span>近七日论坛发帖趋势</span>
+              </div>
             </div>
           </template>
-          <div ref="forumChart" style="height: 300px"></div>
+          <div ref="forumChart" class="chart-container"></div>
         </el-card>
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" style="margin-top: 20px">
+    <el-row :gutter="20" class="chart-row">
       <el-col :span="8">
-        <el-card>
+        <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>维修分类统计</span>
+              <div class="card-title">
+                <div class="title-bar"></div>
+                <span>维修分类统计</span>
+              </div>
             </div>
           </template>
-          <div ref="repairTypeChart" style="height: 300px"></div>
+          <div ref="repairTypeChart" class="chart-container"></div>
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card>
+        <el-card class="chart-card">
           <template #header>
             <div class="card-header">
-              <span>缴费收缴率</span>
+              <div class="card-title">
+                <div class="title-bar"></div>
+                <span>缴费收缴率</span>
+              </div>
             </div>
           </template>
-          <div ref="feeRateChart" style="height: 300px"></div>
+          <div ref="feeRateChart" class="chart-container"></div>
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card class="stat-card">
-          <el-statistic title="维修员总数" :value="stats.workerCount">
-            <template #suffix>人</template>
-          </el-statistic>
+          <div class="stat-card-inner">
+            <div class="stat-icon stat-icon-cyan">
+              <el-icon :size="24"><Tools /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">维修员总数</div>
+              <div class="stat-value">{{ stats.workerCount }}<span class="stat-unit">人</span></div>
+            </div>
+          </div>
         </el-card>
         <el-card class="stat-card" style="margin-top: 20px">
-          <el-statistic title="维修员平均评分" :value="stats.avgWorkerScore" :precision="1">
-            <template #suffix>分</template>
-          </el-statistic>
+          <div class="stat-card-inner">
+            <div class="stat-icon stat-icon-yellow">
+              <el-icon :size="24"><Star /></el-icon>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">维修员平均评分</div>
+              <div class="stat-value">{{ stats.avgWorkerScore.toFixed(1) }}<span class="stat-unit">分</span></div>
+            </div>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -173,16 +221,32 @@ const renderCharts = () => {
     tooltip: { trigger: 'axis' },
     xAxis: {
       type: 'category',
-      data: feeDates
+      data: feeDates,
+      axisLine: { lineStyle: { color: '#E2E8F0' } },
+      axisLabel: { color: '#94A3B8' }
     },
-    yAxis: { type: 'value' },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      splitLine: { lineStyle: { color: '#F1F5F9' } },
+      axisLabel: { color: '#94A3B8' }
+    },
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
     series: [
       {
         data: feeAmounts,
         type: 'line',
         smooth: true,
-        itemStyle: { color: '#409EFF' },
-        lineStyle: { color: '#409EFF' }
+        symbol: 'circle',
+        symbolSize: 8,
+        itemStyle: { color: '#4F6EF7' },
+        lineStyle: { color: '#4F6EF7', width: 3 },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(79, 110, 247, 0.25)' },
+            { offset: 1, color: 'rgba(79, 110, 247, 0.02)' }
+          ])
+        }
       }
     ]
   })
@@ -199,19 +263,33 @@ const renderCharts = () => {
     tooltip: { trigger: 'axis' },
     xAxis: {
       type: 'category',
-      data: forumDates
+      data: forumDates,
+      axisLine: { lineStyle: { color: '#E2E8F0' } },
+      axisLabel: { color: '#94A3B8' }
     },
-    yAxis: { 
+    yAxis: {
       type: 'value',
-      minInterval: 1
+      minInterval: 1,
+      axisLine: { show: false },
+      splitLine: { lineStyle: { color: '#F1F5F9' } },
+      axisLabel: { color: '#94A3B8' }
     },
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
     series: [
       {
         data: forumCounts,
         type: 'line',
         smooth: true,
-        itemStyle: { color: '#67C23A' },
-        lineStyle: { color: '#67C23A' }
+        symbol: 'circle',
+        symbolSize: 8,
+        itemStyle: { color: '#10B981' },
+        lineStyle: { color: '#10B981', width: 3 },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: 'rgba(16, 185, 129, 0.25)' },
+            { offset: 1, color: 'rgba(16, 185, 129, 0.02)' }
+          ])
+        }
       }
     ]
   })
@@ -221,13 +299,15 @@ const renderCharts = () => {
   const repairTypeData = Object.entries(stats.value.repairTypes).map(([name, value]) => ({ name, value }))
   repairTypeChartInstance.setOption({
     tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-    legend: { orient: 'vertical', left: 'left', top: 'middle' },
+    legend: { orient: 'vertical', left: 'left', top: 'middle', textStyle: { color: '#64748B' } },
+    color: ['#4F6EF7', '#10B981', '#F59E0B', '#EF4444', '#6366F1', '#EC4899'],
     series: [{
       type: 'pie',
       radius: ['40%', '70%'],
       center: ['60%', '50%'],
       data: repairTypeData.length > 0 ? repairTypeData : [{ name: '暂无数据', value: 0 }],
-      emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
+      emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } },
+      label: { color: '#64748B' }
     }]
   })
 
@@ -235,13 +315,25 @@ const renderCharts = () => {
   feeRateChartInstance = echarts.init(feeRateChart.value)
   feeRateChartInstance.setOption({
     tooltip: { trigger: 'axis' },
-    xAxis: { type: 'category', data: ['已缴费', '未缴费'] },
-    yAxis: { type: 'value', minInterval: 1 },
+    xAxis: {
+      type: 'category',
+      data: ['已缴费', '未缴费'],
+      axisLine: { lineStyle: { color: '#E2E8F0' } },
+      axisLabel: { color: '#94A3B8' }
+    },
+    yAxis: {
+      type: 'value',
+      minInterval: 1,
+      axisLine: { show: false },
+      splitLine: { lineStyle: { color: '#F1F5F9' } },
+      axisLabel: { color: '#94A3B8' }
+    },
+    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
     series: [{
       type: 'bar',
       data: [
-        { value: stats.value.feeRate.paid, itemStyle: { color: '#67C23A' } },
-        { value: stats.value.feeRate.unpaid, itemStyle: { color: '#F56C6C' } }
+        { value: stats.value.feeRate.paid, itemStyle: { color: '#10B981', borderRadius: [6, 6, 0, 0] } },
+        { value: stats.value.feeRate.unpaid, itemStyle: { color: '#EF4444', borderRadius: [6, 6, 0, 0] } }
       ],
       barWidth: '40%'
     }]
@@ -258,8 +350,102 @@ const renderCharts = () => {
 </script>
 
 <style scoped>
+.dashboard {
+  min-height: 100%;
+}
+
 .stat-card {
   margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.stat-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-icon-blue {
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
+}
+
+.stat-icon-orange {
+  background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+}
+
+.stat-icon-green {
+  background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+}
+
+.stat-icon-purple {
+  background: linear-gradient(135deg, #6366F1 0%, #818CF8 100%);
+}
+
+.stat-icon-cyan {
+  background: linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%);
+}
+
+.stat-icon-yellow {
+  background: linear-gradient(135deg, #EAB308 0%, #FDE047 100%);
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-unit {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+.stat-prefix {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chart-row {
+  margin-top: 20px;
+}
+
+.chart-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover) !important;
 }
 
 .card-header {
@@ -267,5 +453,24 @@ const renderCharts = () => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.title-bar {
+  width: 4px;
+  height: 18px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+.chart-container {
+  height: 300px;
 }
 </style>

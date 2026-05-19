@@ -1,9 +1,12 @@
 <template>
-  <div class="notification-container">
-    <el-card>
+  <div class="page-container">
+    <el-card class="page-card">
       <template #header>
-        <div class="card-header">
-          <span>通知管理</span>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>通知管理</span>
+          </div>
         </div>
       </template>
 
@@ -82,12 +85,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.notification-container {
-  padding: 0;
-}
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 </style>

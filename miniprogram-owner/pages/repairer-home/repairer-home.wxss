@@ -1,13 +1,13 @@
 /* pages/repairer-home/repairer-home.wxss */
 .container {
   min-height: 100vh;
-  background-color: #f7f8fa;
+  background-color: #F7F8FB;
   padding-bottom: 20rpx;
 }
 
 /* 自定义导航栏 */
 .custom-nav-bar {
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
   padding-top: calc(160rpx + env(safe-area-inset-top));
   padding-bottom: 20rpx;
 }
@@ -57,7 +57,7 @@
   padding: 40rpx 30rpx;
   background-color: #fff;
   margin: 60rpx 20rpx;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
 }
 
@@ -70,13 +70,13 @@
 .stat-value {
   font-size: 48rpx;
   font-weight: bold;
-  color: #304156;
+  color: #4F6EF7;
   margin-bottom: 10rpx;
 }
 
 .stat-label {
   font-size: 24rpx;
-  color: #999;
+  color: #94A3B8;
 }
 
 /* 标签页 */
@@ -84,8 +84,8 @@
   display: flex;
   background-color: #fff;
   margin: 0 20rpx 40rpx 20rpx;
-  border-bottom: 1rpx solid #eee;
-  border-radius: 12rpx 12rpx 0 0;
+  border-bottom: 1rpx solid #F1F5F9;
+  border-radius: 16rpx 16rpx 0 0;
   padding-top: 10rpx;
 }
 
@@ -94,12 +94,12 @@
   text-align: center;
   padding: 35rpx 0;
   font-size: 28rpx;
-  color: #666;
+  color: #64748B;
   position: relative;
 }
 
 .tab-item.active {
-  color: #304156;
+  color: #4F6EF7;
   font-weight: bold;
 }
 
@@ -111,7 +111,7 @@
   transform: translateX(-50%);
   width: 60rpx;
   height: 4rpx;
-  background-color: #304156;
+  background-color: #4F6EF7;
   border-radius: 2rpx;
 }
 
@@ -122,7 +122,7 @@
 
 .order-item {
   background-color: #fff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   padding: 30rpx;
   margin-bottom: 20rpx;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
@@ -137,13 +137,13 @@
 
 .order-id {
   font-size: 26rpx;
-  color: #999;
+  color: #94A3B8;
 }
 
 .order-status {
   font-size: 24rpx;
-  color: #304156;
-  background-color: rgba(48, 65, 86, 0.1);
+  color: #4F6EF7;
+  background-color: rgba(79, 110, 247, 0.1);
   padding: 8rpx 16rpx;
   border-radius: 4rpx;
 }
@@ -155,7 +155,7 @@
 .order-desc {
   display: block;
   font-size: 28rpx;
-  color: #333;
+  color: #1E293B;
   line-height: 1.6;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -171,17 +171,17 @@
 
 .order-time {
   font-size: 24rpx;
-  color: #999;
+  color: #94A3B8;
 }
 
 .arrow {
   font-size: 32rpx;
-  color: #ccc;
+  color: #CBD5E1;
 }
 
 .empty {
   text-align: center;
   padding: 100rpx 0;
-  color: #999;
+  color: #94A3B8;
   font-size: 28rpx;
 }

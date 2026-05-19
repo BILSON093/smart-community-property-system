@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div style="margin-bottom: 16px; display: flex; gap: 12px; align-items: center;">
+  <div class="page-container">
+    <div class="filter-area">
       <el-select v-model="selectedType" placeholder="报修分类" clearable style="width: 150px" @change="loadRepairs">
         <el-option label="全部分类" :value="null" />
         <el-option label="水电维修" value="水电维修" />
@@ -11,6 +11,7 @@
       </el-select>
     </div>
 
+    <el-card class="page-card">
     <el-table :data="repairList" border stripe>
       <el-table-column prop="id" label="ID" width="80" />
       <el-table-column prop="ownerName" label="业主" width="120" />
@@ -101,6 +102,7 @@
         <el-button @click="showDetailDialog = false">关闭</el-button>
       </template>
     </el-dialog>
+    </el-card>
   </div>
 </template>
 

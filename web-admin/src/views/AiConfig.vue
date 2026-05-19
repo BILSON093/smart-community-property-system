@@ -1,10 +1,15 @@
 <template>
-  <div class="ai-config">
-    <el-card>
+  <div class="page-container">
+    <el-card class="page-card">
       <template #header>
-        <div class="card-header">
-          <span>AI模型配置</span>
-          <el-button type="primary" @click="handleAdd">添加配置</el-button>
+        <div class="page-header">
+          <div class="page-title">
+            <div class="title-bar"></div>
+            <span>AI模型配置</span>
+          </div>
+          <div class="page-actions">
+            <el-button type="primary" @click="handleAdd">添加配置</el-button>
+          </div>
         </div>
       </template>
 
@@ -310,14 +315,4 @@ const maskApiKey = (apiKey) => {
 </script>
 
 <style scoped>
-.ai-config {
-  padding: 20px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
 </style>

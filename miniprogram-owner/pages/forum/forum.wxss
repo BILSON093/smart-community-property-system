@@ -1,7 +1,7 @@
 /* pages/forum/forum.wxss */
 .container {
   min-height: 100vh;
-  background-color: #f7f8fa;
+  background-color: #F7F8FB;
   padding-bottom: 40rpx;
 }
 
@@ -23,14 +23,14 @@
   padding: 12rpx 24rpx;
   margin-right: 20rpx;
   font-size: 28rpx;
-  color: #646566;
-  background-color: #f7f8fa;
+  color: #64748B;
+  background-color: #F1F5F9;
   border-radius: 20rpx;
   border: none;
 }
 
 .category-item.active {
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   color: #ffffff;
 }
 
@@ -40,7 +40,7 @@
 
 .post-card {
   background-color: #ffffff;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
@@ -67,19 +67,19 @@
 
 .username {
   font-size: 28rpx;
-  color: #323233;
+  color: #1E293B;
   font-weight: 500;
   margin-bottom: 4rpx;
 }
 
 .time {
   font-size: 24rpx;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .pin-badge {
   padding: 4rpx 12rpx;
-  background-color: #ff6b00;
+  background-color: #EF4444;
   color: #ffffff;
   font-size: 22rpx;
   border-radius: 4rpx;
@@ -93,7 +93,7 @@
   display: block;
   font-size: 30rpx;
   font-weight: 600;
-  color: #323233;
+  color: #1E293B;
   margin-bottom: 12rpx;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -102,7 +102,7 @@
 
 .post-desc {
   font-size: 28rpx;
-  color: #646566;
+  color: #64748B;
   line-height: 1.6;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -126,7 +126,7 @@
 .post-footer {
   display: flex;
   padding-top: 16rpx;
-  border-top: 1rpx solid #ebedf0;
+  border-top: 1rpx solid #F1F5F9;
 }
 
 .footer-item {
@@ -134,13 +134,13 @@
   align-items: center;
   margin-right: 40rpx;
   font-size: 26rpx;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .footer-item.delete-btn {
   margin-left: auto;
   margin-right: 0;
-  color: #f56c6c;
+  color: #EF4444;
 }
 
 .footer-item text:first-child {
@@ -153,7 +153,7 @@
   align-items: center;
   justify-content: center;
   padding: 200rpx 0;
-  color: #969799;
+  color: #94A3B8;
 }
 
 .empty-icon {
@@ -169,7 +169,7 @@
 .loading {
   text-align: center;
   padding: 40rpx 0;
-  color: #969799;
+  color: #94A3B8;
   font-size: 28rpx;
 }
 
@@ -179,12 +179,12 @@
   right: 40rpx;
   width: 120rpx;
   height: 120rpx;
-  background: linear-gradient(135deg, #304156 0%, #3a4b63 100%);
+  background: linear-gradient(135deg, #4F6EF7 0%, #6B85F9 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(48, 65, 86, 0.4);
+  box-shadow: 0 8rpx 24rpx rgba(79, 110, 247, 0.4);
   z-index: 999;
 }
 

@@ -117,7 +117,7 @@ const previewNoticeImage = (imageUrl, index) => {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 30px;
-  color: #304156;
+  color: var(--text-primary);
 }
 
 .notice-list {
@@ -128,15 +128,15 @@ const previewNoticeImage = (imageUrl, index) => {
 
 .notice-item {
   padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.08);
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .notice-item:hover {
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-hover);
   transform: translateY(-2px);
 }
 
@@ -150,7 +150,7 @@ const previewNoticeImage = (imageUrl, index) => {
 .notice-title {
   font-size: 18px;
   font-weight: 500;
-  color: #303133;
+  color: var(--text-primary);
   margin: 0;
   display: flex;
   align-items: center;
@@ -158,29 +158,29 @@ const previewNoticeImage = (imageUrl, index) => {
 }
 
 .urgent-tag {
-  background: #F56C6C;
+  background: var(--danger);
   color: #fff;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: normal;
 }
 
 .notice-time {
   font-size: 14px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .notice-content {
   font-size: 14px;
-  color: #606266;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 .empty-state {
   text-align: center;
   padding: 80px 0;
-  color: #909399;
+  color: var(--text-muted);
   font-size: 16px;
 }
 
@@ -200,17 +200,17 @@ const previewNoticeImage = (imageUrl, index) => {
 
 .modal-content {
   background: #fff;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   width: 90%;
   max-width: 800px;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-lg);
 }
 
 .modal-header {
   padding: 20px 24px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid #F1F5F9;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -220,18 +220,18 @@ const previewNoticeImage = (imageUrl, index) => {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #303133;
+  color: var(--text-primary);
 }
 
 .close-btn {
   font-size: 24px;
-  color: #909399;
+  color: var(--text-muted);
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .close-btn:hover {
-  color: #606266;
+  color: var(--text-secondary);
 }
 
 .modal-body {
@@ -244,40 +244,40 @@ const previewNoticeImage = (imageUrl, index) => {
   gap: 16px;
   margin-bottom: 20px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .publish-time {
   font-size: 14px;
-  color: #909399;
+  color: var(--text-muted);
 }
 
 .notice-detail-content {
   font-size: 16px;
   line-height: 1.8;
-  color: #303133;
+  color: var(--text-primary);
   white-space: pre-wrap;
 }
 
 .modal-footer {
   padding: 20px 24px;
-  border-top: 1px solid #e4e7ed;
+  border-top: 1px solid #F1F5F9;
   text-align: right;
 }
 
 .btn {
   padding: 10px 24px;
-  background: #409EFF;
+  background: var(--primary);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   cursor: pointer;
   transition: background 0.3s;
 }
 
 .btn:hover {
-  background: #66b1ff;
+  background: var(--primary-light);
 }
 
 /* 响应式设计 */

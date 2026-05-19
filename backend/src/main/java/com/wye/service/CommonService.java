@@ -27,19 +27,19 @@ public class CommonService {
         Map<String, Object> result = new HashMap<>();
         
         try {
-            // 创建目录
-            File dir = new File(uploadPath);
+            // 创建目录（使用绝对路径）
+            File dir = new File(uploadPath).getAbsoluteFile();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            
+
             // 生成文件名
             String originalFilename = file.getOriginalFilename();
             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             String fileName = UUID.randomUUID().toString() + extension;
-            
+
             // 保存文件
-            File destFile = new File(uploadPath + "/" + fileName);
+            File destFile = new File(dir, fileName);
             file.transferTo(destFile);
             
             // 返回URL

@@ -1,10 +1,17 @@
 <template>
-  <el-container class="worker-layout">
-    <el-aside width="200px" class="aside">
-      <div class="logo">维修员端</div>
+  <el-container class="layout-container">
+    <el-aside width="220px">
+      <div class="logo">
+        <div class="logo-icon">维</div>
+        <span>维修员端</span>
+      </div>
       <el-menu
         :default-active="activeMenu"
-        class="el-menu-vertical-demo"
+        router
+        background-color="transparent"
+        text-color="#94A3B8"
+        active-text-color="#4F6EF7"
+        class="sidebar-menu"
         @select="handleMenuSelect"
       >
         <el-menu-item index="/worker-home">
@@ -23,23 +30,22 @@
     </el-aside>
     <el-container>
       <el-header>
-        <div class="header-content">
-          <div class="user-info">
-            <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link">
-                <el-avatar :size="32" :src="userInfo.avatar || ''" style="margin-right: 8px;">
-                  {{ (userInfo.realName || '维修员').charAt(0) }}
-                </el-avatar>
-                {{ userInfo.realName || '维修员' }}
-                <el-icon class="el-icon--right"><arrow-down /></el-icon>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
+        <div class="header-left"></div>
+        <div class="header-right">
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              <el-avatar :size="34" :src="userInfo.avatar || ''" class="header-avatar">
+                {{ (userInfo.realName || '维修员').charAt(0) }}
+              </el-avatar>
+              <span class="header-username">{{ userInfo.realName || '维修员' }}</span>
+              <el-icon class="el-icon--right"><arrow-down /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </el-header>
       <el-main>
@@ -78,74 +84,129 @@ const handleCommand = (command) => {
 </script>
 
 <style scoped>
-.worker-layout {
+.layout-container {
   height: 100vh;
 }
 
-.aside {
-  background-color: #304156;
-  color: white;
-  display: flex;
-  flex-direction: column;
+.el-aside {
+  background-color: var(--sidebar-bg);
+  overflow-x: hidden;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
-.aside .logo {
+.logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   font-size: 18px;
-  font-weight: bold;
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, rgba(79, 110, 247, 0.3) 0%, rgba(79, 110, 247, 0.1) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-gradient);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+}
+
+.sidebar-menu {
+  border-right: none !important;
+  padding: 8px;
+}
+
+.sidebar-menu .el-menu-item {
+  height: 44px;
+  line-height: 44px;
+  margin: 2px 0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu .el-menu-item:hover {
+  background-color: var(--sidebar-hover) !important;
+}
+
+.sidebar-menu .el-menu-item.is-active {
+  background-color: var(--sidebar-active-bg) !important;
+  color: var(--primary) !important;
+  font-weight: 600;
+  position: relative;
+}
+
+.sidebar-menu .el-menu-item.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--primary-gradient);
+  border-radius: 0 2px 2px 0;
+}
+
+.sidebar-menu .el-menu-item .el-icon {
+  font-size: 18px;
+  margin-right: 8px;
 }
 
 .el-header {
-  background-color: #ffffff;
-  color: #333;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid #F1F5F9;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 60px !important;
 }
 
-.header-content {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.header-left {
+  flex: 1;
 }
 
-.user-info {
+.header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .el-dropdown-link {
   cursor: pointer;
   display: flex;
   align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: color 0.2s;
+}
+
+.el-dropdown-link:hover {
+  color: var(--primary);
+}
+
+.header-avatar {
+  background: var(--primary-gradient) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.header-username {
+  font-weight: 500;
 }
 
 .el-main {
-  background-color: #f5f5f5;
-  padding: 20px;
-}
-
-.el-menu-vertical-demo {
-  background-color: transparent;
-  border-right: none;
-}
-
-.el-menu-vertical-demo .el-menu-item {
-  color: rgba(255, 255, 255, 0.8);
-  margin: 10px 0;
-  border-radius: 0 20px 20px 0;
-}
-
-.el-menu-vertical-demo .el-menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.el-menu-vertical-demo .el-menu-item.is-active {
-  background-color: #409EFF;
-  color: white;
+  background-color: var(--bg-page);
+  padding: var(--space-lg);
+  overflow-y: auto;
 }
 </style>
