@@ -27,28 +27,28 @@
 
 | 功能 | 截图 |
 |------|------|
-| 登录页 | ![image-20260520010051281](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010051281.png) |
-| 数据看板 | ![image-20260520010110825](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010110825.png) |
-| 报修管      | ![image-20260520010204549](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010204549.png) |
-| AI 智能助手 | ![image-20260520010314743](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010314743.png) |
+| 登录页 | ![管理端登录](screenshots/admin-login.png) |
+| 数据看板 | ![数据看板](screenshots/admin-dashboard.png) |
+| 报修管理 | ![报修管理](screenshots/admin-repair.png) |
+| AI 智能助手 | ![AI助手](screenshots/admin-agent.png) |
 
 ### 业主 Web 端（web-user）
 
 | 功能 | 截图 |
 |------|------|
-| 首页 | ![image-20260520010336303](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010336303.png) |
-| 社区论坛 | ![image-20260520010428337](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010428337.png) |
-| 物业缴费 | ![image-20260520010445925](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010445925.png) |
-| AI 智能助手 | ![image-20260520010517789](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010517789.png) |
+| 首页 | ![首页](screenshots/user-home.png) |
+| 社区论坛 | ![论坛](screenshots/user-forum.png) |
+| 物业缴费 | ![缴费](screenshots/user-pay.png) |
+| AI 智能助手 | ![AI助手](screenshots/user-agent.png) |
 
 ### 微信小程序（miniprogram-owner）
 
 | 功能 | 截图 |
 |------|------|
-| 首页 | ![image-20260520010605855](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010605855.png) |
-| 论坛 | ![image-20260520010630543](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010630543.png) |
-| 报修 | ![image-20260520010656541](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010656541.png) |
-| 个人中心 | ![image-20260520010725611](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20260520010725611.png) |
+| 首页 | ![小程序首页](screenshots/mp-home.png) |
+| 论坛 | ![小程序论坛](screenshots/mp-forum.png) |
+| 报修 | ![小程序报修](screenshots/mp-repair.png) |
+| 个人中心 | ![小程序个人中心](screenshots/mp-profile.png) |
 
 > 将截图文件放入 `screenshots/` 目录后即可显示。
 
