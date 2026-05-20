@@ -212,6 +212,92 @@ public class PropertyAgentTools {
                 {"notification_id", "integer", "通知ID", "true"}
             })));
 
+        tools.add(buildTool("cancel_activity_signup",
+            "取消已报名的社区活动",
+            buildParams(new String[][]{
+                {"user_id", "integer", "用户ID", "true"},
+                {"activity_id", "integer", "活动ID", "true"}
+            })));
+
+        tools.add(buildTool("query_my_activities",
+            "查询用户已报名的社区活动列表",
+            buildParams(new String[][]{
+                {"user_id", "integer", "用户ID", "true"}
+            })));
+
+        tools.add(buildTool("query_fee_history",
+            "查询业主的缴费历史记录，包括已缴和未缴的所有账单",
+            buildParams(new String[][]{
+                {"owner_id", "integer", "业主用户ID", "true"},
+                {"status", "integer", "筛选状态：0=未缴，1=已缴，不填=全部", "false"}
+            })));
+
+        tools.add(buildTool("query_my_forum_posts",
+            "查询业主自己发布的论坛帖子列表",
+            buildParams(new String[][]{
+                {"user_id", "integer", "用户ID", "true"},
+                {"limit", "integer", "返回数量，默认10", "false"}
+            })));
+
+        tools.add(buildTool("cancel_repair",
+            "撤回报修工单，仅限待审核状态的工单可撤回",
+            buildParams(new String[][]{
+                {"repair_id", "integer", "报修工单ID", "true"},
+                {"owner_id", "integer", "业主用户ID，用于校验工单归属", "true"}
+            })));
+
+        tools.add(buildTool("query_repair_list",
+            "管理员查询全部报修工单列表，可按状态筛选",
+            buildParams(new String[][]{
+                {"status", "integer", "筛选状态：0=待审核，1=已派单，2=维修中，3=已完成，不填=全部", "false"},
+                {"limit", "integer", "返回数量，默认20", "false"}
+            })));
+
+        tools.add(buildTool("query_fee_list",
+            "管理员查询全部缴费账单列表，可按状态筛选",
+            buildParams(new String[][]{
+                {"status", "integer", "筛选状态：0=未缴，1=已缴，不填=全部", "false"},
+                {"limit", "integer", "返回数量，默认20", "false"}
+            })));
+
+        tools.add(buildTool("create_fee",
+            "管理员为指定业主创建缴费账单",
+            buildParams(new String[][]{
+                {"owner_id", "integer", "业主用户ID", "true"},
+                {"type", "string", "费用类型，如：物业费、水费、电费、燃气费", "true"},
+                {"month", "string", "账单月份，如：2026-05", "true"},
+                {"amount", "number", "缴费金额", "true"},
+                {"remark", "string", "备注信息", "false"}
+            })));
+
+        tools.add(buildTool("query_feedback_list",
+            "管理员查询业主提交的反馈列表",
+            buildParams(new String[][]{
+                {"status", "integer", "筛选状态：0=待处理，1=已处理，不填=全部", "false"},
+                {"limit", "integer", "返回数量，默认20", "false"}
+            })));
+
+        tools.add(buildTool("process_feedback",
+            "管理员处理业主反馈，标记为已处理并可添加回复",
+            buildParams(new String[][]{
+                {"feedback_id", "integer", "反馈ID", "true"},
+                {"reply", "string", "回复内容", "false"}
+            })));
+
+        tools.add(buildTool("query_worker_stats",
+            "查询维修员的绩效统计，包括完成工单数、平均评分等",
+            buildParams(new String[][]{
+                {"worker_id", "integer", "维修员用户ID", "true"}
+            })));
+
+        tools.add(buildTool("batch_create_fee",
+            "管理员批量生成指定月份的物业费账单，为所有业主统一生成",
+            buildParams(new String[][]{
+                {"type", "string", "费用类型，如：物业费、水费", "true"},
+                {"month", "string", "账单月份，如：2026-05", "true"},
+                {"amount", "number", "每户缴费金额", "true"}
+            })));
+
         return tools;
     }
 
@@ -290,6 +376,30 @@ public class PropertyAgentTools {
                     return queryNotifications(arguments);
                 case "mark_notification_read":
                     return markNotificationRead(arguments);
+                case "cancel_activity_signup":
+                    return cancelActivitySignup(arguments);
+                case "query_my_activities":
+                    return queryMyActivities(arguments);
+                case "query_fee_history":
+                    return queryFeeHistory(arguments);
+                case "query_my_forum_posts":
+                    return queryMyForumPosts(arguments);
+                case "cancel_repair":
+                    return cancelRepair(arguments);
+                case "query_repair_list":
+                    return queryRepairList(arguments);
+                case "query_fee_list":
+                    return queryFeeList(arguments);
+                case "create_fee":
+                    return createFee(arguments);
+                case "query_feedback_list":
+                    return queryFeedbackList(arguments);
+                case "process_feedback":
+                    return processFeedback(arguments);
+                case "query_worker_stats":
+                    return queryWorkerStats(arguments);
+                case "batch_create_fee":
+                    return batchCreateFee(arguments);
                 default:
                     return "{\"error\": \"未知工具: " + toolName + "\"}";
             }
@@ -911,5 +1021,514 @@ public class PropertyAgentTools {
         notification.setIsRead(1);
         sysNotificationMapper.updateById(notification);
         return "{\"result\": \"已标记已读\", \"notification_id\": " + notificationId + "}";
+    }
+
+    private String cancelActivitySignup(Map<String, Object> args) {
+        Long userId = getLong(args, "user_id");
+        Long activityId = getLong(args, "activity_id");
+
+        BusActivitySignup signup = busActivitySignupMapper.selectOne(
+            new QueryWrapper<BusActivitySignup>()
+                .eq("activity_id", activityId)
+                .eq("user_id", userId)
+        );
+        if (signup == null) {
+            return "{\"error\": \"您未报名该活动，无法取消\"}";
+        }
+
+        busActivitySignupMapper.deleteById(signup.getId());
+
+        BusActivity activity = busActivityMapper.selectById(activityId);
+        String activityTitle = activity != null ? activity.getTitle() : "未知活动";
+        Long count = busActivitySignupMapper.countByActivityId(activityId);
+        return "{\"result\": \"取消报名成功\", \"activity\": \"" + activityTitle
+             + "\", \"remaining_signup_count\": " + count + "}";
+    }
+
+    private String queryMyActivities(Map<String, Object> args) {
+        Long userId = getLong(args, "user_id");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        List<BusActivitySignup> signups = busActivitySignupMapper.selectList(
+            new QueryWrapper<BusActivitySignup>()
+                .eq("user_id", userId)
+                .orderByDesc("create_time")
+        );
+
+        if (signups == null || signups.isEmpty()) {
+            return "{\"result\": \"您尚未报名任何活动\", \"count\": 0, \"items\": []}";
+        }
+
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (BusActivitySignup signup : signups) {
+            BusActivity activity = busActivityMapper.selectById(signup.getActivityId());
+            if (activity != null) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("activity_id", activity.getId());
+                item.put("title", activity.getTitle());
+                item.put("location", activity.getLocation() != null ? activity.getLocation() : "");
+                item.put("start_time", activity.getStartTime() != null ? sdf.format(activity.getStartTime()) : "");
+                item.put("signup_time", signup.getCreateTime() != null ? sdf.format(signup.getCreateTime()) : "");
+                items.add(item);
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("count", items.size());
+        result.put("items", items);
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String queryFeeHistory(Map<String, Object> args) {
+        Long ownerId = getLong(args, "owner_id");
+        Integer status = args.containsKey("status") && args.get("status") != null
+            ? ((Number) args.get("status")).intValue() : null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        QueryWrapper<BusFee> wrapper = new QueryWrapper<BusFee>()
+            .eq("owner_id", ownerId)
+            .orderByDesc("create_time");
+        if (status != null) {
+            wrapper.eq("status", status);
+        }
+
+        List<BusFee> fees = busFeeMapper.selectList(wrapper);
+
+        if (fees == null || fees.isEmpty()) {
+            String filterDesc = status != null ? (status == 0 ? "未缴" : "已缴") : "";
+            return "{\"result\": \"暂无" + filterDesc + "缴费记录\", \"count\": 0, \"items\": []}";
+        }
+
+        BigDecimal totalPaid = BigDecimal.ZERO;
+        BigDecimal totalUnpaid = BigDecimal.ZERO;
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (BusFee fee : fees) {
+            BigDecimal amount = fee.getAmount() != null ? fee.getAmount() : BigDecimal.ZERO;
+            if (fee.getStatus() != null && fee.getStatus() == 1) {
+                totalPaid = totalPaid.add(amount);
+            } else {
+                totalUnpaid = totalUnpaid.add(amount);
+            }
+
+            Map<String, Object> item = new HashMap<>();
+            item.put("fee_id", fee.getId());
+            item.put("type", fee.getType());
+            item.put("month", fee.getMonth());
+            item.put("amount", amount);
+            item.put("status", fee.getStatus() == 1 ? "已缴" : "未缴");
+            item.put("pay_time", fee.getPayTime() != null ? sdf.format(fee.getPayTime()) : "");
+            item.put("create_time", fee.getCreateTime() != null ? sdf.format(fee.getCreateTime()) : "");
+            if (fee.getRemark() != null && !fee.getRemark().isEmpty()) {
+                item.put("remark", fee.getRemark());
+            }
+            items.add(item);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("count", items.size());
+        result.put("total_paid", totalPaid);
+        result.put("total_unpaid", totalUnpaid);
+        result.put("items", items);
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String queryMyForumPosts(Map<String, Object> args) {
+        Long userId = getLong(args, "user_id");
+        int limit = getInt(args, "limit", 10);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        List<BusForum> posts = busForumMapper.selectList(
+            new QueryWrapper<BusForum>()
+                .eq("user_id", userId)
+                .orderByDesc("create_time")
+                .last("LIMIT " + limit)
+        );
+
+        if (posts == null || posts.isEmpty()) {
+            return "{\"result\": \"您尚未发布过帖子\", \"count\": 0, \"items\": []}";
+        }
+
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (BusForum post : posts) {
+            String catName = "";
+            if (post.getCategoryId() != null) {
+                BusForumCategory cat = busForumCategoryMapper.selectById(post.getCategoryId());
+                if (cat != null) catName = cat.getName();
+            }
+
+            Map<String, Object> item = new HashMap<>();
+            item.put("post_id", post.getId());
+            item.put("title", post.getTitle());
+            item.put("category", catName);
+            item.put("is_pinned", post.getIsPinned());
+            item.put("create_time", post.getCreateTime() != null ? sdf.format(post.getCreateTime()) : "");
+            items.add(item);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("count", items.size());
+        result.put("items", items);
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String cancelRepair(Map<String, Object> args) {
+        Long repairId = getLong(args, "repair_id");
+        Long ownerId = getLong(args, "owner_id");
+
+        BusRepair repair = busRepairMapper.selectById(repairId);
+        if (repair == null) {
+            return "{\"error\": \"报修工单不存在\"}";
+        }
+        if (!repair.getOwnerId().equals(ownerId)) {
+            return "{\"error\": \"该工单不属于您，无法撤回\"}";
+        }
+        if (repair.getStatus() != null && repair.getStatus() != 0) {
+            String[] statusNames = {"待审核", "已派单", "维修中", "已完成"};
+            String currentStatus = repair.getStatus() < statusNames.length ? statusNames[repair.getStatus()] : "未知";
+            return "{\"error\": \"该工单当前状态为" + currentStatus + "，只有待审核状态可以撤回\"}";
+        }
+
+        busRepairMapper.deleteById(repairId);
+        return "{\"result\": \"报修工单撤回成功\", \"repair_id\": " + repairId
+             + ", \"content\": \"" + repair.getContent() + "\"}";
+    }
+
+    private String queryRepairList(Map<String, Object> args) {
+        Integer status = args.containsKey("status") && args.get("status") != null
+            ? ((Number) args.get("status")).intValue() : null;
+        int limit = getInt(args, "limit", 20);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        QueryWrapper<BusRepair> wrapper = new QueryWrapper<BusRepair>()
+            .orderByDesc("create_time")
+            .last("LIMIT " + limit);
+        if (status != null) {
+            wrapper.eq("status", status);
+        }
+
+        List<BusRepair> repairs = busRepairMapper.selectList(wrapper);
+
+        if (repairs == null || repairs.isEmpty()) {
+            return "{\"result\": \"暂无报修工单\", \"count\": 0, \"items\": []}";
+        }
+
+        String[] statusNames = {"待审核", "已派单", "维修中", "已完成"};
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (BusRepair repair : repairs) {
+            String statusName = repair.getStatus() != null && repair.getStatus() < statusNames.length
+                ? statusNames[repair.getStatus()] : "未知";
+
+            String ownerName = "";
+            if (repair.getOwnerId() != null) {
+                SysUser user = sysUserMapper.selectById(repair.getOwnerId());
+                if (user != null) ownerName = user.getRealName() != null ? user.getRealName() : user.getUsername();
+            }
+
+            String workerName = "";
+            if (repair.getWorkerId() != null) {
+                SysUser worker = sysUserMapper.selectById(repair.getWorkerId());
+                if (worker != null) workerName = worker.getRealName() != null ? worker.getRealName() : worker.getUsername();
+            }
+
+            Map<String, Object> item = new HashMap<>();
+            item.put("repair_id", repair.getId());
+            item.put("content", repair.getContent());
+            item.put("type", repair.getType() != null ? repair.getType() : "");
+            item.put("status", statusName);
+            item.put("owner_name", ownerName);
+            item.put("worker_name", workerName);
+            item.put("create_time", repair.getCreateTime() != null ? sdf.format(repair.getCreateTime()) : "");
+            items.add(item);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("count", items.size());
+        result.put("items", items);
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String queryFeeList(Map<String, Object> args) {
+        Integer status = args.containsKey("status") && args.get("status") != null
+            ? ((Number) args.get("status")).intValue() : null;
+        int limit = getInt(args, "limit", 20);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        QueryWrapper<BusFee> wrapper = new QueryWrapper<BusFee>()
+            .orderByDesc("create_time")
+            .last("LIMIT " + limit);
+        if (status != null) {
+            wrapper.eq("status", status);
+        }
+
+        List<BusFee> fees = busFeeMapper.selectList(wrapper);
+
+        if (fees == null || fees.isEmpty()) {
+            return "{\"result\": \"暂无缴费账单\", \"count\": 0, \"items\": []}";
+        }
+
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (BusFee fee : fees) {
+            String ownerName = "";
+            if (fee.getOwnerId() != null) {
+                SysUser user = sysUserMapper.selectById(fee.getOwnerId());
+                if (user != null) ownerName = user.getRealName() != null ? user.getRealName() : user.getUsername();
+            }
+
+            Map<String, Object> item = new HashMap<>();
+            item.put("fee_id", fee.getId());
+            item.put("owner_name", ownerName);
+            item.put("type", fee.getType());
+            item.put("month", fee.getMonth());
+            item.put("amount", fee.getAmount());
+            item.put("status", fee.getStatus() == 1 ? "已缴" : "未缴");
+            item.put("pay_time", fee.getPayTime() != null ? sdf.format(fee.getPayTime()) : "");
+            item.put("create_time", fee.getCreateTime() != null ? sdf.format(fee.getCreateTime()) : "");
+            items.add(item);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("count", items.size());
+        result.put("items", items);
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String createFee(Map<String, Object> args) {
+        Long ownerId = getLong(args, "owner_id");
+        String type = getString(args, "type");
+        String month = getString(args, "month");
+        Object amountObj = args.get("amount");
+        String remark = getString(args, "remark");
+
+        if (type == null || type.trim().isEmpty()) {
+            return "{\"error\": \"费用类型不能为空\"}";
+        }
+        if (month == null || month.trim().isEmpty()) {
+            return "{\"error\": \"账单月份不能为空\"}";
+        }
+        if (amountObj == null) {
+            return "{\"error\": \"缴费金额不能为空\"}";
+        }
+
+        BigDecimal amount;
+        if (amountObj instanceof Number) {
+            amount = new BigDecimal(amountObj.toString());
+        } else {
+            amount = new BigDecimal(amountObj.toString());
+        }
+
+        SysUser user = sysUserMapper.selectById(ownerId);
+        if (user == null) {
+            return "{\"error\": \"业主不存在\"}";
+        }
+
+        BusFee fee = new BusFee();
+        fee.setOwnerId(ownerId);
+        fee.setType(type.trim());
+        fee.setMonth(month.trim());
+        fee.setAmount(amount);
+        fee.setStatus(0);
+        fee.setReminded(0);
+        if (remark != null && !remark.trim().isEmpty()) {
+            fee.setRemark(remark.trim());
+        }
+        fee.setCreateTime(new Date());
+        busFeeMapper.insert(fee);
+
+        String ownerName = user.getRealName() != null ? user.getRealName() : user.getUsername();
+        return "{\"result\": \"账单创建成功\", \"fee_id\": " + fee.getId()
+             + ", \"owner\": \"" + ownerName
+             + "\", \"type\": \"" + type.trim()
+             + "\", \"month\": \"" + month.trim()
+             + "\", \"amount\": " + amount + "}";
+    }
+
+    private String queryFeedbackList(Map<String, Object> args) {
+        Integer status = args.containsKey("status") && args.get("status") != null
+            ? ((Number) args.get("status")).intValue() : null;
+        int limit = getInt(args, "limit", 20);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        QueryWrapper<BusFeedback> wrapper = new QueryWrapper<BusFeedback>()
+            .orderByDesc("create_time")
+            .last("LIMIT " + limit);
+        if (status != null) {
+            wrapper.eq("status", status);
+        }
+
+        List<BusFeedback> feedbacks = busFeedbackMapper.selectList(wrapper);
+
+        if (feedbacks == null || feedbacks.isEmpty()) {
+            return "{\"result\": \"暂无反馈记录\", \"count\": 0, \"items\": []}";
+        }
+
+        List<Map<String, Object>> items = new ArrayList<>();
+        for (BusFeedback fb : feedbacks) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("feedback_id", fb.getId());
+            item.put("user_name", fb.getUserName() != null ? fb.getUserName() : "");
+            item.put("content", fb.getContent());
+            item.put("status", fb.getStatus() == 1 ? "已处理" : "待处理");
+            item.put("reply", fb.getReply() != null ? fb.getReply() : "");
+            item.put("create_time", fb.getCreateTime() != null ? sdf.format(fb.getCreateTime()) : "");
+            items.add(item);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("count", items.size());
+        result.put("items", items);
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String processFeedback(Map<String, Object> args) {
+        Long feedbackId = getLong(args, "feedback_id");
+        String reply = getString(args, "reply");
+
+        BusFeedback feedback = busFeedbackMapper.selectById(feedbackId);
+        if (feedback == null) {
+            return "{\"error\": \"反馈记录不存在\"}";
+        }
+        if (feedback.getStatus() != null && feedback.getStatus() == 1) {
+            return "{\"error\": \"该反馈已处理，不能重复处理\"}";
+        }
+
+        feedback.setStatus(1);
+        feedback.setUpdateTime(new Date());
+        if (reply != null && !reply.trim().isEmpty()) {
+            feedback.setReply(reply.trim());
+        }
+        busFeedbackMapper.updateById(feedback);
+
+        return "{\"result\": \"反馈处理成功\", \"feedback_id\": " + feedbackId
+             + ", \"user_name\": \"" + (feedback.getUserName() != null ? feedback.getUserName() : "")
+             + "\", \"has_reply\": " + (reply != null && !reply.trim().isEmpty()) + "}";
+    }
+
+    private String queryWorkerStats(Map<String, Object> args) {
+        Long workerId = getLong(args, "worker_id");
+
+        SysUser worker = sysUserMapper.selectById(workerId);
+        if (worker == null) {
+            return "{\"error\": \"维修员不存在\"}";
+        }
+
+        SysRepairWorker repairWorker = sysRepairWorkerMapper.selectByUserId(workerId);
+        String workerStatus = "未知";
+        if (repairWorker != null) {
+            if (repairWorker.getStatus() == 0) workerStatus = "待审核";
+            else if (repairWorker.getStatus() == 1) workerStatus = "正常";
+            else if (repairWorker.getStatus() == 2) workerStatus = "已禁用";
+        }
+
+        long completedCount = busRepairMapper.selectCount(
+            new QueryWrapper<BusRepair>().eq("worker_id", workerId).eq("status", 3)
+        );
+        long processingCount = busRepairMapper.selectCount(
+            new QueryWrapper<BusRepair>().eq("worker_id", workerId).in("status", Arrays.asList(1, 2))
+        );
+
+        List<BusRepair> completedRepairs = busRepairMapper.selectList(
+            new QueryWrapper<BusRepair>().eq("worker_id", workerId).eq("status", 3)
+        );
+
+        double avgScore = 0;
+        int evalCount = 0;
+        if (completedRepairs != null && !completedRepairs.isEmpty()) {
+            BigDecimal totalScore = BigDecimal.ZERO;
+            for (BusRepair r : completedRepairs) {
+                BusEvaluation eval = busEvaluationMapper.selectOne(
+                    new QueryWrapper<BusEvaluation>().eq("repair_id", r.getId())
+                );
+                if (eval != null) {
+                    totalScore = totalScore.add(new BigDecimal(eval.getScore()));
+                    evalCount++;
+                }
+            }
+            if (evalCount > 0) {
+                avgScore = totalScore.doubleValue() / evalCount;
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "查询成功");
+        result.put("worker_name", worker.getRealName() != null ? worker.getRealName() : worker.getUsername());
+        result.put("phone", worker.getPhone() != null ? worker.getPhone() : "");
+        result.put("status", workerStatus);
+        result.put("completed_count", completedCount);
+        result.put("processing_count", processingCount);
+        result.put("evaluation_count", evalCount);
+        result.put("avg_score", evalCount > 0 ? String.format("%.1f", avgScore) : "暂无评价");
+        return JSONUtil.toJsonStr(result);
+    }
+
+    private String batchCreateFee(Map<String, Object> args) {
+        String type = getString(args, "type");
+        String month = getString(args, "month");
+        Object amountObj = args.get("amount");
+
+        if (type == null || type.trim().isEmpty()) {
+            return "{\"error\": \"费用类型不能为空\"}";
+        }
+        if (month == null || month.trim().isEmpty()) {
+            return "{\"error\": \"账单月份不能为空\"}";
+        }
+        if (amountObj == null) {
+            return "{\"error\": \"缴费金额不能为空\"}";
+        }
+
+        BigDecimal amount;
+        if (amountObj instanceof Number) {
+            amount = new BigDecimal(amountObj.toString());
+        } else {
+            amount = new BigDecimal(amountObj.toString());
+        }
+
+        List<SysOwner> owners = sysOwnerMapper.selectList(null);
+        if (owners == null || owners.isEmpty()) {
+            return "{\"error\": \"系统中没有业主信息\"}";
+        }
+
+        int createdCount = 0;
+        int skippedCount = 0;
+        for (SysOwner owner : owners) {
+            Long ownerId = owner.getUserId();
+
+            Long existing = busFeeMapper.selectCount(
+                new QueryWrapper<BusFee>()
+                    .eq("owner_id", ownerId)
+                    .eq("type", type.trim())
+                    .eq("month", month.trim())
+            );
+            if (existing > 0) {
+                skippedCount++;
+                continue;
+            }
+
+            BusFee fee = new BusFee();
+            fee.setOwnerId(ownerId);
+            fee.setType(type.trim());
+            fee.setMonth(month.trim());
+            fee.setAmount(amount);
+            fee.setStatus(0);
+            fee.setReminded(0);
+            fee.setCreateTime(new Date());
+            busFeeMapper.insert(fee);
+            createdCount++;
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "批量生成完成");
+        result.put("type", type.trim());
+        result.put("month", month.trim());
+        result.put("amount", amount);
+        result.put("created_count", createdCount);
+        result.put("skipped_count", skippedCount);
+        result.put("total_owners", owners.size());
+        return JSONUtil.toJsonStr(result);
     }
 }

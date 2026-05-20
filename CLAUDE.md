@@ -91,7 +91,7 @@ Controller → Service → Mapper (MyBatis Plus) → MySQL
 ### AI Agent 系统
 
 - `agent/PropertyAgent.java` — 实现 OpenAI 兼容的 Function Calling 循环 (最多 5 轮)
-- `agent/PropertyAgentTools.java` — 17 个工具 (12 个业主可用 + 5 个管理员专用)
+- `agent/PropertyAgentTools.java` — 31 个工具 (19 个业主可用 + 12 个管理员专用)
 - 工具按用户角色过滤
 - 支持多 AI 提供商: 本地、ModelScope (Qwen, GLM)、DashScope
 - AI 配置存储在 `ai_config` 表，可运行时切换

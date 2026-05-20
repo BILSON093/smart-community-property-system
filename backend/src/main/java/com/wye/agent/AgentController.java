@@ -20,6 +20,7 @@ public class AgentController {
                                             HttpServletRequest httpRequest) {
         try {
             Long userId = (Long) httpRequest.getAttribute("userId");
+            Integer role = (Integer) httpRequest.getAttribute("role");
             String message = (String) request.get("message");
 
             List<Map<String, Object>> history = null;
@@ -31,7 +32,7 @@ public class AgentController {
                 return Result.error("消息不能为空");
             }
 
-            Map<String, Object> result = propertyAgent.chat(userId, message, history);
+            Map<String, Object> result = propertyAgent.chat(userId, role, message, history);
             return Result.success(result);
         } catch (Exception e) {
             e.printStackTrace();
