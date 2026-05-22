@@ -307,6 +307,13 @@ public class PropertyAgentTools {
         Map<String, Object> function = new HashMap<>();
         function.put("name", name);
         function.put("description", description);
+        // 确保 parameters 始终包含 type: "object"（LM Studio 严格校验要求）
+        if (!parameters.containsKey("type")) {
+            parameters.put("type", "object");
+        }
+        if (!parameters.containsKey("properties")) {
+            parameters.put("properties", new HashMap<>());
+        }
         function.put("parameters", parameters);
         tool.put("function", function);
         return tool;
