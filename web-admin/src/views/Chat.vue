@@ -81,6 +81,7 @@
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import request from '@/utils/request'
+import { connectChat } from '@/utils/realtime'
 
 const userList = ref([])
 const selectedUserId = ref(null)
@@ -129,10 +130,22 @@ const formatTime = (timeStr) => {
 }
 
 let pollingTimer = null
+let chatSocket = null
 
 onMounted(() => {
   loadAdminInfo()
   loadUsers()
+  chatSocket = connectChat((message) => {
+    if (message.event !== 'chat.message') return
+    const payload = message.payload || {}
+    loadUsers()
+    if (selectedUserId.value && payload.sessionId === selectedUserId.value) {
+      if (!messages.value.some(item => item.id === payload.id)) {
+        messages.value.push(payload)
+        scrollToBottom()
+      }
+    }
+  })
   pollingTimer = setInterval(() => {
     if (selectedUserId.value) {
       loadMessages()
@@ -144,6 +157,10 @@ onBeforeUnmount(() => {
   if (pollingTimer) {
     clearInterval(pollingTimer)
     pollingTimer = null
+  }
+  if (chatSocket) {
+    chatSocket.close()
+    chatSocket = null
   }
 })
 
@@ -221,17 +238,9 @@ const sendMessage = async () => {
       msgType: 'text'
     })
 
-    messages.value.push({
-      id: messages.value.length + 1,
-      sender: 2,
-      content: messageInput.value,
-      createTime: formatTime(new Date().toISOString()),
-      avatar: adminInfo.value.avatar,
-      senderName: adminInfo.value.name
-    })
-
     messageInput.value = ''
     ElMessage.success('发送成功')
+    await loadMessages()
     scrollToBottom()
   } catch (error) {
     ElMessage.error('发送失败：' + (error.message || '未知错误'))

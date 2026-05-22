@@ -15,6 +15,8 @@ Page({
     selectedImage: '', // 已选中的图片
     imageReady: false // 图片是否已准备好
   },
+  chatSocket: null,
+  chatPollingTimer: null,
 
   onLoad() {
     // 先用缓存的头像
@@ -31,6 +33,20 @@ Page({
     }).catch(() => {})
     this.loadAdminInfo()
     this.loadChatHistory()
+  },
+
+  onUnload() {
+    this.stopManualRealtime()
+  },
+
+  onHide() {
+    this.stopManualRealtime()
+  },
+
+  onShow() {
+    if (this.data.chatMode === 'manual') {
+      this.startManualRealtime()
+    }
   },
 
   loadAdminInfo() {
@@ -61,6 +77,91 @@ Page({
       this.scrollToBottom()
     }).catch(() => {
       this.setData({ messageList: [] })
+    })
+  },
+
+  getWsUrl() {
+    const token = app.globalData.token || wx.getStorageSync('token')
+    if (!token) return ''
+    const baseURL = app.globalData.baseURL || 'http://localhost:8080/api'
+    const wsBaseURL = baseURL.replace(/^http:/, 'ws:').replace(/^https:/, 'wss:')
+    return `${wsBaseURL}/ws/chat?token=${encodeURIComponent(token)}`
+  },
+
+  startManualRealtime() {
+    this.connectChatSocket()
+    if (!this.chatPollingTimer) {
+      this.chatPollingTimer = setInterval(() => {
+        if (this.data.chatMode === 'manual') {
+          this.loadChatHistory()
+        }
+      }, 2000)
+    }
+  },
+
+  stopManualRealtime() {
+    if (this.chatPollingTimer) {
+      clearInterval(this.chatPollingTimer)
+      this.chatPollingTimer = null
+    }
+    if (this.chatSocket) {
+      try {
+        this.chatSocket.close()
+      } catch (e) {}
+      this.chatSocket = null
+    }
+  },
+
+  connectChatSocket() {
+    if (this.chatSocket) return
+    const url = this.getWsUrl()
+    if (!url) return
+
+    const socket = wx.connectSocket({ url })
+    this.chatSocket = socket
+
+    socket.onOpen(() => {
+      console.log('聊天实时连接已建立')
+    })
+
+    socket.onMessage((event) => {
+      try {
+        const message = JSON.parse(event.data || '{}')
+        if (message.event === 'chat.message') {
+          this.mergeRealtimeMessage(message.payload || {})
+        }
+      } catch (e) {
+        console.error('解析实时聊天消息失败', e)
+      }
+    })
+
+    socket.onError((error) => {
+      console.error('聊天实时连接失败', error)
+      this.chatSocket = null
+    })
+
+    socket.onClose(() => {
+      console.log('聊天实时连接已关闭')
+      this.chatSocket = null
+    })
+  },
+
+  mergeRealtimeMessage(payload) {
+    if (this.data.chatMode !== 'manual') return
+    if (!payload || payload.sender !== 2) return
+    const exists = this.data.messageList.some(item => item.id === payload.id)
+    if (exists) return
+
+    const message = {
+      id: payload.id || Date.now(),
+      sender: 1,
+      content: payload.msgType === 'image' ? formatImages(payload.content) : (payload.content || ''),
+      type: payload.msgType || 'text',
+      avatar: payload.avatar || this.data.aiAvatar
+    }
+    this.setData({
+      messageList: [...this.data.messageList, message],
+      scrollToView: `msg-${message.id}`
     })
   },
 
@@ -392,7 +493,9 @@ Page({
 
     if (newMode === 'manual') {
       this.loadChatHistory()
+      this.startManualRealtime()
     } else {
+      this.stopManualRealtime()
       this.setData({ messageList: [] })
     }
 

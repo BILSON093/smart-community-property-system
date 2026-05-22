@@ -172,8 +172,16 @@ const confirmPay = async () => {
   if (!currentFee.value) return
   
   try {
-    await request.post(`/fee/pay/${currentFee.value.id}`)
-    showToast('支付成功')
+    const orderRes = await request.post(`/fee/pay/order/${currentFee.value.id}`, {
+      channel: selectedMethod.value
+    })
+    const orderNo = orderRes.data?.orderNo
+    if (!orderNo) {
+      throw new Error('创建支付订单失败')
+    }
+    const payRes = await request.post(`/fee/pay/simulate/${orderNo}`)
+    const idempotent = payRes.data?.idempotent
+    showToast(idempotent ? '订单已支付' : `支付成功，订单号 ${orderNo}`)
     closeDialog()
     onLoad()
   } catch (error) {

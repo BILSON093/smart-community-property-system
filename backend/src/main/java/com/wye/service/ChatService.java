@@ -6,6 +6,7 @@ import com.wye.entity.SysUser;
 import com.wye.mapper.ChatRecordMapper;
 import com.wye.mapper.SysOwnerMapper;
 import com.wye.mapper.SysUserMapper;
+import com.wye.websocket.WebSocketPushService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class ChatService {
     @Autowired
     private SysOwnerMapper sysOwnerMapper;
 
+    @Autowired
+    private WebSocketPushService webSocketPushService;
+
     /**
      * 发送消息
      */
@@ -35,7 +39,12 @@ public class ChatService {
         record.setSender(sender);
         record.setContent(content);
         record.setMsgType(msgType);
+        record.setCreateTime(new java.util.Date());
         chatRecordMapper.insert(record);
+
+        Map<String, Object> payload = buildMessagePayload(record, userId);
+        payload.put("sessionId", userId);
+        webSocketPushService.pushChatMessage(userId, payload);
     }
 
     /**
@@ -76,6 +85,36 @@ public class ChatService {
         }
 
         return result;
+    }
+
+    private Map<String, Object> buildMessagePayload(ChatRecord record, Long sessionId) {
+        Map<String, Object> msgMap = new HashMap<>();
+        msgMap.put("id", record.getId());
+        msgMap.put("sessionId", sessionId);
+        msgMap.put("sender", record.getSender());
+        msgMap.put("content", record.getContent());
+        msgMap.put("msgType", record.getMsgType());
+        msgMap.put("createTime", record.getCreateTime());
+
+        String avatar = "";
+        String senderName = "";
+        if (record.getSender() != null && record.getSender() == 1) {
+            SysUser user = sysUserMapper.selectById(sessionId);
+            if (user != null) {
+                avatar = user.getAvatar();
+                senderName = user.getRealName();
+            }
+        } else if (record.getSender() != null && record.getSender() == 2) {
+            SysUser admin = sysUserMapper.selectByRole(0);
+            if (admin != null) {
+                avatar = admin.getAvatar();
+                senderName = admin.getRealName();
+            }
+        }
+
+        msgMap.put("avatar", avatar);
+        msgMap.put("senderName", senderName);
+        return msgMap;
     }
 
     /**

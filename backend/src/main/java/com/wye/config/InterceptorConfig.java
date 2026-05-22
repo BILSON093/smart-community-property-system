@@ -19,11 +19,16 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                                         "/user/login",
                                         "/user/register/**",
+                                        "/fee/pay/callback",
+                                        "/ws/**",
                                         "/common/**",
                                         "/notice/list",
                                         "/activity/list",
                                         "/carousel/list",
                                         "/error",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
                                         "/upload/**",
                                         "/api/upload/**",
                                         "/forum/list",
@@ -32,4 +37,3 @@ public class InterceptorConfig implements WebMvcConfigurer {
                                 );
     }
 }
-

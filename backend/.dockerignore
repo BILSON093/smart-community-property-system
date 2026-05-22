@@ -1,0 +1,4 @@
+target
+*.log
+upload
+.DS_Store

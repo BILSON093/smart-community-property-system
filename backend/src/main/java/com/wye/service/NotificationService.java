@@ -5,16 +5,22 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wye.entity.SysNotification;
 import com.wye.mapper.SysNotificationMapper;
+import com.wye.websocket.WebSocketPushService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class NotificationService {
 
     @Autowired
     private SysNotificationMapper notificationMapper;
+
+    @Autowired
+    private WebSocketPushService webSocketPushService;
 
     public void create(Long userId, String title, String content, String type) {
         SysNotification notification = new SysNotification();
@@ -25,6 +31,18 @@ public class NotificationService {
         notification.setIsRead(0);
         notification.setCreateTime(new Date());
         notificationMapper.insert(notification);
+
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("id", notification.getId());
+        payload.put("userId", userId);
+        payload.put("title", title);
+        payload.put("content", content);
+        payload.put("type", type);
+        payload.put("isRead", 0);
+        payload.put("createTime", notification.getCreateTime());
+        payload.put("unreadCount", getUnreadCount(userId));
+        webSocketPushService.pushToUser(userId, "notification.created", payload);
+        webSocketPushService.pushToAdmins("notification.created", payload);
     }
 
     public Page<SysNotification> getMyNotifications(Long userId, int page, int size) {
@@ -40,6 +58,10 @@ public class NotificationService {
         if (notification != null) {
             notification.setIsRead(1);
             notificationMapper.updateById(notification);
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("id", id);
+            payload.put("unreadCount", getUnreadCount(notification.getUserId()));
+            webSocketPushService.pushToUser(notification.getUserId(), "notification.read", payload);
         }
     }
 
@@ -47,6 +69,9 @@ public class NotificationService {
         UpdateWrapper<SysNotification> wrapper = new UpdateWrapper<>();
         wrapper.eq("user_id", userId).eq("is_read", 0).set("is_read", 1);
         notificationMapper.update(null, wrapper);
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("unreadCount", 0);
+        webSocketPushService.pushToUser(userId, "notification.read_all", payload);
     }
 
     public Long getUnreadCount(Long userId) {

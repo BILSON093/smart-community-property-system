@@ -64,6 +64,10 @@
 | `/fee/my` | GET | 我的缴费(业主) | - |
 | `/fee/add` | POST | 添加缴费 | `{ownerId, type, month, amount, usage, remark, status}` |
 | `/fee/pay/{id}` | POST | 缴费支付 | 检查是否已缴费 |
+| `/fee/pay/order/{feeId}` | POST | 创建支付订单 | `{channel}`，重复创建复用待支付订单 |
+| `/fee/pay/simulate/{orderNo}` | POST | 模拟支付成功 | 触发幂等支付处理 |
+| `/fee/pay/callback` | POST | 支付回调 | `{orderNo, tradeNo, success}`，支持重复回调幂等 |
+| `/fee/pay/order/{orderNo}` | GET | 查询支付订单 | 业主仅能查自己的订单，管理员可查全部 |
 | `/fee/{id}` | DELETE | 删除缴费 | - |
 | `/fee/settings` | GET | 获取费用单价 | - |
 | `/fee/settings` | POST | 保存费用单价 | `{propertyFee, waterFee, electricityFee, gasFee}` |
@@ -178,7 +182,14 @@
 | `/chat/admin/reply` | POST | 回复消息 | `{sessionId, content, msgType}` 管理员 |
 | `/chat/admin/session?sessionId=` | GET | 指定会话消息 | 管理员 |
 
-### 2.14 文件上传 `/common`
+### 2.14 WebSocket 实时推送 `/ws`
+
+| 入口 | 功能 | 说明 |
+|------|------|------|
+| `/ws/notifications?token=<JWT>` | 实时通知 | 推送 `notification.created`、`notification.read`、`notification.read_all` |
+| `/ws/chat?token=<JWT>` | 实时客服 | 推送 `chat.message` |
+
+### 2.15 文件上传 `/common`
 
 | 接口 | 方法 | 功能 |
 |------|------|------|
@@ -275,6 +286,22 @@
 | create_time | datetime | DEFAULT CURRENT_TIMESTAMP | 创建时间 |
 | remark | varchar(255) | NULL | 备注 |
 | reminded | tinyint | DEFAULT 0 | 已催缴(0=否, 1=是) |
+
+#### `bus_payment_order`
+
+| 字段 | 类型 | 约束 | 说明 |
+|------|------|------|------|
+| id | bigint | PK, 自增 | 支付订单ID |
+| order_no | varchar(64) | UNIQUE, NOT NULL | 支付订单号 |
+| fee_id | bigint | NOT NULL | 账单ID(FK→bus_fee.id) |
+| owner_id | bigint | NOT NULL | 业主ID(FK→sys_user.id) |
+| amount | decimal(10,2) | NOT NULL | 支付金额 |
+| status | tinyint | DEFAULT 0 | 0=待支付, 1=支付成功, 2=已关闭 |
+| channel | varchar(32) | DEFAULT mock | 支付渠道 |
+| trade_no | varchar(64) | UNIQUE | 第三方流水号，用于回调幂等 |
+| paid_time | datetime | NULL | 支付完成时间 |
+| create_time | datetime | DEFAULT CURRENT_TIMESTAMP | 创建时间 |
+| update_time | datetime | DEFAULT CURRENT_TIMESTAMP | 更新时间 |
 
 #### `bus_fee_settings`
 

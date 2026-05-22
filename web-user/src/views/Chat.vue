@@ -100,6 +100,7 @@ import { ref, onMounted, onBeforeUnmount, nextTick, computed } from 'vue'
 import { showToast } from 'vant'
 import request from '@/utils/request'
 import router from '@/router'
+import { connectChat } from '@/utils/realtime'
 
 const isHuman = ref(false)
 const chatMode = ref('agent')
@@ -133,6 +134,8 @@ const modeLabel = computed(() => {
 const messageList = ref(null)
 const userInfo = ref({ avatar: '', name: '' })
 const adminInfo = ref({ avatar: '', name: '' })
+let chatSocket = null
+let chatPollingTimer = null
 
 
 const loadUserInfo = async () => {
@@ -240,6 +243,7 @@ const handleLinkClick = (target) => {
 
 const switchToAgent = () => {
   if (chatMode.value === 'agent') return
+  stopManualRealtime()
   chatMode.value = 'agent'
   isHuman.value = false
   messages.value = []
@@ -255,6 +259,7 @@ const switchToAgent = () => {
 
 const switchToAI = () => {
   if (chatMode.value === 'ai') return
+  stopManualRealtime()
   chatMode.value = 'ai'
   isHuman.value = false
   messages.value = []
@@ -273,6 +278,7 @@ const switchToHuman = () => {
   chatMode.value = 'manual'
   isHuman.value = true
   loadChatHistory()
+  startManualRealtime()
 }
 
 const send = async () => {
@@ -409,10 +415,53 @@ const loadChatHistory = async () => {
   }
 }
 
+const mergeManualMessage = (payload) => {
+  if (!payload || payload.sender !== 2) return
+  if (messages.value.some(item => item.id === payload.id)) return
+  addMessage({
+    id: payload.id,
+    role: 'admin',
+    content: payload.content,
+    createTime: payload.createTime || new Date(),
+    avatar: payload.avatar || adminInfo.value.avatar
+  })
+}
+
+const startManualRealtime = () => {
+  if (!chatSocket || chatSocket.readyState === WebSocket.CLOSED || chatSocket.readyState === WebSocket.CLOSING) {
+    chatSocket = connectChat((message) => {
+      if (message.event !== 'chat.message' || chatMode.value !== 'manual') return
+      mergeManualMessage(message.payload || {})
+    })
+  }
+  if (!chatPollingTimer) {
+    chatPollingTimer = setInterval(() => {
+      if (chatMode.value === 'manual') {
+        loadChatHistory()
+      }
+    }, 2000)
+  }
+}
+
+const stopManualRealtime = () => {
+  if (chatPollingTimer) {
+    clearInterval(chatPollingTimer)
+    chatPollingTimer = null
+  }
+}
+
 onMounted(() => {
   loadUserInfo()
   loadAdminInfo()
   loadChatHistory()
+})
+
+onBeforeUnmount(() => {
+  stopManualRealtime()
+  if (chatSocket) {
+    chatSocket.close()
+    chatSocket = null
+  }
 })
 </script>
 

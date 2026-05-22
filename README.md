@@ -201,6 +201,11 @@ java -jar target/wuye-system-1.0.0.jar
 
 后端运行在 http://localhost:8080/api
 
+接口文档运行后可访问：
+
+- Swagger UI: http://localhost:8080/api/swagger-ui/index.html
+- OpenAPI JSON: http://localhost:8080/api/v3/api-docs
+
 ### 3. 启动管理端
 
 ```bash
@@ -221,9 +226,51 @@ npm run dev
 
 业主 Web 端运行在 http://localhost:3001
 
-### 5. 微信小程序
+### 5. Docker Compose 一键启动
+
+```bash
+docker compose up --build
+```
+
+启动后：
+
+- 后端 API: http://localhost:8080/api
+- 管理端: http://localhost:3000
+- 业主 Web 端: http://localhost:3001
+- MySQL: localhost:3306
+
+### 6. 微信小程序
 
 使用微信开发者工具导入 `miniprogram-owner/` 目录，点击编译运行。需要在 `miniprogram-owner/app.js` 中配置 `baseURL` 指向后端地址。
+
+## 新增工程能力
+
+### WebSocket 实时推送
+
+后端提供两个 WebSocket 入口，连接时通过 `token` 查询参数传入 JWT：
+
+```text
+ws://localhost:8080/api/ws/notifications?token=<JWT>
+ws://localhost:8080/api/ws/chat?token=<JWT>
+```
+
+当前支持事件：
+
+- `notification.created`：新通知推送
+- `notification.read`：单条通知已读
+- `notification.read_all`：全部已读
+- `chat.message`：人工客服消息
+
+### 模拟支付订单
+
+物业缴费新增订单化流程，并保留原 `/fee/pay/{id}` 兼容接口：
+
+| 接口 | 方法 | 说明 |
+|------|------|------|
+| `/fee/pay/order/{feeId}` | POST | 创建支付订单，重复点击会复用待支付订单 |
+| `/fee/pay/simulate/{orderNo}` | POST | 模拟支付成功 |
+| `/fee/pay/callback` | POST | 模拟第三方支付回调，支持重复回调幂等 |
+| `/fee/pay/order/{orderNo}` | GET | 查询支付订单 |
 
 ### 默认账号
 
@@ -266,7 +313,7 @@ JWT Token 中包含 userId、username、role，拦截器解析后存入 request 
 
 ## 数据库设计
 
-系统包含 20 张表：
+系统包含 21 张表：
 
 **用户相关**
 | 表名 | 说明 |
@@ -285,6 +332,7 @@ JWT Token 中包含 userId、username、role，拦截器解析后存入 request 
 | bus_activity | 社区活动 |
 | bus_activity_signup | 活动报名 |
 | bus_fee | 缴费记录 |
+| bus_payment_order | 支付订单（模拟支付、回调幂等） |
 | bus_fee_settings | 费用单价配置 |
 | bus_repair | 报修工单（含分类字段） |
 | bus_evaluation | 维修评价（1-5 分） |

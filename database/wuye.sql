@@ -105,6 +105,32 @@ CREATE TABLE `bus_fee`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '缴费信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for bus_payment_order
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_payment_order`;
+CREATE TABLE `bus_payment_order`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '支付订单号',
+  `fee_id` bigint(20) NOT NULL COMMENT '账单ID',
+  `owner_id` bigint(20) NOT NULL COMMENT '业主ID',
+  `amount` decimal(10, 2) NOT NULL COMMENT '支付金额',
+  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=待支付, 1=支付成功, 2=已关闭',
+  `channel` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'mock' COMMENT '支付渠道',
+  `trade_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '第三方流水号',
+  `paid_time` datetime NULL DEFAULT NULL COMMENT '支付完成时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_order_no`(`order_no` ASC) USING BTREE,
+  UNIQUE INDEX `uk_trade_no`(`trade_no` ASC) USING BTREE,
+  INDEX `idx_fee_id`(`fee_id` ASC) USING BTREE,
+  INDEX `idx_owner_id`(`owner_id` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE,
+  CONSTRAINT `fk_payment_fee` FOREIGN KEY (`fee_id`) REFERENCES `bus_fee` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `fk_payment_owner` FOREIGN KEY (`owner_id`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '支付订单表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for bus_fee_settings
 -- ----------------------------
 DROP TABLE IF EXISTS `bus_fee_settings`;

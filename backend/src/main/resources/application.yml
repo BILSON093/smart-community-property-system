@@ -11,9 +11,9 @@ spring:
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/wuye?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
-    username: root
-    password: 12345678
+    url: ${DB_URL:jdbc:mysql://localhost:3306/wuye?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:12345678}
   
   # 文件上传配置
   servlet:
@@ -44,13 +44,13 @@ file:
 
 # JWT配置
 jwt:
-  secret: wuye-system-secret-key-2024
-  expiration: 86400000 # 24小时
+  secret: ${JWT_SECRET:wuye-system-secret-key-2024}
+  expiration: ${JWT_EXPIRATION:86400000} # 24小时
 
 # AI配置（本地AI接口）
 ai:
-  url: http://localhost:1234/v1/chat/completions
-  model: local-model
+  url: ${AI_URL:http://localhost:1234/v1/chat/completions}
+  model: ${AI_MODEL:local-model}
 
 # Agent配置
 agent:

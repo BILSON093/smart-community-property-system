@@ -1,5 +1,6 @@
 # 依赖包
 node_modules/
+.m2/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

@@ -29,18 +29,44 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { showToast } from 'vant'
 import request from '@/utils/request'
+import { connectNotifications } from '@/utils/realtime'
 
 const notifications = ref([])
 const loading = ref(false)
 const finished = ref(false)
 const page = ref(1)
+let notificationSocket = null
 
 onMounted(() => {
   loadNotifications()
+  notificationSocket = connectNotifications(handleRealtimeNotification)
 })
+
+onBeforeUnmount(() => {
+  if (notificationSocket) {
+    notificationSocket.close()
+    notificationSocket = null
+  }
+})
+
+const handleRealtimeNotification = (message) => {
+  const payload = message.payload || {}
+  if (message.event === 'notification.created') {
+    const exists = notifications.value.some(item => item.id === payload.id)
+    if (!exists) {
+      notifications.value.unshift(payload)
+      showToast(payload.title || '收到新通知')
+    }
+  } else if (message.event === 'notification.read') {
+    const item = notifications.value.find(item => item.id === payload.id)
+    if (item) item.isRead = 1
+  } else if (message.event === 'notification.read_all') {
+    notifications.value.forEach(item => { item.isRead = 1 })
+  }
+}
 
 const loadNotifications = async () => {
   if (loading.value || finished.value) return

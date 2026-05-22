@@ -1,0 +1,65 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wuye-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: wuye
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database/wuye.sql:/docker-entrypoint-initdb.d/01-wuye.sql:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p12345678"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: wuye-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/wuye?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+      DB_USERNAME: root
+      DB_PASSWORD: 12345678
+      JWT_SECRET: change-me-in-production
+      AI_URL: http://host.docker.internal:1234/v1/chat/completions
+      AI_MODEL: local-model
+    ports:
+      - "8080:8080"
+    volumes:
+      - upload-data:/app/upload
+
+  web-admin:
+    build:
+      context: ./web-admin
+      args:
+        VITE_API_BASE_URL: /api
+        VITE_WS_BASE_URL: /api
+    container_name: wuye-web-admin
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+  web-user:
+    build:
+      context: ./web-user
+      args:
+        VITE_API_BASE_URL: /api
+        VITE_WS_BASE_URL: /api
+    container_name: wuye-web-user
+    depends_on:
+      - backend
+    ports:
+      - "3001:80"
+
+volumes:
+  mysql-data:
+  upload-data:
