@@ -16,6 +16,7 @@ public class OpenApiConfig {
                 .title("智慧社区物业管理系统 API")
                 .description("业主、管理员、维修员三端共用 REST API，包含报修、缴费、通知、论坛、活动和 AI Agent。")
                 .version("1.0.0")
-                .license(new License().name("MIT")));
+                .license(new License().name("Source Available Non-Commercial License v1.0")
+                    .url("https://github.com/BILSON093/smart-community-property-system/blob/main/LICENSE")));
     }
 }
